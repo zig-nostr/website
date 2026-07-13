@@ -14,7 +14,15 @@ export const metadata = {
 }
 
 const navbar = (
-  <Navbar logo={<b>zig-nostr</b>} projectLink="https://github.com/zig-nostr" />
+  <Navbar
+    logo={
+      <span className="zn-navlogo">
+        <img src="/logo.svg" alt="" width="26" height="26" />
+        <b>zig-nostr</b>
+      </span>
+    }
+    projectLink="https://github.com/zig-nostr"
+  />
 )
 
 const footer = (
