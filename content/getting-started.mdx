@@ -1,0 +1,88 @@
+# Getting Started
+
+`zig-nostr` is a Nostr protocol library for [Zig](https://ziglang.org). It
+targets Zig **0.16** and is **pre-alpha** (`v0.3.5`).
+
+## Install
+
+Fetch the library into your project's `build.zig.zon`:
+
+```sh
+zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.3.5.tar.gz
+```
+
+Then wire the module in `build.zig`:
+
+```zig
+const nostr = b.dependency("nostr", .{ .target = target, .optimize = optimize });
+your_module.addImport("nostr", nostr.module("nostr"));
+```
+
+The library vendors and compiles bitcoin-core's libsecp256k1 and LMDB from
+source, so no system packages are required.
+
+## Quickstart: sign and verify an event
+
+```zig
+const std = @import("std");
+const nostr = @import("nostr");
+
+pub fn main() !void {
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    const allocator = arena.allocator();
+
+    // A Signer wraps the libsecp256k1 context; deinit it when done.
+    var signer = nostr.keys.Signer.init();
+    defer signer.deinit();
+
+    // Load a keypair from a 32-byte secret key.
+    const secret: nostr.keys.SecretKey = your_secret_key; // 32 bytes
+    const keypair = try signer.keyPairFromSecretKey(secret);
+
+    // Build and sign a kind:1 text note (no tags, deterministic nonce).
+    const note = try nostr.event.create(
+        allocator,
+        signer,
+        keypair,
+        std.time.timestamp(),
+        1,
+        &.{},
+        "hello from zig-nostr",
+        null,
+    );
+
+    // Verify: recompute the canonical id, then check the Schnorr signature.
+    std.debug.assert(try nostr.event.verify(allocator, signer, note));
+
+    // Serialize to the wire JSON form.
+    const json = try nostr.event.toJson(allocator, note);
+    std.debug.print("{s}\n", .{json});
+}
+```
+
+## What's in the box
+
+The `nostr` module re-exports focused namespaces:
+
+- `keys` — secp256k1 keys and BIP-340 Schnorr sign/verify
+- `event` — the NIP-01 event model, canonical id, JSON encode/decode
+- `nip19` / `bech32` — `npub`/`nsec`/`note`/`nprofile`/`nevent`/`naddr` encoding
+- `nip06` / `bip39` — mnemonic key derivation
+- `nip49` — encrypted key storage at rest (`ncryptsec`)
+- `nip44` — v2 payload encryption
+- `nip46` — remote signing ("bunker") protocol
+- `nip42` — client authentication to relays
+- `relay` / `websocket` / `message` / `filter` — live transport & subscriptions
+- `nip65` — relay lists and outbox routing
+- `store` — the local-first, memory-mapped event store
+
+See [Architecture](/architecture) for how these fit together.
+
+## Build from source
+
+```sh
+git clone https://github.com/zig-nostr/nostr
+cd nostr
+zig build test    # run the suite
+```

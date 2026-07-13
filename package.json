@@ -1,0 +1,21 @@
+{
+  "name": "zig-nostr-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "postbuild": "pagefind --site .next/server/app/ --output-path public/_pagefind"
+  },
+  "dependencies": {
+    "next": "^15.5.20",
+    "nextra": "^4.6.1",
+    "nextra-theme-docs": "^4.6.1",
+    "pagefind": "^1.5.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zod": "^4.1.12"
+  }
+}

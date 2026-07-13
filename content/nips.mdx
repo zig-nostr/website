@@ -1,0 +1,25 @@
+# NIP Support
+
+Nostr is defined by its [NIPs](https://github.com/nostr-protocol/nips) — Nostr
+Implementation Possibilities. Here's where `zig-nostr` stands. Every "done" NIP
+is covered by tests, and the cryptographic ones are verified against their
+official specification vectors.
+
+| NIP | Title | Status |
+|----|----|----|
+| [01](https://github.com/nostr-protocol/nips/blob/master/01.md) | Basic protocol: events, signatures, subscriptions | ✅ done |
+| [06](https://github.com/nostr-protocol/nips/blob/master/06.md) | Key derivation from mnemonic seed | ✅ done |
+| [09](https://github.com/nostr-protocol/nips/blob/master/09.md) | Event deletion (ingestion) | ✅ done |
+| [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities | ✅ done |
+| [21](https://github.com/nostr-protocol/nips/blob/master/21.md) | `nostr:` URI scheme | ✅ done |
+| [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | Client-to-relay authentication | ✅ done |
+| [44](https://github.com/nostr-protocol/nips/blob/master/44.md) | Encrypted payloads (v2) | ✅ done |
+| [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect — remote signing | ✅ done |
+| [49](https://github.com/nostr-protocol/nips/blob/master/49.md) | Private key encryption (`ncryptsec`) | ✅ done |
+| [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay list metadata (outbox) | ✅ done |
+| [17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages | 🚧 planned (A6) |
+| [59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap | 🚧 planned (A6) |
+| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading | 🚧 planned (A7) |
+
+The planned NIPs land with the [showcase apps](/roadmap) — a NIP-17 private
+messenger (A6) and a read-only outbox client (A7).

@@ -1,0 +1,58 @@
+# Architecture
+
+`zig-nostr` is built in layers, each shipped and tested on its own. Everything
+above the crypto core is written in plain Zig; the two C dependencies
+(libsecp256k1 and LMDB) are compiled from pinned source.
+
+## Library core
+
+The credibility anchor. secp256k1 keys and BIP-340 Schnorr signatures come from
+bitcoin-core's **libsecp256k1**, bound via `translate-c` and passing the full
+official BIP-340 test-vector suite. On top of it:
+
+- **NIP-01 event model** — canonical serialization, sha256 id computation, and
+  wire JSON encode/decode, verified against sha256 oracle vectors.
+- **NIP-19 / NIP-21** — bech32 entity encoding (`npub`/`nsec`/`note` and the
+  TLV forms `nprofile`/`nevent`/`naddr`/`nrelay`) plus `nostr:` URIs.
+- **NIP-06** — BIP-39 mnemonics and BIP-32 HD derivation, byte-for-byte against
+  the official vectors.
+- **NIP-49** — private-key encryption at rest (`ncryptsec`): scrypt +
+  XChaCha20-Poly1305, with NFKC password normalization for cross-implementation
+  interop.
+
+## Transport & outbox
+
+- **RFC 6455 WebSocket** framing and handshake, and a stream-generic relay
+  connection state machine with NIP-01 subscriptions.
+- A live **TCP/TLS dialer** that resolves hostnames through the system resolver.
+- **NIP-65 outbox model** — relay lists with read/write routing and *zero*
+  hardcoded relays, so events are published and fetched where they actually
+  live.
+
+## Local-first store
+
+A zero-copy, memory-mapped **LMDB** event store (`store.zig`):
+
+- A compact binary event record with secondary indexes (author, kind,
+  `created_at`, tag).
+- A **bounded, newest-first query planner** — it walks the indexes via reverse
+  cursors and a k-way merge, stopping at `limit`, so feed latency stays flat as
+  the store grows (see [Performance](/performance)).
+- Validate-on-insert ingestion: dedup, replaceable / parameterized-replaceable
+  upserts, and NIP-09 deletions.
+- A direct-message conversation index, local-first reconciliation, and a
+  size-cap cache.
+
+## Signer protocol
+
+The layer the native signer is built on:
+
+- **NIP-44 v2** payload encryption (ChaCha20 + HMAC-SHA256 over a libsecp256k1
+  ECDH secret), verified against the official vectors.
+- **NIP-46** remote signing — the request/response messages, the `kind:24133`
+  envelope, a transport-agnostic dispatcher behind an approval policy, and the
+  `bunker://` / `nostrconnect://` connection URIs.
+- **NIP-42** client authentication, so a signer can serve over relays that gate
+  access behind auth.
+
+The native signer built on this layer is **[Signet](/signer)**.

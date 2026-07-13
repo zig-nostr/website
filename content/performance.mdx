@@ -1,0 +1,34 @@
+# Performance
+
+Performance is a standing design goal, not an afterthought. These are
+`zig-nostr`'s own numbers — measured with the in-repo benchmark and reproducible
+on your own machine. No competitor comparisons; just what the library does.
+
+## Local store: query & ingest
+
+Measured on an Apple Silicon Mac, `ReleaseFast`, warm cache, best of 50 runs.
+Events are spread across 100 authors; the feed query is a 20-author, `kind:1`
+home timeline returning 500 notes.
+
+| Store size | Feed query (500 notes) | Profile query | Ingest |
+|----|----|----|----|
+| 20,000 events | 0.26 ms | 0.09 ms | ~135k events/s |
+| 100,000 events | 0.28 ms | 0.25 ms | ~135k events/s |
+
+The headline isn't just that a feed query takes **~0.28 ms** — it's that going
+from 20k to 100k stored events barely moves it. That's the **bounded query
+planner**: it walks the indexes newest-first and stops at `limit`, so latency
+tracks the page size you ask for, not the size of the store.
+
+## Reproduce it
+
+```sh
+git clone https://github.com/zig-nostr/nostr
+cd nostr
+BENCH_N=100000 zig build bench -Doptimize=ReleaseFast
+```
+
+The benchmark source is
+[`src/bench.zig`](https://github.com/zig-nostr/nostr/blob/main/src/bench.zig).
+Absolute numbers vary with hardware; the *shape* — flat feed latency as the
+store grows — is the point.

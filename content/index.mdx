@@ -1,0 +1,65 @@
+---
+title: The Nostr protocol, natively in Zig
+---
+
+<div className="zn-landing">
+
+<div className="zn-hero">
+  <h1>The Nostr protocol, natively in Zig</h1>
+  <p className="tagline">
+    A foundational Nostr library for Zig — audited secp256k1/BIP-340 signing, a
+    zero-copy local-first event store, and a native NIP-46 remote signer that
+    keeps your key on a machine you control.
+  </p>
+  <div className="zn-cta">
+    <a className="zn-btn zn-btn-primary" href="/getting-started">Get started</a>
+    <a className="zn-btn zn-btn-secondary" href="https://github.com/zig-nostr/nostr">View on GitHub</a>
+  </div>
+</div>
+
+<div className="zn-stats">
+  <div className="zn-stat"><div className="num">0.28&nbsp;ms</div><div className="label">500-note feed query @ 100k events</div></div>
+  <div className="zn-stat"><div className="num">135k/s</div><div className="label">event ingest</div></div>
+  <div className="zn-stat"><div className="num">19/19</div><div className="label">BIP-340 test vectors</div></div>
+</div>
+
+<div className="zn-features">
+  <div className="zn-card">
+    <div className="zn-icon">🔑</div>
+    <h3>Credible crypto core</h3>
+    <p>secp256k1 keys and BIP-340 Schnorr signatures via bitcoin-core's libsecp256k1, passing the full official test-vector suite.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-icon">⚡</div>
+    <h3>Local-first store</h3>
+    <p>A zero-copy, memory-mapped LMDB event store with a bounded, newest-first query planner — sub-millisecond feeds that stay flat as the store grows.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-icon">🛡️</div>
+    <h3>Native remote signer</h3>
+    <p>Signet, a NIP-46 bunker that signs for any client while your nsec never leaves the daemon — a downloadable macOS app.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-icon">🧭</div>
+    <h3>Outbox model</h3>
+    <p>NIP-65 relay lists with read/write routing and zero hardcoded relays — events go where they belong.</p>
+  </div>
+</div>
+
+## Install
+
+Add the library to your Zig project:
+
+```sh
+zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.3.5.tar.gz
+```
+
+```zig
+const nostr = b.dependency("nostr", .{ .target = target, .optimize = optimize });
+your_module.addImport("nostr", nostr.module("nostr"));
+```
+
+zig-nostr is **pre-alpha** and MIT-licensed — a library plus native showcases,
+all on the same core. [Explore the docs →](/getting-started)
+
+</div>

@@ -1,0 +1,32 @@
+# Roadmap
+
+`zig-nostr` ships in milestones: a library flagship, then native showcases that
+prove the library on real product surfaces, then documentation and interop.
+
+## Done
+
+- **A2 — Library core.** secp256k1/BIP-340 signing, the NIP-01 event model,
+  NIP-19/21 encoding, NIP-06 derivation, NIP-49 key storage. `v0.1.0`.
+- **A3 — Transport & outbox.** WebSocket, relay subscriptions, a live TCP/TLS
+  dialer, NIP-65 outbox routing. `v0.2.0`.
+- **A4 — Local-first store.** Zero-copy memory-mapped LMDB store, a bounded query
+  planner, a DM index, reconciliation, and a cache. `v0.2.0`.
+- **A5 — Native signer.** NIP-44 v2, the NIP-46 bunker protocol, NIP-42 auth —
+  and **[Signet](/signer)**, a downloadable macOS remote signer. `v0.3.x`.
+
+## In progress
+
+- **A8 — Docs, benchmarks & built-with.** This site, the
+  [performance numbers](/performance), and the [built-with](/built-with) page.
+
+## Final milestones
+
+- **A6 — DM-only secure messenger.** A native NIP-17 private-messaging app,
+  signing via Signet, rendering instantly from the local store.
+- **A7 — Read-only outbox client.** A pure-consumption feed reader that paints
+  from cache on launch and reconciles live — the clearest "native is faster"
+  demo.
+
+Track the detail on the
+[project board](https://github.com/orgs/zig-nostr/projects) and in each repo's
+issues.

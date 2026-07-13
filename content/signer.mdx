@@ -1,0 +1,47 @@
+# Signet — the native remote signer
+
+**Signet** is a native macOS remote signer built on `zig-nostr`. It implements
+the NIP-46 "bunker" protocol: your `nsec` lives in a local daemon on a machine
+you control, and every signing request from a client waits for your explicit
+approval. The key never leaves the daemon.
+
+<img
+  src="/signet-demo.gif"
+  alt="Signet approving a Nostr signing request"
+  style={{ borderRadius: '0.7rem', maxWidth: '420px', width: '100%', marginTop: '0.5rem' }}
+/>
+
+## How it works
+
+- A headless **daemon** holds the key (encrypted at rest with NIP-49) and speaks
+  NIP-46 over relays.
+- A native **approval GUI** shows each incoming request — `sign_event`,
+  `nip44_encrypt`, and so on — and forwards your approve/deny decision over a
+  loopback channel. The GUI never sees the key.
+- Clients connect with a `bunker://` URL. It works end-to-end over public
+  relays, including those that require NIP-42 authentication.
+
+## Install (macOS, Apple Silicon)
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/signet/main/scripts/install-macos.sh | bash
+```
+
+The installer resolves the latest release, verifies its SHA-256, installs
+`Signet.app`, and launches it. Source, releases, and build instructions live at
+[`zig-nostr/signet`](https://github.com/zig-nostr/signet).
+
+## Supported operations
+
+`sign_event` · `get_public_key` · `nip44_encrypt` · `nip44_decrypt` · `ping`
+
+Each is gated by a per-request approval policy with method and event-kind
+allowlists, so you decide exactly what a connected client may ask for.
+
+## Why it matters
+
+The hard problem in Nostr UX is key custody: every web client that wants to post
+on your behalf traditionally needs your `nsec`. Signet is the counter-example —
+a fast, native key manager that signs for any client while the secret stays put.
+It's the first of the `zig-nostr` [showcases](/roadmap); the messenger and reader
+are next.
