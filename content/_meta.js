@@ -12,10 +12,10 @@ export default {
     },
   },
   'getting-started': 'Getting Started',
+  ecosystem: 'Ecosystem',
   architecture: 'Architecture',
   nips: 'NIP Support',
   signer: 'Signet',
   performance: 'Performance',
-  'built-with': 'Built With zig-nostr',
   roadmap: 'Roadmap',
 }

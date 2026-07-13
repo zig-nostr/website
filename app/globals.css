@@ -5,6 +5,10 @@
   --zn-border: #e6e6e6;
   --zn-card-bg: #fbfbfb;
   --zn-muted: #6b7280;
+  /* Marketing gradient — Nostr purple → Zig orange, routed through a warm pink
+     so the midtones stay bright and readable. Used sparingly (headline + small
+     accents), never on body text. Readability first. */
+  --zn-grad: linear-gradient(90deg, #8e44f2 0%, #d64f86 50%, #f7a41d 100%);
 }
 .dark {
   --zn-border: #2a2a2a;
@@ -45,7 +49,9 @@
   letter-spacing: -0.025em;
   margin: 0;
   max-width: 20ch;
-  background: linear-gradient(120deg, #f7a41d 10%, #ec6a5e 90%);
+  /* Nostr-purple → Zig-orange, the marketing headline. Angled toward vertical so
+     the wrapped last word ("Zig") lands in the orange end. */
+  background-image: linear-gradient(155deg, #8e44f2 0%, #d64f86 52%, #f7a41d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -94,11 +100,13 @@
 }
 
 /* ---------------- Feature cards ---------------- */
-.zn-features {
+.zn-features,
+.zn-pillars,
+.zn-apps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
   gap: 1rem;
-  margin: 2.75rem auto 0;
+  margin: 1.25rem auto 0;
   max-width: 62rem;
 }
 .zn-card {
@@ -151,4 +159,66 @@
   max-width: 68rem;
   margin: 0 auto;
   padding-bottom: 2rem;
+}
+
+/* ---------------- Section titles ---------------- */
+.zn-section-title {
+  text-align: center;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  margin: 3.25rem 0 0;
+}
+.zn-section-title::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin: 0.6rem auto 0;
+  border-radius: 2px;
+  background-image: var(--zn-grad);
+}
+
+/* ---------------- Native app cards ---------------- */
+.zn-app-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.zn-app-head h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 650;
+}
+.zn-tag {
+  flex: none;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 1rem;
+  border: 1px solid var(--zn-border);
+  color: var(--zn-muted);
+}
+.zn-tag-shipped {
+  color: #1a1200;
+  background: #f0851a;
+  border-color: transparent;
+}
+.zn-applink {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #f0851a;
+  text-decoration: none;
+}
+.zn-more {
+  text-align: center;
+  margin: 1.5rem auto 0;
+  color: var(--zn-muted);
+  font-size: 0.92rem;
 }

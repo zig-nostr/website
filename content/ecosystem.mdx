@@ -1,0 +1,44 @@
+# The zig-nostr ecosystem
+
+zig-nostr is more than a library — it's a layered ecosystem for building on Nostr
+in Zig. One audited core, shared by focused utility libraries and by real native
+apps, so every layer benefits from the same well-tested foundation.
+
+## Core library
+
+**[`zig-nostr/nostr`](https://github.com/zig-nostr/nostr)** — secp256k1 keys and
+BIP-340 signing, the NIP-01 event model, relay transport with the outbox model, a
+zero-copy local-first store, and the NIP-46 signer protocol. It's the credibility
+anchor for everything else, and it keeps growing: more NIPs and capabilities land
+with each milestone. See [NIP support](/nips) and the [architecture](/architecture).
+
+## Utility libraries
+
+Focused building blocks that layer on the core so apps don't reinvent the basics.
+More arrive as the ecosystem grows — they'll be listed here as they ship.
+
+## Native apps
+
+Real products built entirely on the core — proof it holds up under product weight,
+and the reason the ecosystem exists.
+
+### Signet — shipped
+
+A NIP-46 remote signer for macOS. Your key lives in a local daemon; every signing
+request waits for your approval, and your `nsec` never leaves it.
+→ [`zig-nostr/signet`](https://github.com/zig-nostr/signet) · [read more](/signer)
+
+### On the roadmap
+
+- **A private messenger** — NIP-17 gift-wrapped DMs, signing through Signet,
+  rendering instantly from the local store.
+- **A read-only reader** — an outbox-model feed that paints from cache on launch
+  and reconciles live.
+- **More apps, more platforms** — the ecosystem expands across desktop and mobile.
+
+See the [roadmap](/roadmap) for what's next.
+
+---
+
+Building on zig-nostr? Open an issue or PR on
+[GitHub](https://github.com/zig-nostr) and we'll add it here.

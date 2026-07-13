@@ -15,7 +15,7 @@ const siteUrl =
     : 'http://localhost:3000')
 
 const description =
-  'Audited secp256k1/BIP-340 signing, a zero-copy local-first event store, and a native NIP-46 remote signer.'
+  'A native Nostr ecosystem in Zig — a foundational protocol library, utility libraries, and fast native apps like the Signet remote signer.'
 
 export const metadata = {
   metadataBase: new URL(siteUrl),

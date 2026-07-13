@@ -8,13 +8,13 @@ title: The Nostr protocol, natively in Zig
   <img src="/logo.svg" alt="zig-nostr" className="zn-hero-logo" width="104" height="104" />
   <h1>The Nostr protocol, natively in Zig</h1>
   <p className="tagline">
-    A foundational Nostr library for Zig — audited secp256k1/BIP-340 signing, a
-    zero-copy local-first event store, and a native NIP-46 remote signer that
-    keeps your key on a machine you control.
+    A native Nostr ecosystem in Zig — a foundational protocol library, utility
+    libraries built on it, and fast native apps that keep your keys on hardware
+    you control.
   </p>
   <div className="zn-cta">
     <a className="zn-btn zn-btn-primary" href="/getting-started">Get started</a>
-    <a className="zn-btn zn-btn-secondary" href="https://github.com/zig-nostr/nostr">View on GitHub</a>
+    <a className="zn-btn zn-btn-secondary" href="/ecosystem">Explore the ecosystem</a>
   </div>
 </div>
 
@@ -23,6 +23,28 @@ title: The Nostr protocol, natively in Zig
   <div className="zn-stat"><div className="num">135k/s</div><div className="label">event ingest</div></div>
   <div className="zn-stat"><div className="num">19/19</div><div className="label">BIP-340 test vectors</div></div>
 </div>
+
+<h2 className="zn-section-title">One core, many surfaces</h2>
+
+<div className="zn-pillars">
+  <div className="zn-card">
+    <div className="zn-icon">📦</div>
+    <h3>Core library</h3>
+    <p>The foundation — keys, events, transport, the outbox model, and a local-first store. Actively growing toward full Nostr coverage, milestone after milestone.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-icon">🧩</div>
+    <h3>Utility libraries</h3>
+    <p>Focused building blocks layered on the core, so every app shares one audited, well-tested base instead of reinventing crypto and storage.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-icon">🖥️</div>
+    <h3>Native apps</h3>
+    <p><a href="/signer">Signet</a> ships today — with a messenger, a reader, and more on the way across desktop and mobile. Real products, all on one core.</p>
+  </div>
+</div>
+
+<h2 className="zn-section-title">What the core gives you</h2>
 
 <div className="zn-features">
   <div className="zn-card">
@@ -57,9 +79,40 @@ title: The Nostr protocol, natively in Zig
   </div>
 </div>
 
-## Install
+<h2 className="zn-section-title">Native apps</h2>
 
-Add the library to your Zig project:
+<div className="zn-apps">
+  <div className="zn-card">
+    <div className="zn-app-head">
+      <h3>Signet</h3>
+      <span className="zn-tag zn-tag-shipped">Shipped</span>
+    </div>
+    <p>A NIP-46 remote signer for macOS. Your nsec stays in a local daemon; every request waits for your approval.</p>
+    <a className="zn-applink" href="/signer">Learn more →</a>
+  </div>
+  <div className="zn-card">
+    <div className="zn-app-head">
+      <h3>Messenger</h3>
+      <span className="zn-tag">Planned</span>
+    </div>
+    <p>A private DM app — NIP-17 gift-wrapped messages, signing through Signet, rendering instantly from the local store.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-app-head">
+      <h3>Reader</h3>
+      <span className="zn-tag">Planned</span>
+    </div>
+    <p>A read-only outbox client that paints from cache on launch and reconciles live — the clearest "native is faster" demo.</p>
+  </div>
+</div>
+
+<p className="zn-more">More native apps — and more platforms, desktop and mobile — are on the <a href="/roadmap">roadmap</a>.</p>
+
+<h2 className="zn-section-title">Install the core</h2>
+
+<p style={{ textAlign: 'center', color: 'var(--zn-muted)', marginTop: '0.75rem' }}>
+  Add the library to your Zig project:
+</p>
 
 ```sh
 zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.3.5.tar.gz
@@ -71,6 +124,6 @@ your_module.addImport("nostr", nostr.module("nostr"));
 ```
 
 zig-nostr is **pre-alpha** and MIT-licensed — a library plus native showcases,
-all on the same core. [Explore the docs →](/getting-started)
+all on one core. [Explore the docs →](/getting-started)
 
 </div>
