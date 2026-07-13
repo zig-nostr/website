@@ -45,6 +45,16 @@ title: The Nostr protocol, natively in Zig
     <h3>Outbox model</h3>
     <p>NIP-65 relay lists with read/write routing and zero hardcoded relays — events go where they belong.</p>
   </div>
+  <div className="zn-card">
+    <div className="zn-icon">🔒</div>
+    <h3>Encrypted payloads</h3>
+    <p>NIP-44 v2 authenticated encryption (ChaCha20 + HMAC-SHA256), verified against the official vectors — the basis for private messaging.</p>
+  </div>
+  <div className="zn-card">
+    <div className="zn-icon">🔐</div>
+    <h3>Portable keys</h3>
+    <p>NIP-06 mnemonic derivation and NIP-49 <code>ncryptsec</code> encryption at rest, NFKC-normalized for cross-app interop.</p>
+  </div>
 </div>
 
 ## Install

@@ -4,13 +4,37 @@ import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
 
+// Base URL for absolute OG/canonical links. Sourced from the environment so the
+// production domain lives in the Vercel dashboard, never committed here. On Vercel
+// VERCEL_PROJECT_PRODUCTION_URL is injected automatically; set NEXT_PUBLIC_SITE_URL
+// to pin the canonical custom domain.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000')
+
+const description =
+  'Audited secp256k1/BIP-340 signing, a zero-copy local-first event store, and a native NIP-46 remote signer.'
+
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'zig-nostr — the Nostr protocol, natively in Zig',
     template: '%s — zig-nostr',
   },
-  description:
-    'A foundational Nostr protocol library for Zig: secp256k1/BIP-340 signing, a zero-copy local-first event store, and a native NIP-46 remote signer.',
+  description,
+  openGraph: {
+    type: 'website',
+    siteName: 'zig-nostr',
+    title: 'zig-nostr — the Nostr protocol, natively in Zig',
+    description,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'zig-nostr — the Nostr protocol, natively in Zig',
+    description,
+  },
 }
 
 const navbar = (
