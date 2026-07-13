@@ -1,32 +1,63 @@
 # Roadmap
 
-`zig-nostr` ships in milestones: a library flagship, then native showcases that
-prove the library on real product surfaces, then documentation and interop.
+zig-nostr ships in milestones: one audited core, native apps that prove it on real product
+surfaces, and steady expansion across NIPs and platforms. Below is what's shipped, what's
+being built now, and the year ahead — roughly a milestone a month.
 
-## Done
+## Shipped
 
-- **A2 — Library core.** secp256k1/BIP-340 signing, the NIP-01 event model,
-  NIP-19/21 encoding, NIP-06 derivation, NIP-49 key storage. `v0.1.0`.
-- **A3 — Transport & outbox.** WebSocket, relay subscriptions, a live TCP/TLS
-  dialer, NIP-65 outbox routing. `v0.2.0`.
-- **A4 — Local-first store.** Zero-copy memory-mapped LMDB store, a bounded query
-  planner, a DM index, reconciliation, and a cache. `v0.2.0`.
-- **A5 — Native signer.** NIP-44 v2, the NIP-46 bunker protocol, NIP-42 auth —
-  and **[Signet](/signer)**, a downloadable macOS remote signer. `v0.3.x`.
+- **Library core** — secp256k1 keys and BIP-340 Schnorr signatures (bitcoin-core's
+  libsecp256k1), the NIP-01 event model, NIP-19/21 encoding, NIP-06 derivation, and NIP-49
+  key storage. Passes the full official BIP-340 test-vector suite.
+- **Transport & outbox** — RFC 6455 WebSocket, a relay connection state machine with NIP-01
+  subscriptions, a live TCP/TLS dialer, and the NIP-65 outbox model with zero hardcoded relays.
+- **Local-first store** — a zero-copy, memory-mapped LMDB event store with a bounded,
+  newest-first query planner. [Sub-millisecond feeds](/performance) that stay flat as the
+  store grows.
+- **Signer protocol** — NIP-44 v2 encryption, the NIP-46 remote-signing ("bunker") protocol,
+  and NIP-42 client authentication.
+- **[Signet](/signer)** — the native remote signer. Your key lives in a local daemon and
+  every request waits for your approval. A downloadable macOS app.
+- **Docs & benchmarks** — this site, the [NIP-support table](/nips), and reproducible
+  [performance numbers](/performance).
 
 ## In progress
 
-- **A8 — Docs, benchmarks & ecosystem.** This site, the
-  [performance numbers](/performance), and the [ecosystem](/ecosystem) page.
+- **The flagship client** — a fast, local-first native Nostr client organized around
+  community **"places."** Three things done well:
+  - **Onboarding in under two minutes** — browse as a guest with no key; when you want to
+    post, generate a key or connect [Signet](/signer); a curated starter pack means the feed
+    is never empty.
+  - **Local-first performance** — the feed renders from disk instantly and reconciles from
+    relays in the background; posting is optimistic; nothing waits on the slowest relay.
+  - **Community "places"** — the home isn't a global firehose but browsable, joinable
+    community relays organized by interest.
 
-## Final milestones
+  A polished, focused vertical slice first — depth over breadth — with the rest on the year
+  ahead.
 
-- **A6 — DM-only secure messenger.** A native NIP-17 private-messaging app,
-  signing via Signet, rendering instantly from the local store.
-- **A7 — Read-only outbox client.** A pure-consumption feed reader that paints
-  from cache on launch and reconciles live — the clearest "native is faster"
-  demo.
+## The year ahead
+
+Roughly one milestone a month, expanding the core and the ecosystem around it:
+
+1. **Library 1.0** — a stable public API, an audited error model, and a fuzzed parser.
+2. **A deeper client** — threads (NIP-10), reactions and reposts, quotes, and media (NIP-92).
+3. **A "places" discovery engine** — relay discovery and reviews, and one-tap tooling to spin
+   up and tend a community relay.
+4. **A secure messenger** — private direct messages (NIP-17 gift wrap) on the local store,
+   signing through Signet.
+5. **A document app** — Nostr-native notes and long-form (NIP-23), personal and shareable.
+6. **Payments** — zaps (NIP-57) and Nostr Wallet Connect (NIP-47), wired into the apps.
+7. **Reusable utility libraries** — the local store, outbox/discovery, onboarding, and the
+   NIP-46 bunker, extracted as standalone packages other projects can build on.
+8. **Sync & reliability** — set-reconciliation sync (NIP-77 Negentropy), capability discovery
+   (NIP-11), reconnection/backoff, and relay health scoring.
+9. **C-ABI bindings** — a stable C header so Swift, Kotlin, C, and JS projects can link the
+   library.
+10. **WASM** — the library compiled to WebAssembly, with a browser example.
+11. **Mobile** — the client on iOS and Android, with the core running on-device.
+12. **Adoption & 1.0** — a 1.0 client, external projects building on the library, contributor
+    docs, and a full benchmark suite.
 
 Track the detail on the
-[project board](https://github.com/orgs/zig-nostr/projects) and in each repo's
-issues.
+[project board](https://github.com/orgs/zig-nostr/projects) and in each repo's issues.

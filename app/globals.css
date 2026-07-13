@@ -208,6 +208,11 @@
   background: #f0851a;
   border-color: transparent;
 }
+.zn-tag-building {
+  color: #fff;
+  background: #7c36eb;
+  border-color: transparent;
+}
 .zn-applink {
   display: inline-block;
   margin-top: 0.75rem;
