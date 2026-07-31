@@ -1,0 +1,112 @@
+# Plaza, the flagship client
+
+**Plaza** is a fast, local-first Nostr client for macOS, built natively in Zig on
+the [`zig-nostr`](https://github.com/zig-nostr/nostr) core. No browser, no
+Electron, no interpreter in the binary: the toolkit draws every pixel, and the
+event store runs inside the app's own process rather than behind an IPC boundary.
+
+Two things it tries to do well. You get from launch to reading in seconds and to
+posting in about two minutes. And the feed comes off local disk, so it is
+already there when the window opens and reconciles with relays behind you.
+
+## Reading first, identity later
+
+Plaza opens into a feed. Not a welcome wall, not a sign-up form: reading Nostr
+never needed a key, so the app does not ask for one until you reach for
+something that does. Browse as a guest for as long as you like.
+
+When you do want in, there are three ways and you pick the one that fits:
+
+- **Create an identity.** A key is minted for you, in seconds, with nothing to
+  write down up front.
+- **Bring a key you already have.** It goes into the keyholder, not into the app.
+- **Use your own signer.** Paste a `bunker://` link and Plaza signs through
+  [Signet](/signer) or any other NIP-46 signer, with the key never leaving it.
+
+Whatever you reached for when you were asked is remembered and finished for you
+afterwards, so signing in never costs you the thing you were doing.
+
+## Your key is not in the app
+
+Plaza does not hold your secret key, even when it makes one for you. A separate
+keyholder process owns it, reached over authenticated loopback, and the app asks
+it to sign. The ceremony that mints or imports a key runs in its own window, so
+you can see the process that is about to hold your key at the moment it starts
+holding it.
+
+That is the same design as [Signet](/signer), and it is why connecting an
+external signer is a first-class path rather than an advanced setting.
+
+## What is in it today
+
+A follow-based feed with a curated starter pack so it is never empty · real names
+and avatars from `kind:0` · inline pictures and link previews · threads with the
+chain above a note and replies nested under it · quotes and `nostr:` mentions
+rendered inline · a composer with a mention picker and drafts that survive a quit
+· reactions · notifications for what was aimed at you · profile pages with
+follows and followers · your own relay list, read and write, routed by
+[NIP-65](/nips) · settings, sessions, and sign-out without lock-in.
+
+Private messages are the milestone after this one.
+
+## Careful with what is yours
+
+Follow lists, relay lists and profiles are replaceable events: publishing one
+replaces whatever the network already had. Plaza reads yours back before it
+writes, keeps the parts it does not understand, and refuses to publish a list it
+has not seen. An app that drops half your follows because a relay was slow to
+answer is worse than an app that does nothing at all.
+
+## Fast on purpose
+
+The feed is a windowed list: it builds only the rows near the viewport, so its
+cost follows the window rather than the length of the feed. Measured on the
+ReleaseFast build while scrolling hard through a live feed:
+
+| Stage | p90 | Budget |
+| --- | --- | --- |
+| Rebuild | 54&micro;s | 400&micro;s |
+| Layout | 432&micro;s | 1500&micro;s |
+| Patch | 19&micro;s | 200&micro;s |
+
+A 120&nbsp;Hz frame is 8333&micro;s, so a hard scroll spends about a tenth of
+one. Sixty notes mount 63 widget nodes rather than roughly 500. The numbers are
+reproducible: `scripts/frame-budget.sh` in the repo measures them and fails on a
+regression.
+
+See [performance](/performance) for the library numbers underneath.
+
+## Getting it
+
+Plaza is not tagged for download yet. Build it from source today:
+
+```sh
+git clone https://github.com/zig-nostr/plaza
+cd plaza
+npm install -g @native-sdk/cli
+native build .          # a ReleaseFast binary in zig-out/bin/
+scripts/package-macos.sh   # or the same artifact as Plaza.app
+```
+
+macOS on Apple Silicon. A one-line installer lands with the first tagged
+release.
+
+Plaza is ad-hoc signed and not notarized on purpose. It signs notes with your
+key, so the trust anchor is a build you can reproduce rather than an Apple
+signature you cannot inspect.
+
+Linux and Windows build and test in CI. Packaged releases for them come later:
+the toolkit renders through a software rasteriser off macOS today, and shipping
+one now would misrepresent how Plaza performs.
+
+## Built on the core
+
+Everything Plaza does with Nostr comes from
+[`zig-nostr/nostr`](https://github.com/zig-nostr/nostr): keys and BIP-340
+signing, the event model, relay transport and the outbox model, the local store,
+and the NIP-46 signer protocol. Plaza is the product weight that proves the core
+holds up. See the [architecture](/architecture) and the
+[NIP-support table](/nips).
+
+Source, issues and milestones live at
+[`zig-nostr/plaza`](https://github.com/zig-nostr/plaza).
