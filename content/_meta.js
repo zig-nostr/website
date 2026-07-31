@@ -15,6 +15,7 @@ export default {
   ecosystem: 'Ecosystem',
   architecture: 'Architecture',
   nips: 'NIP Support',
+  plaza: 'Plaza',
   signer: 'Signet',
   performance: 'Performance',
   roadmap: 'Roadmap',
