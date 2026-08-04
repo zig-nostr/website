@@ -18,12 +18,12 @@ something that does. Browse as a guest for as long as you like.
 When you do want in, there are three ways and you pick the one that fits:
 
 - **Create an identity.** A key is minted for you, in seconds, with nothing to
-  write down up front. Plaza never mints one itself: Signet does, in its own
+  write down up front. Plaza never mints one itself: Notary does, in its own
   process, and Plaza is only told the public half.
 - **Bring a key you already have.** The packaged app hands your paste straight
-  to Signet through a separate ceremony window, so Plaza itself never sees it.
+  to Notary through a separate ceremony window, so Plaza itself never sees it.
 - **Use your own signer.** Paste a `bunker://` link and Plaza signs through
-  [Signet](/signer) or any other NIP-46 signer, with the key never leaving it.
+  [Notary](/signer) or any other NIP-46 signer, with the key never leaving it.
 
 What you reached for when you were asked is remembered, and completed as soon as
 signing in allows it, so signing in does not cost you the thing you were
@@ -31,7 +31,7 @@ doing.
 
 ## Your key is not in the app
 
-Plaza does not hold your secret key. Signet, a separate process shipped inside
+Plaza does not hold your secret key. Notary, a separate process shipped inside
 the app, owns it and is reached over authenticated loopback; Plaza asks it to
 sign and never sees the secret. Making a key goes the same way, so there is no
 moment at which Plaza has held one. The ceremony that mints or imports runs in
@@ -44,7 +44,7 @@ in Plaza itself and is written to `~/.plaza`. In that state the sign-in card
 stops promising otherwise and reads "Pasted here, and kept on this device." A
 packaged build carries the window and does not have this path.
 
-That is the same design as [Signet](/signer), and it is why connecting an
+That is the same design as [Notary](/signer), and it is why connecting an
 external signer is a first-class path rather than an advanced setting.
 
 ## What is in it today

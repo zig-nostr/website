@@ -15,7 +15,7 @@ const siteUrl =
     : 'http://localhost:3000')
 
 const description =
-  'A native Nostr ecosystem in Zig — a foundational protocol library, utility libraries, and fast native apps like the Signet remote signer.'
+  'A native Nostr ecosystem in Zig: a foundational protocol library, utility libraries, and fast native apps like the Notary remote signer.'
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
