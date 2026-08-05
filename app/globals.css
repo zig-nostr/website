@@ -227,3 +227,34 @@
   color: var(--zn-muted);
   font-size: 0.92rem;
 }
+
+/* The four Notary screens on /signer. Two up on a wide page, one up on a
+   phone, because a screenshot of a window is unreadable at half a phone's
+   width. The caption carries the meaning, so it stays with its picture
+   rather than being collected into a paragraph underneath. */
+.zn-shots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+.zn-shots figure {
+  margin: 0;
+}
+.zn-shots img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.7rem;
+  display: block;
+}
+.zn-shots figcaption {
+  margin-top: 0.55rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+@media (max-width: 640px) {
+  .zn-shots {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
