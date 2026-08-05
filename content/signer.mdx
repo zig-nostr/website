@@ -1,22 +1,40 @@
 # Notary: the native remote signer
 
-**Notary** is a native macOS remote signer built on `zig-nostr`. It implements
-the NIP-46 "bunker" protocol: your `nsec` lives in a local daemon on a machine
-you control, and every signing request from a client waits for your explicit
-approval. The key never leaves the daemon.
+**Notary** is a native macOS remote signer built on `zig-nostr`: Zig throughout,
+drawing its own pixels, with no Electron and no WebView anywhere. It implements
+the NIP-46 "bunker" protocol, so your `nsec` lives in a local daemon on a machine
+you control. Nothing gets signed quietly: you see what a client is asking for
+before it happens, and the key never leaves the daemon.
 
-<img
-  src="/notary-demo.gif"
-  alt="Notary approving a Nostr signing request"
-  style={{ borderRadius: '0.7rem', maxWidth: '420px', width: '100%', marginTop: '0.5rem' }}
-/>
+## The whole app
+
+Four screens, which is all of it.
+
+<div className="zn-shots">
+  <figure>
+    <img src="/notary/setup.jpg" alt="Set up your signer: create a new key or import one you already have" />
+    <figcaption><strong>Set up.</strong> Create a key or bring one you have. The key is generated and stored by the daemon; the app only ever sends the passphrase.</figcaption>
+  </figure>
+  <figure>
+    <img src="/notary/unlock.jpg" alt="Unlock your signer with your passphrase" />
+    <figcaption><strong>Unlock.</strong> The key is encrypted at rest. Nothing serves until you unlock it.</figcaption>
+  </figure>
+  <figure>
+    <img src="/notary/serving.jpg" alt="Serving: the bunker URL to copy, and live per-relay status" />
+    <figcaption><strong>Serve.</strong> Copy the <code>bunker://</code> URL into any Nostr client. Each relay reports its own state, so you can see where you are reachable.</figcaption>
+  </figure>
+  <figure>
+    <img src="/notary/request.jpg" alt="A signing request naming itself, waiting for approve or deny" />
+    <figcaption><strong>Approve.</strong> Every request names itself and waits. Nothing is signed while you are not looking.</figcaption>
+  </figure>
+</div>
 
 ## How it works
 
 - A headless **daemon** holds the key (encrypted at rest with NIP-49) and speaks
   NIP-46 over relays.
-- A native **approval GUI** shows each incoming request — `sign_event`,
-  `nip44_encrypt`, and so on — and forwards your approve/deny decision over a
+- A native **approval GUI** shows each incoming request (`sign_event`,
+  `nip44_encrypt`, and so on) and forwards your approve/deny decision over a
   loopback channel. The GUI never sees the key.
 - Clients connect with a `bunker://` URL. It works end-to-end over public
   relays, including those that require NIP-42 authentication.
