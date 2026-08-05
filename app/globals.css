@@ -228,18 +228,21 @@
   font-size: 0.92rem;
 }
 
-/* The four Notary screens on /signer. Two up on a wide page, one up on a
-   phone, because a screenshot of a window is unreadable at half a phone's
-   width. The caption carries the meaning, so it stays with its picture
-   rather than being collected into a paragraph underneath. */
+/* Notary's cards on /signer: one wide lead image, then three portrait panels
+   side by side. Below 640px the panels stack, because a 1000x1400 card at a
+   third of a phone's width is unreadable. */
+.zn-shot-hero {
+  width: 100%;
+  height: auto;
+  border-radius: 0.7rem;
+  display: block;
+  margin: 1.25rem 0;
+}
 .zn-shots {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin: 1.5rem 0;
-}
-.zn-shots figure {
-  margin: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
 }
 .zn-shots img {
   width: 100%;
@@ -247,11 +250,10 @@
   border-radius: 0.7rem;
   display: block;
 }
-.zn-shots figcaption {
-  margin-top: 0.55rem;
+.zn-shot-note {
   font-size: 0.875rem;
   line-height: 1.5;
-  opacity: 0.8;
+  opacity: 0.75;
 }
 @media (max-width: 640px) {
   .zn-shots {
