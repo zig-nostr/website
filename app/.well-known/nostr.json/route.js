@@ -1,4 +1,4 @@
-// NIP-05 identifier endpoint — https://github.com/nostr-protocol/nips/blob/master/05.md
+// NIP-05 identifier endpoint: https://github.com/nostr-protocol/nips/blob/master/05.md
 //
 // Served as a dynamic route (not a static public/ file) so we honor the
 // `?name=<local-part>` query and return only the requested mapping, instead of

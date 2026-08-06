@@ -65,17 +65,17 @@ pub fn main() !void {
 
 The `nostr` module re-exports focused namespaces:
 
-- `keys` — secp256k1 keys and BIP-340 Schnorr sign/verify
-- `event` — the NIP-01 event model, canonical id, JSON encode/decode
-- `nip19` / `bech32` — `npub`/`nsec`/`note`/`nprofile`/`nevent`/`naddr` encoding
-- `nip06` / `bip39` — mnemonic key derivation
-- `nip49` — encrypted key storage at rest (`ncryptsec`)
-- `nip44` — v2 payload encryption
-- `nip46` — remote signing ("bunker") protocol
-- `nip42` — client authentication to relays
-- `relay` / `websocket` / `message` / `filter` — live transport & subscriptions
-- `nip65` — relay lists and outbox routing
-- `store` — the local-first, memory-mapped event store
+- `keys`: secp256k1 keys and BIP-340 Schnorr sign/verify
+- `event`: the NIP-01 event model, canonical id, JSON encode/decode
+- `nip19` / `bech32`: `npub`/`nsec`/`note`/`nprofile`/`nevent`/`naddr` encoding
+- `nip06` / `bip39`: mnemonic key derivation
+- `nip49`: encrypted key storage at rest (`ncryptsec`)
+- `nip44`: v2 payload encryption
+- `nip46`: remote signing ("bunker") protocol
+- `nip42`: client authentication to relays
+- `relay` / `websocket` / `message` / `filter`: live transport & subscriptions
+- `nip65`: relay lists and outbox routing
+- `store`: the local-first, memory-mapped event store
 
 See [Architecture](/architecture) for how these fit together.
 

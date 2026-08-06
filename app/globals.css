@@ -5,7 +5,7 @@
   --zn-border: #e6e6e6;
   --zn-card-bg: #fbfbfb;
   --zn-muted: #6b7280;
-  /* Marketing gradient — Nostr purple → Zig orange, routed through a warm pink
+  /* Marketing gradient: Nostr purple to Zig orange, routed through a warm pink
      so the midtones stay bright and readable. Used sparingly (headline + small
      accents), never on body text. Readability first. */
   --zn-grad: linear-gradient(90deg, #8e44f2 0%, #d64f86 50%, #f7a41d 100%);
