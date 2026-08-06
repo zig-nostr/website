@@ -10,13 +10,16 @@ Measured on an Apple Silicon Mac, `ReleaseFast`, warm cache, best of 50 runs.
 Events are spread across 100 authors; the feed query is a 20-author, `kind:1`
 home timeline returning 500 notes.
 
-| Store size | Feed query (500 notes) | Profile query | Ingest |
-|----|----|----|----|
-| 20,000 events | 0.26 ms | 0.09 ms | ~135k events/s |
-| 100,000 events | 0.28 ms | 0.25 ms | ~135k events/s |
+| Store size | Feed query (500 notes) | Timeline query (1 author) | Profile query | Ingest |
+|----|----|----|----|----|
+| 20,000 events | 0.25 ms | 0.09 ms | 0.007 ms | ~170k events/s |
+| 100,000 events | 0.28 ms | 0.24 ms | 0.008 ms | ~149k events/s |
 
 The headline isn't just that a feed query takes **~0.28 ms**: it's that going
-from 20k to 100k stored events barely moves it. That's the **bounded query
+from 20k to 100k stored events barely moves it. The profile query makes the same
+point sharply: fetching one account's `kind:0` out of a hundred thousand events
+reads a single index entry, so it costs **8 microseconds** and does not care how
+much history sits behind it. That's the **bounded query
 planner**: it walks the indexes newest-first and stops at `limit`, so latency
 tracks the page size you ask for, not the size of the store.
 

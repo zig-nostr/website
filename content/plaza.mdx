@@ -114,30 +114,25 @@ See [performance](/performance) for the library numbers underneath.
 
 ## Getting it
 
-Plaza is not tagged for download yet. Build it from source today:
-
 ```sh
-git clone https://github.com/zig-nostr/plaza
-cd plaza
-npm install -g @native-sdk/cli
-native build .          # a ReleaseFast binary in zig-out/bin/
-scripts/package-macos.sh   # or the same artifact as Plaza.app
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/install-macos.sh | bash
 ```
 
-macOS on Apple Silicon. A one-line installer lands with the first tagged
-release.
+macOS on Apple Silicon. The installer verifies the download's SHA-256, installs
+`Plaza.app`, clears the download-quarantine flag so it opens without a Gatekeeper
+detour, and launches it. Your key, session and local store live in `~/.plaza` and
+survive every upgrade.
 
 Plaza is ad-hoc signed and not notarized on purpose. It signs notes with your
 key, so the trust anchor is a build you can reproduce rather than an Apple
-signature you cannot inspect.
+signature you cannot inspect. Read the
+[installer](https://github.com/zig-nostr/plaza/blob/main/scripts/install-macos.sh),
+or build the same artifact yourself:
 
-Linux builds and tests in CI on every change. Windows is not in the matrix yet:
-the relay transport resolves hostnames through libc `getaddrinfo`, which Zig's
-standard library does not declare for Windows, so nothing depending on the
-library links there. That is a gap in the protocol library rather than in Plaza.
-Packaged releases for either come later anyway: the toolkit renders through a
-software rasteriser off macOS today, and shipping one now would misrepresent how
-Plaza performs.
+```sh
+git clone https://github.com/zig-nostr/plaza
+cd plaza && scripts/package-macos.sh
+```
 
 ## Built on the core
 
