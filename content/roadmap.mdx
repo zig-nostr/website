@@ -1,60 +1,70 @@
 # Roadmap
 
-zig-nostr ships in milestones: one audited core, native apps that prove it on real product
-surfaces, and steady expansion across NIPs and platforms. Below is what's shipped, what's
-being built now, and the year ahead — roughly a milestone a month.
+zig-nostr is a protocol library in Zig, the native apps that prove it on real
+product surfaces, and the docs around both. This is what has shipped, and the
+order of what comes next.
+
+No dates. The order is a commitment; a calendar would not be.
 
 ## Shipped
 
-- **Library core** — secp256k1 keys and BIP-340 Schnorr signatures (bitcoin-core's
+- **Library core**: secp256k1 keys and BIP-340 Schnorr signatures (bitcoin-core's
   libsecp256k1), the NIP-01 event model, NIP-19/21 encoding, NIP-06 derivation, and NIP-49
   key storage. Passes the full official BIP-340 test-vector suite.
-- **Transport & outbox** — RFC 6455 WebSocket, a relay connection state machine with NIP-01
+- **Transport and outbox**: RFC 6455 WebSocket, a relay connection state machine with NIP-01
   subscriptions, a live TCP/TLS dialer, and the NIP-65 outbox model with zero hardcoded relays.
-- **Local-first store** — a zero-copy, memory-mapped LMDB event store with a bounded,
+- **Local-first store**: a zero-copy, memory-mapped LMDB event store with a bounded,
   newest-first query planner. [Sub-millisecond feeds](/performance) that stay flat as the
   store grows.
-- **Signer protocol** — NIP-44 v2 encryption, the NIP-46 remote-signing ("bunker") protocol,
+- **Signer protocol**: NIP-44 v2 encryption, the NIP-46 remote-signing ("bunker") protocol,
   and NIP-42 client authentication.
-- **[Notary](/signer)**: the native remote signer, Zig with no Electron. Your key lives in a
-  local daemon and nothing gets signed quietly. A downloadable macOS app.
-- **Docs & benchmarks** — this site, the [NIP-support table](/nips), and reproducible
+- **[Notary](/signer)**, the native remote signer. Your key lives in a local daemon and
+  nothing gets signed quietly. A downloadable macOS app.
+- **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways, and read a
+  follow feed that renders from disk before the network answers.
+- **Docs and benchmarks**: this site, the [NIP-support table](/nips), and reproducible
   [performance numbers](/performance).
 
-## In progress
+## What comes next, in order
 
-- **[Plaza](/plaza)**, the flagship client: a fast, local-first native Nostr client.
-  Two things done well:
-  - **Onboarding in under two minutes** — browse as a guest with no key; when you want to
-    post, generate a key or connect [Notary](/signer); a curated starter pack means the feed
-    is never empty.
-  - **Local-first performance** — the feed renders from disk instantly and reconciles from
-    relays in the background; posting is optimistic; nothing waits on the slowest relay.
+1. **Notifications worth opening.** Who it was, what they did, the note it was about, and
+   what a zap carried. Today a reply is a line of text with no face and no content.
+2. **Reach.** Following somebody means seeing them: per-author relay routing on the way in,
+   the outbox model on the way out, and older notes when you scroll past what is local.
+3. **Ship it, and fix it.** A packaged Linux build, an update path that reaches people who
+   already installed, and enough diagnostics to act on a report. A release you cannot fix is
+   a liability.
+4. **Your identity, and your key.** Edit your profile, export your key, and verify a backup
+   before you need it.
+5. **Readable and usable by everyone.** Operable without a mouse, a light theme, and type
+   that scales.
+6. **Find anything, and keep it clean.** Search people, notes and hashtags. Bookmarks, mutes,
+   and opening a note by address.
+7. **Media worth looking at.** Post pictures, see the picture a quote quotes, and video.
+8. **Money, carefully.** Zaps you can send and receive, and a wallet connection, with the
+   care that anything moving money deserves.
+9. **Private messages.** NIP-17, on the local store, signing through Notary.
+10. **Groups.** NIP-29, on relays that support it.
 
-  A polished, focused vertical slice first — depth over breadth — with the rest on the year
-  ahead.
+## What this deliberately does not do
 
-## The year ahead
+Naming these is half of a roadmap, because each looks obviously worth doing until
+you price it.
 
-Roughly one milestone a month, expanding the core and the ecosystem around it:
-
-1. **Library 1.0** — a stable public API, an audited error model, and a fuzzed parser.
-2. **A deeper client**: reposts, richer media (NIP-92 `imeta`), search, and mute lists.
-   Threads, reactions, quotes and inline media are in [Plaza](/plaza) today.
-4. **A secure messenger** — private direct messages (NIP-17 gift wrap) on the local store,
-   signing through Notary.
-5. **A document app** — Nostr-native notes and long-form (NIP-23), personal and shareable.
-6. **Payments** — zaps (NIP-57) and Nostr Wallet Connect (NIP-47), wired into the apps.
-7. **Reusable utility libraries** — the local store, outbox/discovery, onboarding, and the
-   NIP-46 bunker, extracted as standalone packages other projects can build on.
-8. **Sync & reliability** — set-reconciliation sync (NIP-77 Negentropy), capability discovery
-   (NIP-11), reconnection/backoff, and relay health scoring.
-9. **C-ABI bindings** — a stable C header so Swift, Kotlin, C, and JS projects can link the
-   library.
-10. **WASM** — the library compiled to WebAssembly, with a browser example.
-11. **Mobile** — the client on iOS and Android, with the core running on-device.
-12. **Adoption & 1.0** — a 1.0 client, external projects building on the library, contributor
-    docs, and a full benchmark suite.
-
-Track the detail on the
-[project board](https://github.com/orgs/zig-nostr/projects) and in each repo's issues.
+- **A packaged Windows release.** The smallest overlap with the Nostr audience and the
+  highest cost of the three platforms. Linux gets packaged; Windows stays a build target
+  that CI keeps honest.
+- **Multi-account.** It taxes every feature after it: per-account stores, relay pools,
+  notification state, and switching without a reconnect storm. A read-only "view as" answers
+  most of the real demand.
+- **Tagging the library 1.0.** A version number is not work, and freezing the API in the same
+  stretch that adds groups, messages, media and payments would ratify the least settled code
+  in the repo. Narrow promises on the settled parts instead: keys, events, filters, bech32.
+- **Set-reconciliation sync (NIP-77).** Relay support is thin and the protocol is easy to get
+  subtly wrong. Per-relay cursors capture most of the benefit against a store that already
+  answers a feed query in under a millisecond.
+- **C-ABI bindings, WASM, and mobile.** Real work for a set of consumers that is currently
+  empty. Each becomes worth doing the day somebody names a project that needs it.
+- **Web-of-trust distance filtering.** Computed over a store that holds only what you
+  happened to sync, the graph is wrong in a way that changes between launches, so the same
+  reply appears and disappears for reasons nobody can explain.

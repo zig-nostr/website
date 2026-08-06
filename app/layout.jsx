@@ -20,19 +20,19 @@ const description =
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'zig-nostr — the Nostr protocol, natively in Zig',
-    template: '%s — zig-nostr',
+    default: 'zig-nostr: the Nostr protocol, natively in Zig',
+    template: '%s · zig-nostr',
   },
   description,
   openGraph: {
     type: 'website',
     siteName: 'zig-nostr',
-    title: 'zig-nostr — the Nostr protocol, natively in Zig',
+    title: 'zig-nostr: the Nostr protocol, natively in Zig',
     description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'zig-nostr — the Nostr protocol, natively in Zig',
+    title: 'zig-nostr: the Nostr protocol, natively in Zig',
     description,
   },
 }
@@ -50,7 +50,7 @@ const navbar = (
 )
 
 const footer = (
-  <Footer>MIT {new Date().getFullYear()} © zig-nostr — built with Zig.</Footer>
+  <Footer>MIT {new Date().getFullYear()} © zig-nostr, built with Zig.</Footer>
 )
 
 export default async function RootLayout({ children }) {

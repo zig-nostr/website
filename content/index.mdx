@@ -8,7 +8,7 @@ title: The Nostr protocol, natively in Zig
   <img src="/logo.svg" alt="zig-nostr" className="zn-hero-logo" width="104" height="104" />
   <h1>The Nostr protocol, natively in Zig</h1>
   <p className="tagline">
-    A native Nostr ecosystem in Zig — a foundational protocol library, utility
+    A native Nostr ecosystem in Zig, a foundational protocol library, utility
     libraries built on it, and fast native apps that keep your keys on hardware
     you control.
   </p>
@@ -30,7 +30,7 @@ title: The Nostr protocol, natively in Zig
   <div className="zn-card">
     <div className="zn-icon">📦</div>
     <h3>Core library</h3>
-    <p>The foundation — keys, events, transport, the outbox model, and a local-first store. Actively growing toward full Nostr coverage, milestone after milestone.</p>
+    <p>The foundation, keys, events, transport, the outbox model, and a local-first store. Actively growing toward full Nostr coverage, milestone after milestone.</p>
   </div>
   <div className="zn-card">
     <div className="zn-icon">🧩</div>
@@ -55,7 +55,7 @@ title: The Nostr protocol, natively in Zig
   <div className="zn-card">
     <div className="zn-icon">⚡</div>
     <h3>Local-first store</h3>
-    <p>A zero-copy, memory-mapped LMDB event store with a bounded, newest-first query planner — sub-millisecond feeds that stay flat as the store grows.</p>
+    <p>A zero-copy, memory-mapped LMDB event store with a bounded, newest-first query planner, sub-millisecond feeds that stay flat as the store grows.</p>
   </div>
   <div className="zn-card">
     <div className="zn-icon">🛡️</div>
@@ -65,12 +65,12 @@ title: The Nostr protocol, natively in Zig
   <div className="zn-card">
     <div className="zn-icon">🧭</div>
     <h3>Outbox model</h3>
-    <p>NIP-65 relay lists with read/write routing and zero hardcoded relays — events go where they belong.</p>
+    <p>NIP-65 relay lists with read/write routing and zero hardcoded relays, events go where they belong.</p>
   </div>
   <div className="zn-card">
     <div className="zn-icon">🔒</div>
     <h3>Encrypted payloads</h3>
-    <p>NIP-44 v2 authenticated encryption (ChaCha20 + HMAC-SHA256), verified against the official vectors — the basis for private messaging.</p>
+    <p>NIP-44 v2 authenticated encryption (ChaCha20 + HMAC-SHA256), verified against the official vectors, the basis for private messaging.</p>
   </div>
   <div className="zn-card">
     <div className="zn-icon">🔐</div>
@@ -107,7 +107,7 @@ title: The Nostr protocol, natively in Zig
   </div>
 </div>
 
-<p className="zn-more">More native apps — and more platforms, desktop and mobile — are on the <a href="/roadmap">roadmap</a>.</p>
+<p className="zn-more">More native apps, and more platforms, desktop and mobile, are on the <a href="/roadmap">roadmap</a>.</p>
 
 <h2 className="zn-section-title">Install the core</h2>
 
@@ -124,7 +124,7 @@ const nostr = b.dependency("nostr", .{ .target = target, .optimize = optimize })
 your_module.addImport("nostr", nostr.module("nostr"));
 ```
 
-zig-nostr is **pre-alpha** and MIT-licensed — a library plus native showcases,
+zig-nostr is **pre-alpha** and MIT-licensed, a library plus native showcases,
 all on one core. [Explore the docs →](/getting-started)
 
 </div>
