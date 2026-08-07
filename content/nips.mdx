@@ -7,21 +7,19 @@ official specification vectors.
 
 | NIP | Title | Status |
 |----|----|----|
-| [01](https://github.com/nostr-protocol/nips/blob/master/01.md) | Basic protocol: events, signatures, subscriptions | ✅ done |
-| [06](https://github.com/nostr-protocol/nips/blob/master/06.md) | Key derivation from mnemonic seed | ✅ done |
-| [09](https://github.com/nostr-protocol/nips/blob/master/09.md) | Event deletion (ingestion) | ✅ done |
-| [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities | ✅ done |
+| [01](https://github.com/nostr-protocol/nips/blob/master/01.md) | Basic protocol: events, signatures, subscriptions, `kind:0` profiles and `kind:1` notes | ✅ done |
+| [06](https://github.com/nostr-protocol/nips/blob/master/06.md) | Key derivation from a BIP-39 mnemonic, path `m/44'/1237'/<account>'/0/0` | ✅ done |
+| [09](https://github.com/nostr-protocol/nips/blob/master/09.md) | Event deletion, `kind:5` (ingestion) | ✅ done |
+| [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities: `npub`, `nsec`, `note`, `nprofile`, `nevent`, `naddr` | ✅ done |
 | [21](https://github.com/nostr-protocol/nips/blob/master/21.md) | `nostr:` URI scheme | ✅ done |
 | [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | Client-to-relay authentication | ✅ done |
 | [44](https://github.com/nostr-protocol/nips/blob/master/44.md) | Encrypted payloads (v2) | ✅ done |
-| [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect, remote signing | ✅ done |
+| [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect, remote signing over `kind:24133` | ✅ done |
 | [49](https://github.com/nostr-protocol/nips/blob/master/49.md) | Private key encryption (`ncryptsec`) | ✅ done |
-| [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay list metadata (outbox) | ✅ done |
-| [17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages | 🚧 planned |
-| [59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap | 🚧 planned |
+| [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay list metadata, `kind:10002`, what people call the outbox model | ✅ done |
 
-Private messages and gift wrap land together, in [Plaza's private messages
-milestone](/roadmap).
+That is the library surface, and all of it is done. What the roadmap commits to
+next is [further down this page](#planned-and-where-it-lands).
 
 ## In the apps
 
@@ -31,11 +29,86 @@ rather than library surface.
 
 | NIP | Title | Where |
 |----|----|----|
-| [02](https://github.com/nostr-protocol/nips/blob/master/02.md) | Contact lists | reading and writing your follows |
-| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers | the verified handle on a profile |
-| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading | threads, and replies you post |
-| [25](https://github.com/nostr-protocol/nips/blob/master/25.md) | Reactions | likes, in the feed and notifications |
+| [02](https://github.com/nostr-protocol/nips/blob/master/02.md) | Contact lists, `kind:3` | reading and writing your follows |
+| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers, `/.well-known/nostr.json` | the `name@domain` handle on a profile, checked against the domain |
+| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading, marked `e` tags | threads, and replies you post |
+| [18](https://github.com/nostr-protocol/nips/blob/master/18.md) | Reposts, `kind:6` and `kind:16` | counted on a note, and a row in notifications |
+| [25](https://github.com/nostr-protocol/nips/blob/master/25.md) | Reactions, `kind:7` | likes, in the feed and notifications |
 | [27](https://github.com/nostr-protocol/nips/blob/master/27.md) | `nostr:` mentions in content | names instead of raw base32 |
 | [89](https://github.com/nostr-protocol/nips/blob/master/89.md) | Application handlers | the `client` tag on notes you post |
-| [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments | `imeta` dimensions, so an image reserves its box before it loads |
-| [57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps | receipts are read and shown. Sending is a milestone away |
+| [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments, `imeta` | dimensions read off the tag, so an image reserves its box before it loads |
+| [57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps, `kind:9735` receipts | receipts are read and shown. Sending is a milestone away |
+
+## Planned, and where it lands
+
+These are the specs the [roadmap](/roadmap) commits to, in roadmap order, each
+against the milestone that delivers it. None of it is written yet, which is what
+the status column says on every row. A spec named here is a promise: if one is
+missing, it is because I have not made that promise, not because I forgot it.
+
+| Spec | Title | Milestone | Status |
+|----|----|----|----|
+| [NIP-65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Per-author routing on other people's `kind:10002` lists. The library side is done above, the routing is not | Reach | 🚧 planned |
+| [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | Extra `kind:0` fields (`display_name`, `website`, `banner`, `bot`, `birthday`), carried through untouched when I rewrite a profile | Your identity, and your key | 🚧 planned |
+| [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter | Find anything, and keep it clean | 🚧 planned |
+| [NIP-51](https://github.com/nostr-protocol/nips/blob/master/51.md) | Lists: bookmarks (`kind:10003`) and the mute list (`kind:10000`) | Find anything, and keep it clean | 🚧 planned |
+| [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | The `t` tag: a hashtag is a lowercase `t`, and NIP-01 single-letter indexing is what makes `#t` queryable | Find anything, and keep it clean | 🚧 planned |
+| [Blossom BUD-02](https://github.com/hzrd149/blossom/blob/master/buds/02.md) | Blob upload, `PUT /upload`. This is the step that puts the bytes of a picture on a server | Media worth looking at | 🚧 planned |
+| [Blossom BUD-03](https://github.com/hzrd149/blossom/blob/master/buds/03.md) | User Server List, `kind:10063`: which servers hold your blobs, most trusted first | Media worth looking at | 🚧 planned |
+| [Blossom BUD-11](https://github.com/hzrd149/blossom/blob/master/buds/11.md) | Authorization for those requests: a signed `kind:24242` event carrying the verb and an expiry | Media worth looking at | 🚧 planned |
+| [NIP-92](https://github.com/nostr-protocol/nips/blob/master/92.md) | `imeta` written onto a note I post, not only read off one. It is what makes the picture render in someone else's client | Media worth looking at | 🚧 planned |
+| [NIP-B7](https://github.com/nostr-protocol/nips/blob/master/B7.md) | Finding a blob again: when a media URL ends in a sha256, retry it against the author's `kind:10063` servers and check the hash | Media worth looking at | 🚧 planned |
+| [NIP-71](https://github.com/nostr-protocol/nips/blob/master/71.md) | Video events: `kind:21`, and `kind:22` for short portrait video | Media worth looking at | 🚧 planned |
+| [NIP-57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps you can send: a `kind:9734` request to the recipient's LNURL callback, and the `kind:9735` receipt that follows the payment | Money, carefully | 🚧 planned |
+| [NIP-47](https://github.com/nostr-protocol/nips/blob/master/47.md) | Nostr Wallet Connect, so that invoice is paid in the app: a `nostr+walletconnect://` link, over kinds 13194, 23194 and 23195 | Money, carefully | 🚧 planned |
+| [NIP-17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages: `kind:14` chat, `kind:15` files, and the `kind:10050` relay list they are delivered to | Private messages | 🚧 planned |
+| [NIP-59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap, which does the wrapping NIP-17 defers: a `kind:13` seal signed by me, inside a `kind:1059` wrap signed by a throwaway key | Private messages | 🚧 planned |
+| [NIP-29](https://github.com/nostr-protocol/nips/blob/master/29.md) | Groups, which live on one relay: an `h` tag on every event, relay-published metadata (`kind:39000`), and join and leave requests (`kind:9021`, `kind:9022`) | Groups | 🚧 planned |
+
+**Blossom is not a NIP.** It is a separate protocol with its own repository,
+[hzrd149/blossom](https://github.com/hzrd149/blossom), and its documents are
+called BUDs rather than NIPs. It sits in this table because it is where file
+upload actually happens. A media list without it would be a list that cannot
+post a picture.
+
+NIP-B7 is the Nostr side of the same story, and it is easy to mistake for the
+upload spec. It is not one. It only says how to find a blob again, so a client
+that implemented it and nothing else could not upload anything at all. The older
+upload NIP, [NIP-96](https://github.com/nostr-protocol/nips/blob/master/96.md),
+is marked `unrecommended` in the NIPs repo and replaced by Blossom. I do not
+implement it.
+
+Zaps lean on something that is not a NIP either. The recipient's LNURL pay
+endpoint hands back the invoice, and it is that server, not my app, that signs
+and publishes the `kind:9735` receipt. A pubkey whose LNURL endpoint has not
+opted into Nostr cannot be zapped at all.
+
+Three milestones name no spec, and inventing one for them would be dishonest.
+Notifications is assembled out of NIPs already on this page: NIP-10 replies,
+NIP-18 reposts, NIP-25 reactions, NIP-27 mentions and NIP-57 zap receipts.
+Packaging, updates and diagnostics are not protocol work. Neither is a light
+theme, keyboard operation, or type that scales.
+
+## Named, and not doing
+
+Refusing is a promise too, and these are the ones I get asked about. The
+[roadmap](/roadmap) has the rest.
+
+- **[NIP-77](https://github.com/nostr-protocol/nips/blob/master/77.md)**, set
+  reconciliation. Relay support is thin and the protocol is easy to get subtly
+  wrong. Per-relay cursors capture most of the benefit against a store that
+  already answers a feed query in under a millisecond.
+- **[NIP-96](https://github.com/nostr-protocol/nips/blob/master/96.md)**, HTTP
+  file storage. Marked `unrecommended` in the NIPs repo and replaced by Blossom.
+  Media goes through Blossom instead.
+- **[NIP-60](https://github.com/nostr-protocol/nips/blob/master/60.md)** and
+  **[NIP-61](https://github.com/nostr-protocol/nips/blob/master/61.md)**, the
+  Cashu wallet and nutzaps. That is a second payment rail with a second wallet
+  behind it. Lightning zaps come first, and shipping those says nothing about
+  shipping these.
+- **[NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)**, proof
+  of work. No milestone needs it, and no mainstream relay I have checked
+  advertises a `min_pow_difficulty` above zero in its
+  [NIP-11](https://github.com/nostr-protocol/nips/blob/master/11.md) document.
+  If that changes, reading the number and mining to it is a small piece of work,
+  and I would rather do it then than promise it now.
