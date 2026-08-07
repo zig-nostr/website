@@ -12,39 +12,55 @@ No dates. The order is a commitment; a calendar would not be.
   libsecp256k1), the NIP-01 event model, NIP-19/21 encoding, NIP-06 derivation, and NIP-49
   key storage. Passes the full official BIP-340 test-vector suite.
 - **Transport and outbox**: RFC 6455 WebSocket, a relay connection state machine with NIP-01
-  subscriptions, a live TCP/TLS dialer, and the NIP-65 outbox model with zero hardcoded relays.
+  subscriptions, a live TCP/TLS dialer, and NIP-65 relay lists (kind 10002), the routing people
+  call the outbox model, with zero hardcoded relays.
 - **Local-first store**: a zero-copy, memory-mapped LMDB event store with a bounded,
-  newest-first query planner. [Sub-millisecond feeds](/performance) that stay flat as the
-  store grows.
-- **Signer protocol**: NIP-44 v2 encryption, the NIP-46 remote-signing ("bunker") protocol,
-  and NIP-42 client authentication.
-- **[Notary](/signer)**, the native remote signer. Your key lives in a local daemon and
-  nothing gets signed quietly. A downloadable macOS app.
-- **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways, and read a
-  follow feed that renders from disk before the network answers.
+  newest-first planner for NIP-01 filters. [Sub-millisecond feeds](/performance) that stay
+  flat as the store grows.
+- **Signer protocol**: NIP-44 v2 encryption, the NIP-46 remote-signing ("bunker") protocol
+  over kind 24133, and NIP-42 client authentication.
+- **[Notary](/signer)**, the native remote signer. Your key lives in a local daemon, it hands
+  you a `bunker://` URL, and nothing gets signed quietly. A downloadable macOS app.
+- **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways (including a
+  NIP-46 bunker), and read a follow feed (your kind 3 list) that renders from disk before the
+  network answers.
 - **Docs and benchmarks**: this site, the [NIP-support table](/nips), and reproducible
   [performance numbers](/performance).
 
 ## What comes next, in order
 
 1. **Notifications worth opening.** Who it was, what they did, the note it was about, and
-   what a zap carried. Today a reply is a line of text with no face and no content.
-2. **Reach.** Following somebody means seeing them: per-author relay routing on the way in,
-   the outbox model on the way out, and older notes when you scroll past what is local.
+   what a zap carried: NIP-25 reactions, NIP-18 reposts, NIP-10 replies, and NIP-57 zap
+   receipts (kind 9735). Today a reply is a line of text with no face and no content.
+2. **Reach.** Following somebody means seeing them: per-author routing from each author's
+   NIP-65 relay list (kind 10002) on the way in, the outbox model on the way out, and older
+   notes when you scroll past what is local.
 3. **Ship it, and fix it.** A packaged Linux build, an update path that reaches people who
    already installed, and enough diagnostics to act on a report. A release you cannot fix is
    a liability.
-4. **Your identity, and your key.** Edit your profile, export your key, and verify a backup
-   before you need it.
+4. **Your identity, and your key.** Edit your kind 0 profile without dropping the NIP-24
+   fields another client set, show a NIP-05 address as identification rather than a badge,
+   and export your key as a NIP-49 `ncryptsec` you have verified before you need it. A third
+   way in is being evaluated: a FROST bunker in the shape of fiatjaf's
+   [promenade](https://git.fiatjaf.com/promenade), where the key is split across independent
+   signers and reached over NIP-46.
 5. **Readable and usable by everyone.** Operable without a mouse, a light theme, and type
    that scales.
-6. **Find anything, and keep it clean.** Search people, notes and hashtags. Bookmarks, mutes,
-   and opening a note by address.
-7. **Media worth looking at.** Post pictures, see the picture a quote quotes, and video.
-8. **Money, carefully.** Zaps you can send and receive, and a wallet connection, with the
-   care that anything moving money deserves.
-9. **Private messages.** NIP-17, on the local store, signing through Notary.
-10. **Groups.** NIP-29, on relays that support it.
+6. **Find anything, and keep it clean.** Search people, notes and hashtags: NIP-50 where a
+   relay supports it, and `#t` filters for the hashtags. NIP-51 bookmarks (kind 10003) and
+   mutes (kind 10000), and opening a note by address, from a NIP-19 `nevent` or `naddr`.
+7. **Media worth looking at.** Post pictures: [Blossom](https://github.com/hzrd149/blossom)
+   BUD-02 upload to the servers in your kind 10063 list, with a NIP-92 `imeta` tag so they
+   render elsewhere, and NIP-B7 to re-find a blob by its sha256 when a host goes down. Then
+   the picture a quote quotes, and NIP-71 video (kinds 21 and 22).
+8. **Money, carefully.** Zaps you can send and receive (NIP-57) and a NIP-47 wallet
+   connection, with the care that anything moving money deserves. The kind 9735 receipt is
+   the only proof a zap was paid, and it is the recipient's LNURL server that publishes it.
+9. **Private messages.** NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059
+   wrap), on the local store, signing through Notary, published only to the recipient's kind
+   10050 DM relays.
+10. **Groups.** NIP-29, on relays that support it: every event carries an `h` tag with the
+    group id, and the relay hosting the group is the authority on who is in it.
 
 ## What this deliberately does not do
 
@@ -65,6 +81,20 @@ you price it.
   answers a feed query in under a millisecond.
 - **C-ABI bindings, WASM, and mobile.** Real work for a set of consumers that is currently
   empty. Each becomes worth doing the day somebody names a project that needs it.
+- **A proof of work difficulty slider (NIP-13).** Reading proof of work is cheap: count the
+  leading zero bits of the event id and honour the target committed in the `nonce` tag. A
+  slider is not, and none of the mainstream relays I checked ask for any difficulty, so the
+  setting would buy background mining, a cancel path and per-kind policy for nothing. Mining
+  when a relay actually asks, through `min_pow_difficulty` in its NIP-11 document or an `OK`
+  rejection that starts `pow:`, needs no setting at all.
+- **Nutzaps (NIP-61).** They look like a variant of zaps and they are not: a kind 9321 nutzap
+  is Cashu ecash, and redeeming one needs a NIP-60 wallet (kind 17375) kept on relays plus a
+  mint list of your own. That is a second payment rail behind a second wallet, and item 8
+  already covers sending and receiving money.
+- **NIP-96 HTTP file storage.** Supporting both upload paths looks like broader
+  compatibility. NIP-96 carries an `unrecommended` banner in its own spec and the NIPs index
+  strikes it through as replaced by Blossom, so uploads go to Blossom (item 7) and nowhere
+  else.
 - **Web-of-trust distance filtering.** Computed over a store that holds only what you
   happened to sync, the graph is wrong in a way that changes between launches, so the same
   reply appears and disappears for reasons nobody can explain.
