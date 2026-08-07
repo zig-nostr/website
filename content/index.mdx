@@ -40,7 +40,7 @@ title: The Nostr protocol, natively in Zig
   <div className="zn-card">
     <div className="zn-icon">🖥️</div>
     <h3>Native apps</h3>
-    <p><a href="/signer">Notary</a> ships today, <a href="/plaza">Plaza</a> is the flagship client in progress, and a messenger and more are on the way across desktop and mobile. Real products, all on one core.</p>
+    <p><a href="/signer">Notary</a> and <a href="/plaza">Plaza</a> both ship today: a remote signer and a local-first client you can download and use. Private messages, zaps and groups land inside them. Real products, all on one core.</p>
   </div>
 </div>
 
@@ -93,21 +93,21 @@ title: The Nostr protocol, natively in Zig
   <div className="zn-card">
     <div className="zn-app-head">
       <h3>Plaza</h3>
-      <span className="zn-tag zn-tag-building">Building</span>
+      <span className="zn-tag zn-tag-shipped">Shipped</span>
     </div>
-    <p>A fast, local-first client: browse and post within two minutes, with the feed rendered from disk.</p>
+    <p>A fast, local-first client: browse and post within two minutes, with the feed rendered from disk. A downloadable macOS app.</p>
     <a className="zn-applink" href="/plaza">Learn more →</a>
   </div>
   <div className="zn-card">
     <div className="zn-app-head">
-      <h3>Messenger</h3>
+      <h3>Private messages</h3>
       <span className="zn-tag">Planned</span>
     </div>
-    <p>A private DM app: NIP-17 gift-wrapped messages, signing through Notary, rendering instantly from the local store.</p>
+    <p>NIP-17 gift-wrapped DMs on the local store, signing through Notary. A milestone inside Plaza rather than a separate app: a messenger you have to switch to is one you stop using.</p>
   </div>
 </div>
 
-<p className="zn-more">More native apps, and more platforms, desktop and mobile, are on the <a href="/roadmap">roadmap</a>.</p>
+<p className="zn-more">What comes next, and what is deliberately not being built, is on the <a href="/roadmap">roadmap</a>.</p>
 
 <h2 className="zn-section-title">Install the core</h2>
 
@@ -116,7 +116,7 @@ title: The Nostr protocol, natively in Zig
 </p>
 
 ```sh
-zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.3.5.tar.gz
+zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.3.8.tar.gz
 ```
 
 ```zig
@@ -124,7 +124,7 @@ const nostr = b.dependency("nostr", .{ .target = target, .optimize = optimize })
 your_module.addImport("nostr", nostr.module("nostr"));
 ```
 
-zig-nostr is **pre-alpha** and MIT-licensed, a library plus native showcases,
-all on one core. [Explore the docs →](/getting-started)
+zig-nostr is **early** and MIT-licensed: a library, plus two native apps you can
+download today, all on one core. [Explore the docs →](/getting-started)
 
 </div>

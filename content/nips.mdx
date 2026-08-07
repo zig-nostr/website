@@ -17,9 +17,25 @@ official specification vectors.
 | [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect, remote signing | ✅ done |
 | [49](https://github.com/nostr-protocol/nips/blob/master/49.md) | Private key encryption (`ncryptsec`) | ✅ done |
 | [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay list metadata (outbox) | ✅ done |
-| [17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages | 🚧 planned (A6) |
-| [59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap | 🚧 planned (A6) |
-| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading | 🚧 planned (A7) |
+| [17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages | 🚧 planned |
+| [59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap | 🚧 planned |
 
-The planned NIPs land with the [showcase apps](/roadmap): a NIP-17 private
-messenger (A6) and a read-only outbox client (A7).
+Private messages and gift wrap land together, in [Plaza's private messages
+milestone](/roadmap).
+
+## In the apps
+
+The library gives an app the protocol. These are implemented above it, in
+[Plaza](/plaza), and are listed separately because they are client behaviour
+rather than library surface.
+
+| NIP | Title | Where |
+|----|----|----|
+| [02](https://github.com/nostr-protocol/nips/blob/master/02.md) | Contact lists | reading and writing your follows |
+| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers | the verified handle on a profile |
+| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading | threads, and replies you post |
+| [25](https://github.com/nostr-protocol/nips/blob/master/25.md) | Reactions | likes, in the feed and notifications |
+| [27](https://github.com/nostr-protocol/nips/blob/master/27.md) | `nostr:` mentions in content | names instead of raw base32 |
+| [89](https://github.com/nostr-protocol/nips/blob/master/89.md) | Application handlers | the `client` tag on notes you post |
+| [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments | `imeta` dimensions, so an image reserves its box before it loads |
+| [57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps | receipts are read and shown. Sending is a milestone away |
