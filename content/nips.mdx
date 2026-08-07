@@ -61,6 +61,8 @@ missing, it is because I have not made that promise, not because I forgot it.
 | [NIP-71](https://github.com/nostr-protocol/nips/blob/master/71.md) | Video events: `kind:21`, and `kind:22` for short portrait video | Media worth looking at | 🚧 planned |
 | [NIP-57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps you can send: a `kind:9734` request to the recipient's LNURL callback, and the `kind:9735` receipt that follows the payment | Money, carefully | 🚧 planned |
 | [NIP-47](https://github.com/nostr-protocol/nips/blob/master/47.md) | Nostr Wallet Connect, so that invoice is paid in the app: a `nostr+walletconnect://` link, over kinds 13194, 23194 and 23195 | Money, carefully | 🚧 planned |
+| [NIP-61](https://github.com/nostr-protocol/nips/blob/master/61.md) | Nutzaps: Cashu ecash sent straight to a pubkey (`kind:9321`), gated on a `kind:10019` naming the mints you trust. No LNURL provider in the path, which is what makes a brand-new account payable | Money, carefully | 🚧 planned |
+| [NIP-60](https://github.com/nostr-protocol/nips/blob/master/60.md) | The wallet that holds what arrives: `kind:17375` wallet, `kind:7375` tokens, `kind:7376` spending history, which NIP-61 reuses to mark a nutzap redeemed | Money, carefully | 🚧 planned |
 | [NIP-17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages: `kind:14` chat, `kind:15` files, and the `kind:10050` relay list they are delivered to | Private messages | 🚧 planned |
 | [NIP-59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap, which does the wrapping NIP-17 defers: a `kind:13` seal signed by me, inside a `kind:1059` wrap signed by a throwaway key | Private messages | 🚧 planned |
 | [NIP-29](https://github.com/nostr-protocol/nips/blob/master/29.md) | Groups, which live on one relay: an `h` tag on every event, relay-published metadata (`kind:39000`), and join and leave requests (`kind:9021`, `kind:9022`) | Groups | 🚧 planned |
@@ -83,6 +85,14 @@ endpoint hands back the invoice, and it is that server, not my app, that signs
 and publishes the `kind:9735` receipt. A pubkey whose LNURL endpoint has not
 opted into Nostr cannot be zapped at all.
 
+That last sentence is the reason nutzaps are on the list rather than filed as a
+duplicate of zaps. Lightning zaps only reach somebody who signed up with an
+LNURL provider before you tried to pay them, so the people least likely to be
+paid are the ones who just arrived. Ecash carries its own cost in exchange: a
+mint is a custodian holding real value, both specs are `draft` and `optional`,
+and client support is still thin. That belongs on screen when somebody picks a
+mint, not buried in a setting.
+
 Three milestones name no spec, and inventing one for them would be dishonest.
 Notifications is assembled out of NIPs already on this page: NIP-10 replies,
 NIP-18 reposts, NIP-25 reactions, NIP-27 mentions and NIP-57 zap receipts.
@@ -101,11 +111,6 @@ Refusing is a promise too, and these are the ones I get asked about. The
 - **[NIP-96](https://github.com/nostr-protocol/nips/blob/master/96.md)**, HTTP
   file storage. Marked `unrecommended` in the NIPs repo and replaced by Blossom.
   Media goes through Blossom instead.
-- **[NIP-60](https://github.com/nostr-protocol/nips/blob/master/60.md)** and
-  **[NIP-61](https://github.com/nostr-protocol/nips/blob/master/61.md)**, the
-  Cashu wallet and nutzaps. That is a second payment rail with a second wallet
-  behind it. Lightning zaps come first, and shipping those says nothing about
-  shipping these.
 - **[NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)**, proof
   of work. No milestone needs it, and no mainstream relay I have checked
   advertises a `min_pow_difficulty` above zero in its

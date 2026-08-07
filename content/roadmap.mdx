@@ -56,6 +56,9 @@ No dates. The order is a commitment; a calendar would not be.
 8. **Money, carefully.** Zaps you can send and receive (NIP-57) and a NIP-47 wallet
    connection, with the care that anything moving money deserves. The kind 9735 receipt is
    the only proof a zap was paid, and it is the recipient's LNURL server that publishes it.
+   Then NIP-61 nutzaps, Cashu ecash sent to a pubkey: a Lightning zap needs an LNURL provider
+   the recipient signed up for in advance, and an account four clicks old has none, so this
+   is what makes a new person payable at all.
 9. **Private messages.** NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059
    wrap), on the local store, signing through Notary, published only to the recipient's kind
    10050 DM relays.
@@ -87,10 +90,6 @@ you price it.
   setting would buy background mining, a cancel path and per-kind policy for nothing. Mining
   when a relay actually asks, through `min_pow_difficulty` in its NIP-11 document or an `OK`
   rejection that starts `pow:`, needs no setting at all.
-- **Nutzaps (NIP-61).** They look like a variant of zaps and they are not: a kind 9321 nutzap
-  is Cashu ecash, and redeeming one needs a NIP-60 wallet (kind 17375) kept on relays plus a
-  mint list of your own. That is a second payment rail behind a second wallet, and item 8
-  already covers sending and receiving money.
 - **NIP-96 HTTP file storage.** Supporting both upload paths looks like broader
   compatibility. NIP-96 carries an `unrecommended` banner in its own spec and the NIPs index
   strikes it through as replaced by Blossom, so uploads go to Blossom (item 7) and nowhere
