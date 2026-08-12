@@ -107,11 +107,19 @@ ranked by how many of your follows use each relay, and the connections are
 chosen by who they reach.
 
 Measured on my own account, which follows 257 people: between the relays I chose
-myself and the eight it routes to, 202 of them are covered, and 156 of those by
-two relays each, so one relay being down does not hide anybody. The remaining 55
+myself and the eight it routes to, 196 of them are covered, and 147 of those by
+two relays each, so one relay being down does not hide anybody. The remaining 61
 are asked of every relay I have, which is what the app did for everyone before
 any of this. Adding the routed connections is what moved those numbers; without
 them the eight relays in my own pool were the whole answer.
+
+Carrying people and answering the door are different things, so Plaza checks the
+second one too. The relay with the most of those writers on my account is paid,
+and I have not subscribed; it refuses the connection itself rather than the
+subscription, so there is nothing to authenticate and nothing to negotiate. A
+relay that will not have us after three tries loses its slot to the next one
+down and is tried again in six hours. Until Plaza did that, the same count read
+202, and fifty of those people were behind a closed door.
 
 It is bounded on purpose: eight routed connections alongside the eight in your
 own pool, and one is only opened while it would reach somebody not already
