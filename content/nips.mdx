@@ -38,6 +38,7 @@ rather than library surface.
 | [89](https://github.com/nostr-protocol/nips/blob/master/89.md) | Application handlers | the `client` tag on notes you post |
 | [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments, `imeta` | dimensions read off the tag, so an image reserves its box before it loads |
 | [57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps, `kind:9735` receipts | receipts are read and shown. Sending is a milestone away |
+| [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay lists, `kind:10002` | per-author routing: the feed reads where the people you follow write, and what you post goes where your own list says |
 
 ## Planned, and where it lands
 
@@ -48,7 +49,6 @@ missing, it is because I have not made that promise, not because I forgot it.
 
 | Spec | Title | Milestone | Status |
 |----|----|----|----|
-| [NIP-65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Per-author routing on other people's `kind:10002` lists. The library side is done above, the routing is not | Reach | 🚧 planned |
 | [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | Extra `kind:0` fields (`display_name`, `website`, `banner`, `bot`, `birthday`), carried through untouched when I rewrite a profile | Your identity, and your key | 🚧 planned |
 | [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter | Find anything, and keep it clean | 🚧 planned |
 | [NIP-51](https://github.com/nostr-protocol/nips/blob/master/51.md) | Lists: bookmarks (`kind:10003`) and the mute list (`kind:10000`) | Find anything, and keep it clean | 🚧 planned |

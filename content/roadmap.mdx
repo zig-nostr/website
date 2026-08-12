@@ -26,44 +26,47 @@ No dates. The order is a commitment; a calendar would not be.
   network answers.
 - **Docs and benchmarks**: this site, the [NIP-support table](/nips), and reproducible
   [performance numbers](/performance).
+- **Reach**: following somebody means seeing them. Plaza reads the NIP-65 relay lists (kind
+  10002) of the people you follow, works out which relays reach the most of them, connects to
+  the ones you are not already on, and asks each relay only about the people who write there.
+  Anybody no chosen relay carries is asked of your own relays, so nobody falls through. What
+  you post goes where your own list says it should, and scrolling past what is on disk asks
+  the relays for older notes.
 
 ## What comes next, in order
 
 1. **Notifications worth opening.** Who it was, what they did, the note it was about, and
    what a zap carried: NIP-25 reactions, NIP-18 reposts, NIP-10 replies, and NIP-57 zap
    receipts (kind 9735). Today a reply is a line of text with no face and no content.
-2. **Reach.** Following somebody means seeing them: per-author routing from each author's
-   NIP-65 relay list (kind 10002) on the way in, the outbox model on the way out, and older
-   notes when you scroll past what is local.
-3. **Ship it, and fix it.** A packaged Linux build, an update path that reaches people who
+2. **Ship it, and fix it.** A packaged Linux build, an update path that reaches people who
    already installed, and enough diagnostics to act on a report. A release you cannot fix is
    a liability.
-4. **Your identity, and your key.** Edit your kind 0 profile without dropping the NIP-24
+3. **Your identity, and your key.** Edit your kind 0 profile without dropping the NIP-24
    fields another client set, show a NIP-05 address as identification rather than a badge,
    and export your key as a NIP-49 `ncryptsec` you have verified before you need it. A third
    way in is being evaluated: a FROST bunker in the shape of fiatjaf's
    [promenade](https://git.fiatjaf.com/promenade), where the key is split across independent
    signers and reached over NIP-46.
-5. **Readable and usable by everyone.** Operable without a mouse, a light theme, and type
+4. **Readable and usable by everyone.** Operable without a mouse, a light theme, and type
    that scales.
-6. **Find anything, and keep it clean.** Search people, notes and hashtags: NIP-50 where a
+5. **Find anything, and keep it clean.** Search people, notes and hashtags: NIP-50 where a
    relay supports it, and `#t` filters for the hashtags. NIP-51 bookmarks (kind 10003) and
    mutes (kind 10000), and opening a note by address, from a NIP-19 `nevent` or `naddr`.
-7. **Media worth looking at.** Post pictures: [Blossom](https://github.com/hzrd149/blossom)
+6. **Media worth looking at.** Post pictures: [Blossom](https://github.com/hzrd149/blossom)
    BUD-02 upload to the servers in your kind 10063 list, with a NIP-92 `imeta` tag so they
    render elsewhere, and NIP-B7 to re-find a blob by its sha256 when a host goes down. Then
    the picture a quote quotes, and NIP-71 video (kinds 21 and 22).
-8. **Money, carefully.** Zaps you can send and receive (NIP-57) and a NIP-47 wallet
+7. **Money, carefully.** Zaps you can send and receive (NIP-57) and a NIP-47 wallet
    connection, with the care that anything moving money deserves. The kind 9735 receipt is
    the only proof a zap was paid, and it is the recipient's LNURL server that publishes it.
    Then NIP-61 nutzaps, Cashu ecash sent to a pubkey: a Lightning zap needs an LNURL provider
    the recipient signed up for in advance, and an account four clicks old has none, so this
    is what makes a new person payable at all.
-9. **Private messages.** NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059
+8. **Private messages.** NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059
    wrap), on the local store, signing through Notary, published only to the recipient's kind
    10050 DM relays.
-10. **Groups.** NIP-29, on relays that support it: every event carries an `h` tag with the
-    group id, and the relay hosting the group is the authority on who is in it.
+9. **Groups.** NIP-29, on relays that support it: every event carries an `h` tag with the
+   group id, and the relay hosting the group is the authority on who is in it.
 
 ## What this deliberately does not do
 
@@ -92,7 +95,7 @@ you price it.
   rejection that starts `pow:`, needs no setting at all.
 - **NIP-96 HTTP file storage.** Supporting both upload paths looks like broader
   compatibility. NIP-96 carries an `unrecommended` banner in its own spec and the NIPs index
-  strikes it through as replaced by Blossom, so uploads go to Blossom (item 7) and nowhere
+  strikes it through as replaced by Blossom, so uploads go to Blossom (item 6) and nowhere
   else.
 - **Web-of-trust distance filtering.** Computed over a store that holds only what you
   happened to sync, the graph is wrong in a way that changes between launches, so the same

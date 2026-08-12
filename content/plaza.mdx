@@ -74,8 +74,9 @@ and avatars from `kind:0` · inline pictures and link previews · threads with t
 chain above a note and replies nested under it · quotes and `nostr:` mentions
 rendered inline · a composer with a mention picker and drafts that survive a quit
 · reactions · notifications for what was aimed at you · profile pages with a
-following count · your own relay list, read and write, routed by
-[NIP-65](/nips) · settings, sessions, and sign-out without lock-in.
+following count · your own relay list, read and write · a feed routed by
+[NIP-65](/nips) to where the people you follow actually publish · settings,
+sessions, and sign-out without lock-in.
 
 There is no follower count anywhere, on purpose. Following is a number someone
 states about themselves, and it is the length of their own contact list.
@@ -83,7 +84,38 @@ Followers is not: nothing on your disk can know who follows a person, and the
 honest options are an indexer's figure or none. Plaza does not print numbers it
 cannot check.
 
-Private messages are the milestone after this one.
+Private messages are a milestone away.
+
+## Where the feed comes from
+
+Following somebody on Nostr does not mean you will see them. If they publish
+only to relays you are not connected to, they are simply absent: no error, no
+empty state, nothing to say a person is missing.
+
+Plaza reads where the people you follow actually write. It takes their NIP-65
+relay lists, works out which relays reach the most of them, connects to the ones
+you are not already on, and asks each relay only about the people who write
+there. A small relay is asked about its dozen writers rather than about everyone
+you follow, and anybody no chosen relay carries is asked of your own relays, so
+nobody falls through.
+
+The relays it picks are not the popular ones. Popularity answers "what should I
+consider adding", which is a question for you; connections answer "which relays
+reach people I cannot otherwise see", and the popular relays all carry the same
+crowd. So the two questions get two answers: the suggestions in settings are
+ranked by how many of your follows use each relay, and the connections are
+chosen by who they reach.
+
+Measured on my own account, which follows 257 people: between the relays I chose
+myself and the eight it routes to, 202 of them are covered, and 156 of those by
+two relays each, so one relay being down does not hide anybody. The remaining 55
+are asked of every relay I have, which is what the app did for everyone before
+any of this. Adding the routed connections is what moved those numbers; without
+them the eight relays in my own pool were the whole answer.
+
+It is bounded on purpose: eight routed connections alongside the eight in your
+own pool, and one is only opened while it would reach somebody not already
+covered twice, so a tidy follow list opens fewer.
 
 ## Careful with what is yours
 
