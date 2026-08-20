@@ -125,6 +125,26 @@ It is bounded on purpose: eight routed connections alongside the eight in your
 own pool, and one is only opened while it would reach somebody not already
 covered twice, so a tidy follow list opens fewer.
 
+## Places
+
+A place is somebody's corner of Nostr: their relays, their people. A
+`plaza://place/` link opens the one it names, from anywhere, and while you are
+in a place you are reading it rather than your own feed with a banner on top.
+
+You arrive as a visitor, which means you can already read and post, and closing
+Plaza forgets you were ever there. Entering keeps it on a rail down the side of
+the window, one press away from then on, and leaving takes it off again. Nothing
+is gated on entering, posting included: whether a post lands is between you and
+that place's relays.
+
+The list of places you have entered is a file on your own machine rather than
+something published, because which communities somebody belongs to is nobody
+else's business.
+
+The format is fiatjaf's Hallway universe object,
+read exactly as it is written, so a place published once means the same thing in
+both.
+
 ## Careful with what is yours
 
 Follow lists, relay lists and profiles are replaceable events: publishing one
@@ -181,7 +201,7 @@ Everything Plaza does with Nostr comes from
 [`zig-nostr/nostr`](https://github.com/zig-nostr/nostr): keys and BIP-340
 signing, the event model, relay transport, the local store, and the NIP-46
 signer protocol. The core's outbox model is there too, and per-author routing
-lands in Plaza on a later milestone. Plaza is the product weight that proves the core
+ships in Plaza today. Plaza is the product weight that proves the core
 holds up. See the [architecture](/architecture) and the
 [NIP-support table](/nips).
 

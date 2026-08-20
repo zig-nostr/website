@@ -24,6 +24,11 @@ No dates. The order is a commitment; a calendar would not be.
 - **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways (including a
   NIP-46 bunker), and read a follow feed (your kind 3 list) that renders from disk before the
   network answers.
+- **Places**: a link opens somebody's corner of Nostr, their relays and their people, and
+  while you are in one you see it rather than your own feed. Visit, enter to keep it on a
+  rail, or leave. The format is fiatjaf's
+  Hallway universe object, so a place published once means
+  the same thing in both.
 - **Docs and benchmarks**: this site, the [NIP-support table](/nips), and reproducible
   [performance numbers](/performance).
 - **Reach**: following somebody means seeing them. Plaza reads the NIP-65 relay lists (kind
@@ -35,53 +40,94 @@ No dates. The order is a commitment; a calendar would not be.
 
 ## What comes next, in order
 
-1. **Notifications worth opening.** Who it was, what they did, the note it was about, and
-   what a zap carried: NIP-25 reactions, NIP-18 reposts, NIP-10 replies, and NIP-57 zap
-   receipts (kind 9735). Today a reply is a line of text with no face and no content.
-2. **Ship it, and fix it.** A packaged Linux build, an update path that reaches people who
-   already installed, and enough diagnostics to act on a report. A release you cannot fix is
-   a liability.
-3. **Your identity, and your key.** Edit your kind 0 profile without dropping the NIP-24
-   fields another client set, show a NIP-05 address as identification rather than a badge,
-   and export your key as a NIP-49 `ncryptsec` you have verified before you need it. A third
-   way in is being evaluated: a FROST bunker in the shape of fiatjaf's
-   [promenade](https://git.fiatjaf.com/promenade), where the key is split across independent
-   signers and reached over NIP-46.
-4. **Readable and usable by everyone.** Operable without a mouse, a light theme, and type
-   that scales.
-5. **Find anything, and keep it clean.** Search people, notes and hashtags: NIP-50 where a
-   relay supports it, and `#t` filters for the hashtags. NIP-51 bookmarks (kind 10003) and
-   mutes (kind 10000), and opening a note by address, from a NIP-19 `nevent` or `naddr`.
-6. **Media worth looking at.** Post pictures: [Blossom](https://github.com/hzrd149/blossom)
-   BUD-02 upload to the servers in your kind 10063 list, with a NIP-92 `imeta` tag so they
-   render elsewhere, and NIP-B7 to re-find a blob by its sha256 when a host goes down. Then
-   the picture a quote quotes, and NIP-71 video (kinds 21 and 22).
-7. **Money, carefully.** Zaps you can send and receive (NIP-57) and a NIP-47 wallet
-   connection, with the care that anything moving money deserves. The kind 9735 receipt is
-   the only proof a zap was paid, and it is the recipient's LNURL server that publishes it.
-   Then NIP-61 nutzaps, Cashu ecash sent to a pubkey: a Lightning zap needs an LNURL provider
-   the recipient signed up for in advance, and an account four clicks old has none, so this
-   is what makes a new person payable at all.
-8. **Private messages.** NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059
-   wrap), on the local store, signing through Notary, published only to the recipient's kind
-   10050 DM relays.
-9. **Groups.** NIP-29, on relays that support it: every event carries an `h` tag with the
-   group id, and the relay hosting the group is the authority on who is in it.
+### Everything you do on the first day
+
+Four things are already built and do not work. Reposts by people you follow never reach the
+feed: Plaza publishes them and counts other people's, but nothing asks a relay for kind 6.
+Relay hints are decoded and dropped, so a quoted note from outside your relays renders dead
+even though its author said where it lives. Hashtags are drawn like every other link and
+carry no target. The bookmark button does nothing.
+
+Then the ordinary parts. Pictures, which is one absence with three symptoms: no posting a
+photo, no avatar, no banner. Uploading is [Blossom](https://github.com/hzrd149/blossom)
+rather than a NIP: BUD-02 `PUT /upload`, authorised by a signed kind 24242 event (BUD-11),
+aimed at the servers in your kind 10063 list (BUD-03), with a NIP-92 `imeta` tag so they
+render elsewhere. A profile with more than three fields, because Plaza reads eight out of a
+kind 0 and lets you edit three, and `lud16` is not one of them, so an account set up only in
+Plaza cannot receive a zap at all. Zaps you can send, not only verify. Finding a person, both
+locally over the profiles already on your disk and through NIP-50 where a relay supports it.
+Notifications that say who it was and what they did. Deleting your own note, NIP-36 content
+warnings, and something drawn in place of a kind Plaza cannot render.
+
+### An app worth leaving open
+
+Nothing Plaza knows leaves the window today: no notification reaches you, and once the people
+you follow run dry there is nothing else to read.
+
+Notifications at the level of the system, which a native app holding live relay connections
+can do with no server in the middle. Feeds with more than one shape: a hashtag, a single
+relay, a saved relay set, follow packs as real events rather than a hardcoded list. A store
+you can see and reclaim, because Plaza keeps everything it has ever ingested and gives you no
+way to see how large that has grown. Muting a word, a hashtag or a thread, and for an
+afternoon rather than forever. An update path, so people who installed are not stranded on
+whatever version they downloaded. Operable without a mouse, a light theme, and type that
+scales.
+
+Places go further: the rest of the fields the format carries, the entered list as an
+encrypted event so it follows you between machines, notifications labelled with which place
+they came from, and a way to find a place that is not somebody handing you a link. A place
+link does nothing on a machine without Plaza, so getplaza.social will resolve the same
+address in a browser.
+
+And a NIP-47 wallet connection, with an approval surface in Notary so a payment is something
+you agree to rather than something that happens.
+
+### What the local store was for
+
+Everything Plaza does reads from a database on your own disk, and none of it can be searched.
+Finding a note you read last week, by words you remember, with the network off, is the thing
+a client without a local store cannot offer.
+
+Private messages: NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059 wrap),
+on the local store, signing through Notary, published only to the recipient's kind 10050 DM
+relays. Notary gains NIP-44 decrypt first, because the seal's conversation key derives from
+the identity key.
+
+NIP-23 long-form, which is a large part of what people write here and which Plaza cannot
+display. NIP-71 video that actually plays, which in a renderer with no browser means platform
+decode and compositing rather than an embed. And NIP-60 wallets with NIP-61 nutzaps, Cashu
+ecash sent to a pubkey: a Lightning zap needs an LNURL provider the recipient signed up for
+in advance, and an account four clicks old has none, so this is what makes a new person
+payable at all.
+
+### Groups, other machines, and the library at 1.0
+
+Groups: NIP-29, on relays that support it. Every event carries an `h` tag with the group id,
+joining is a kind 9021 request, and the relay hosting the group is the authority on who is in
+it. Gated on what a relay declares in its NIP-11 document.
+
+Other platforms. Linux builds and passes the full suite in CI on every change and there is
+still no package, because off macOS the toolkit renders through a software rasteriser with no
+platform text provider, which is upstream work as much as mine. Windows is not in CI at all:
+the relay transport resolves hostnames through libc `getaddrinfo`, which Zig's standard
+library does not declare for Windows.
+
+And the library at 1.0. It has been pre-1.0 on purpose while the API moved underneath it.
+Everything above lands there first, so by the time the rest of this is done the parts worth
+freezing have stopped moving.
 
 ## What this deliberately does not do
 
 Naming these is half of a roadmap, because each looks obviously worth doing until
 you price it.
 
-- **A packaged Windows release.** The smallest overlap with the Nostr audience and the
-  highest cost of the three platforms. Linux gets packaged; Windows stays a build target
-  that CI keeps honest.
+- **A packaged Windows release, for now.** The relay transport resolves hostnames through
+  libc `getaddrinfo`, which Zig's standard library does not declare for Windows, so nothing
+  depending on the library links there. That is a gap in the protocol library rather than in
+  any app, and Windows joins the matrix as soon as it closes.
 - **Multi-account.** It taxes every feature after it: per-account stores, relay pools,
   notification state, and switching without a reconnect storm. A read-only "view as" answers
   most of the real demand.
-- **Tagging the library 1.0.** A version number is not work, and freezing the API in the same
-  stretch that adds groups, messages, media and payments would ratify the least settled code
-  in the repo. Narrow promises on the settled parts instead: keys, events, filters, bech32.
 - **Set-reconciliation sync (NIP-77).** Relay support is thin and the protocol is easy to get
   subtly wrong. Per-relay cursors capture most of the benefit against a store that already
   answers a feed query in under a millisecond.
