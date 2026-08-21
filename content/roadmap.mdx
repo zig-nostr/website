@@ -56,8 +56,8 @@ render elsewhere. A profile with more than three fields, because Plaza reads eig
 kind 0 and lets you edit three, and `lud16` is not one of them, so an account set up only in
 Plaza cannot receive a zap at all. Zaps you can send, not only verify. Finding a person, both
 locally over the profiles already on your disk and through NIP-50 where a relay supports it.
-Notifications that say who it was and what they did. Deleting your own note, NIP-36 content
-warnings, and something drawn in place of a kind Plaza cannot render.
+Deleting your own note, NIP-36 content warnings, and something drawn in place of a kind Plaza
+cannot render.
 
 ### An app worth leaving open
 
@@ -90,8 +90,9 @@ a client without a local store cannot offer.
 
 Private messages: NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059 wrap),
 on the local store, signing through Notary, published only to the recipient's kind 10050 DM
-relays. Notary gains NIP-44 decrypt first, because the seal's conversation key derives from
-the identity key.
+relays. The seal's conversation key derives from the identity key, so the signer has to do the
+NIP-44 work; Notary and the library already do, and it is Plaza's own NIP-46 client that has to
+learn to ask for it.
 
 NIP-23 long-form, which is a large part of what people write here and which Plaza cannot
 display. NIP-71 video that actually plays, which in a renderer with no browser means platform
