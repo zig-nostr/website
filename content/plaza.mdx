@@ -85,7 +85,7 @@ Followers is not: nothing on your disk can know who follows a person, and the
 honest options are an indexer's figure or none. Plaza does not print numbers it
 cannot check.
 
-Private messages are a milestone away.
+Private messages are two milestones out on the [roadmap](/roadmap).
 
 ## Where the feed comes from
 
@@ -159,18 +159,20 @@ than an app that does nothing at all.
 
 The feed is a windowed list: it builds only the rows near the viewport, so its
 cost follows the window rather than the length of the feed. Measured on the
-ReleaseFast build while scrolling hard through a live feed:
+build that ships (ReleaseFast), scrolling hard through a fixed feed of 240
+notes the harness seeds into a store of its own, so a run means the same thing
+twice:
 
 | Stage | p90 | Budget |
 | --- | --- | --- |
-| Rebuild | 54&micro;s | 400&micro;s |
-| Layout | 432&micro;s | 1500&micro;s |
-| Patch | 19&micro;s | 200&micro;s |
+| Rebuild | 275&micro;s | 600&micro;s |
+| Layout | 1360&micro;s | 2200&micro;s |
+| Patch | 55&micro;s | 150&micro;s |
 
-A 120&nbsp;Hz frame is 8333&micro;s, so a hard scroll spends about a tenth of
-one. Sixty notes mount 63 widget nodes rather than roughly 500. The numbers are
-reproducible: `scripts/frame-budget.sh` in the repo measures them and fails on a
-regression.
+A 120&nbsp;Hz frame is 8333&micro;s, so a hard scroll spends about a quarter of
+one. A long feed mounts around 460 widget nodes rather than one per note. The
+numbers are reproducible: `scripts/frame-budget.sh` in the repo measures them
+and fails on a regression.
 
 See [performance](/performance) for the library numbers underneath.
 
