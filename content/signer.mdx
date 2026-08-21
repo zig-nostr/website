@@ -15,7 +15,7 @@ before it happens, and the key never leaves the daemon.
 ## What it does
 
 <div className="zn-shots">
-  <img src="/notary/panel-setup.jpg" alt="The key never arrives: it is created and held by the signer, and this window only forwards your passphrase" />
+  <img src="/notary/panel-setup.jpg" alt="Your key is created and held by the signer: this window forwards a passphrase, or the nsec you choose to import" />
   <img src="/notary/panel-serving.jpg" alt="One URL, any client: paste the bunker link into any Nostr app and you are connected" />
   <img src="/notary/panel-request.jpg" alt="Nothing signs quietly: every request names itself, and waits, before anything is signed" />
 </div>
@@ -32,8 +32,10 @@ before it happens, and the key never leaves the daemon.
 - A headless **daemon** holds the key (encrypted at rest with NIP-49) and speaks
   NIP-46 over relays.
 - A native **approval GUI** shows each incoming request (`sign_event`,
-  `nip44_encrypt`, and so on) and forwards your approve/deny decision over a
-  loopback channel. The GUI never sees the key.
+  `nip44_encrypt`, and so on) and forwards your answer over a loopback channel:
+  allow once, for a day, always, or deny. The key is generated and decrypted in
+  the daemon; the GUI sends it a passphrase, and an nsec only when you import an
+  existing key on the setup screen.
 - Clients connect with a `bunker://` URL. It works end-to-end over public
   relays, including those that require NIP-42 authentication.
 
@@ -49,10 +51,15 @@ The installer resolves the latest release, verifies its SHA-256, installs
 
 ## Supported operations
 
-`sign_event` · `get_public_key` · `nip44_encrypt` · `nip44_decrypt` · `ping`
+`connect` · `sign_event` · `ping` · `get_public_key` · `nip44_encrypt` · `nip44_decrypt` · `logout`
 
-Each is gated by a per-request approval policy with method and event-kind
-allowlists, so you decide exactly what a connected client may ask for.
+Only the three that touch the key reach you; `connect`, `ping`,
+`get_public_key` and `logout` are bookkeeping and are answered without waking
+anybody. A static allowlist of methods and event kinds is the first gate, and
+your answer carries a duration: once, for a day, or always, keyed by client,
+method and event kind, so a client that signs in a loop is not a prompt in a
+loop. A refusal stands for an hour, and a request nobody answers is not written
+down at all.
 
 ## Why it matters
 
