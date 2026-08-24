@@ -76,8 +76,9 @@ chain above a note and replies nested under it · quotes and `nostr:` mentions
 rendered inline · a composer with a mention picker and drafts that survive a quit
 · reactions · notifications for what was aimed at you · profile pages with a
 following count · your own relay list, read and write · a feed routed by
-[NIP-65](/nips) to where the people you follow actually publish · settings,
-sessions, and sign-out without lock-in.
+[NIP-65](/nips) to where the people you follow actually publish · eight switches
+that take parts of the app away for good · places you can enter and leave ·
+settings, sessions, and sign-out without lock-in.
 
 There is no follower count anywhere, on purpose. Following is a number someone
 states about themselves, and it is the length of their own contact list.
@@ -126,6 +127,30 @@ It is bounded on purpose: eight routed connections alongside the eight in your
 own pool, and one is only opened while it would reach somebody not already
 covered twice, so a tidy follow list opens fewer.
 
+## Make it quiet
+
+Which parts of Nostr deserve your attention is your call rather than ours.
+Settings carries eight switches that take things away: replying, reposting,
+reacting, zapping, and the count beside each one.
+
+Hiding is not covering up, and that distinction is the whole point. Turn off
+reactions and Plaza stops asking relays for them: the subscription drops
+`kind:7`, those events never arrive, and that is less to download, less to parse
+and less sitting on your disk. What you hid is absent rather than painted over,
+which is also why a quieter Plaza is a faster one.
+
+Two of the eight are honest exceptions, and the switch says so where you flip
+it. Your own reposts arrive in the same stream as everybody else's, so hiding
+the repost verb changes what is drawn and nothing more. Saying the data was gone
+would be easier and untrue.
+
+Notifications are a separate subscription and keep their own. Hide reaction
+counts in the feed and you will still hear when somebody likes your note.
+
+This is the first piece of a larger idea. A client should bend to the person
+using it, and the settings that shape one person's Plaza are the same shape as
+settings somebody could publish for a whole community.
+
 ## Places
 
 A place is somebody's corner of Nostr: their relay, and what that relay serves. A
@@ -137,10 +162,6 @@ Plaza forgets you were ever there. Entering keeps it on a rail down the side of
 the window, one press away from then on, and leaving takes it off again. Nothing
 is gated on entering, posting included: whether a post lands is between you and
 that place's relays.
-
-The list of places you have entered is a file on your own machine rather than
-something published, because which communities somebody belongs to is nobody
-else's business.
 
 The format is fiatjaf's Hallway universe object,
 read exactly as it is written, so a place published once means the same thing in
