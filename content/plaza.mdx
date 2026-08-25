@@ -59,6 +59,11 @@ moment at which Plaza has held one. The ceremony that mints or imports runs in
 its own window, which is how you get to see the process that is about to hold
 your key at the moment it starts holding it.
 
+Backing the key up happens in that window too, and for the same reason. A key
+you cannot take a copy of is not yours, but Plaza asking for one so it could
+show it to you would make Plaza a process that holds a key. So the window that
+minted it is the one that hands it back.
+
 One honest exception, and the app says it out loud rather than in a footnote: a
 bare source build has no ceremony window, so pasting an existing key there lands
 in Plaza itself and is written to `~/.plaza`. In that state the sign-in card

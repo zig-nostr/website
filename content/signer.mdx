@@ -4,7 +4,7 @@
 drawing its own pixels, with no Electron and no WebView anywhere. It implements
 the NIP-46 "bunker" protocol, so your `nsec` lives in a local daemon on a machine
 you control. Nothing gets signed quietly: you see what a client is asking for
-before it happens, and the key never leaves the daemon.
+before it happens, and the key never leaves the daemon unless you ask for it.
 
 <img
   src="/notary/hero.jpg"
@@ -38,6 +38,23 @@ before it happens, and the key never leaves the daemon.
   existing key on the setup screen.
 - Clients connect with a `bunker://` URL. It works end-to-end over public
   relays, including those that require NIP-42 authentication.
+
+## Your key is yours to take
+
+A nostr key cannot be replaced. If the only copy is on one Mac, losing the Mac
+loses the account, so Notary will hand the key back: **Back up your key**, the
+passphrase, then one of two forms.
+
+The **encrypted key** is the NIP-49 `ncryptsec1…` exactly as it sits on disk,
+still behind your passphrase, so it is safe to keep in a password manager or on
+paper. Keep the passphrase somewhere else.
+
+The **secret key** is the `nsec1…` itself. Anyone who reads it becomes you, for
+good.
+
+The passphrase is asked for either way, including the encrypted form that does
+not strictly need it: an unlocked signer is the normal state, and whoever is at
+the keyboard then is not necessarily the person who set it up.
 
 ## Install (macOS, Apple Silicon)
 
