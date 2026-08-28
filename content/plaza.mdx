@@ -52,9 +52,14 @@ doing.
 
 ## Your key is not in the app
 
-Plaza does not hold your secret key. Notary, a separate process shipped inside
-the app, owns it and is reached over authenticated loopback; Plaza asks it to
-sign and never sees the secret. Making a key goes the same way, so there is no
+Plaza does not hold your secret key. There is no field in it that can hold one.
+Notary, shipped inside the app, is started by Plaza as its own process and holds
+the key there; Plaza asks it to sign and never sees the secret.
+
+The two talk over a channel nothing else on this Mac can reach: no shared file,
+no fixed port, and no name for anything else to find. Holding the channel is
+what proves who is asking, so there is nothing for another app to read or
+guess. Making a key goes the same way, so there is no
 moment at which Plaza has held one. The ceremony that mints or imports runs in
 its own window, which is how you get to see the process that is about to hold
 your key at the moment it starts holding it.

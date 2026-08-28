@@ -29,8 +29,11 @@ before it happens, and the key never leaves the daemon unless you ask for it.
 
 ## How it works
 
-- A headless **daemon** holds the key (encrypted at rest with NIP-49) and speaks
-  NIP-46 over relays.
+- A headless **daemon** holds the key (encrypted at rest with NIP-49). It is one
+  of two things, never both: a bunker on real relays, where a client proves who
+  it is with its own keypair, or the private keyholder of a single app that
+  ships Notary and starts it. One key, one keyholder: a second daemon cannot
+  open a key that is already open.
 - A native **approval GUI** shows each incoming request (`sign_event`,
   `nip44_encrypt`, and so on) and forwards your answer over a loopback channel:
   allow once, for a day, always, or deny. The key is generated and decrypted in
