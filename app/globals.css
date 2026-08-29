@@ -228,7 +228,7 @@
   font-size: 0.92rem;
 }
 
-/* Notary's cards on /signer: one wide lead image, then three portrait panels
+/* Notary's cards on /notary: one wide lead image, then three portrait panels
    side by side. Below 640px the panels stack, because a 1000x1400 card at a
    third of a phone's width is unreadable. */
 .zn-shot-hero {

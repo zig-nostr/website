@@ -16,7 +16,7 @@ export default {
   architecture: 'Architecture',
   nips: 'NIP Support',
   plaza: 'Plaza',
-  signer: 'Notary',
+  notary: 'Notary',
   performance: 'Performance',
   roadmap: 'Roadmap',
 }
