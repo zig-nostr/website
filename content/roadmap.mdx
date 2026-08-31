@@ -24,11 +24,12 @@ No dates. The order is a commitment; a calendar would not be.
 - **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways (including a
   NIP-46 bunker), and read a follow feed (your kind 3 list) that renders from disk before the
   network answers.
-- **Places**: a link opens somebody's corner of Nostr, their relay and what it serves, and
+- **Places**: a link opens somebody's corner of Nostr, their relays and what they serve, and
   while you are in one you see it rather than your own feed. Visit, enter to keep it on a
-  rail, or leave. The format is fiatjaf's
-  Hallway universe object, so a place published once means
-  the same thing in both.
+  rail, or leave. A community can carry several feeds and switch between them, and one that
+  states a colour is drawn in it. The format is fiatjaf's
+  Hallway universe object, and the field names are his exactly, so a document written for
+  one is read the same way by the other.
 - **Docs and benchmarks**: this site, the [NIP-support table](/nips), and reproducible
   [performance numbers](/performance).
 - **Reach**: following somebody means seeing them. Plaza reads the NIP-65 relay lists (kind
@@ -73,11 +74,11 @@ afternoon rather than forever. An update path, so people who installed are not s
 whatever version they downloaded. Operable without a mouse, a light theme, and type that
 scales.
 
-Places go further: the rest of the fields the format carries, the entered list as an
-encrypted event so it follows you between machines, notifications labelled with which place
-they came from, and a way to find a place that is not somebody handing you a link. A place
-link does nothing on a machine without Plaza, so getplaza.social will resolve the same
-address in a browser.
+Places go further: the entered list as an encrypted event so it follows you between
+machines, notifications labelled with which place they came from, a way to find a place that
+is not somebody handing you a link, and a publishing path the two clients share rather than
+a document somebody has to republish by hand. A place link does nothing on a machine without
+Plaza, so getplaza.social will resolve the same address in a browser.
 
 And a NIP-47 wallet connection, with an approval surface in Notary so a payment is something
 you agree to rather than something that happens.
