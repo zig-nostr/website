@@ -20,7 +20,8 @@ No dates. The order is a commitment; a calendar would not be.
 - **Signer protocol**: NIP-44 v2 encryption, the NIP-46 remote-signing ("bunker") protocol
   over kind 24133, and NIP-42 client authentication.
 - **[Notary](/notary)**, the native remote signer. Your key lives in a local daemon, it hands
-  you a `bunker://` URL, and nothing gets signed quietly. A downloadable macOS app.
+  you a `bunker://` URL, and nothing gets signed quietly. A downloadable app for
+  macOS and Linux.
 - **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways (including a
   NIP-46 bunker), and read a follow feed (your kind 3 list) that renders from disk before the
   network answers.
@@ -111,7 +112,9 @@ it. Gated on what a relay declares in its NIP-11 document.
 Other platforms. Linux ships, for x86_64 and aarch64, with the same one-line installer macOS
 has. Off macOS the toolkit renders through a software rasteriser with no platform text
 provider, so Plaza draws every glyph itself and carries its own colour emoji face; the two
-renderer gaps that made that unusable are fixed and filed upstream. Windows is not in CI at
+renderer gaps that made that unusable are fixed and filed upstream. What is still open there
+is coverage: the bundled faces carry Latin, Cyrillic and Greek, so any other script is drawn
+as empty boxes until a broader face ships. Windows is not in CI at
 all: the relay transport resolves hostnames through libc `getaddrinfo`, which Zig's standard
 library does not declare for Windows.
 

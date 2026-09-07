@@ -76,9 +76,13 @@ The installer resolves the latest release, verifies its SHA-256, installs
 curl -fsSL https://raw.githubusercontent.com/zig-nostr/notary/main/scripts/install-linux.sh | bash
 ```
 
-GTK 4 is the one runtime dependency, and the installer says so before it
-downloads anything. It verifies the SHA-256 and installs into `~/.local`, so
-nothing needs root and nothing lands outside your home directory.
+On a reasonably recent distribution: **Ubuntu 23.10+, Debian 13+, or Fedora
+39+**. The binaries are built against glibc 2.38 and the toolkit's Linux host
+wants GTK 4.10, so Ubuntu 22.04 and Debian 12 are too old; the installer checks
+that before it downloads anything. GTK 4 is the one runtime dependency beyond
+that, and it says so before it downloads anything too. It verifies the SHA-256
+and installs into `~/.local`, so nothing needs root and nothing lands outside
+your home directory.
 
 Either way one download brings up both halves: the window, and the daemon it
 spawns, which is where your key actually lives. Source, releases, and build

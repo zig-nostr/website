@@ -69,11 +69,11 @@ you cannot take a copy of is not yours, but Plaza asking for one so it could
 show it to you would make Plaza a process that holds a key. So the window that
 minted it is the one that hands it back.
 
-One honest exception, and the app says it out loud rather than in a footnote: a
-bare source build has no ceremony window, so pasting an existing key there lands
-in Plaza itself and is written to `~/.plaza`. In that state the sign-in card
-stops promising otherwise and reads "Pasted here, and kept on this device." A
-packaged build carries the window and does not have this path.
+There is no exception, including in a source build. Pasting a secret key into
+the sign-in field does not import it: Plaza refuses it without taking it into
+memory, leaves the text in the field you typed it in, and opens the keyholder so
+the key goes to the app that holds keys. A test asserts the old wording is not
+drawn anywhere, so this cannot quietly come back.
 
 That is the same design as [Notary](/notary), and it is why connecting an
 external signer is a first-class path rather than an advanced setting.
@@ -229,8 +229,10 @@ curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/instal
 
 macOS on Apple Silicon. The installer verifies the download's SHA-256, installs
 `Plaza.app`, clears the download-quarantine flag so it opens without a Gatekeeper
-detour, and launches it. Your key, session and local store live in `~/.plaza` and
-survive every upgrade.
+detour, and launches it. Your session and local store live in `~/.plaza` and
+survive every upgrade. Your key is not there: it lives in the keyholder, which is
+a separate process with its own storage, and Plaza has no field that can hold
+one.
 
 Plaza is ad-hoc signed and not notarized on purpose. It signs notes with your
 key, so the trust anchor is a build you can reproduce rather than an Apple
@@ -249,16 +251,23 @@ cd plaza && scripts/package-macos.sh
 curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/install-linux.sh | bash
 ```
 
-x86_64 and aarch64. GTK 4 is the one runtime dependency, and the installer says
-so before it downloads anything rather than after the window fails to open. It
+x86_64 and aarch64, on a reasonably recent distribution: **Ubuntu 23.10+, Debian
+13+, or Fedora 39+**. The binaries are built against glibc 2.38 and the toolkit's
+Linux host wants GTK 4.10, which land on the same generation, so Ubuntu 22.04 and
+Debian 12 are too old. The installer checks that before it downloads anything,
+rather than leaving you with a loader error after a successful-looking install.
+GTK 4 is the one runtime dependency beyond that. It
 verifies the SHA-256, installs into `~/.local` so nothing needs root and nothing
 lands outside your home directory, registers the desktop entry so `plaza://`
 links open Plaza, and launches it. Pass `--archive <file>` to install a tarball
 you already have, which needs no network.
 
-It is the same app, not a port with pieces missing. What differs is underneath:
-macOS hands text to the system to draw, and on Linux there is nothing to hand it
-to, so Plaza draws every glyph itself and carries its own colour emoji face.
+The same app, with one thing to know. macOS hands text to the system to draw. On
+Linux there is nothing to hand it to, so Plaza draws every glyph from faces it
+carries: emoji are drawn in colour, and Latin, Cyrillic and Greek are covered.
+Scripts those faces do not carry, CJK, Japanese, Korean, Arabic, Hebrew, Thai and
+Devanagari among them, are drawn as empty boxes rather than as text. If you read
+Nostr in one of those, the macOS build is the one to use today.
 
 ## Built on the core
 
