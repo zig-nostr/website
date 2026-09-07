@@ -262,12 +262,13 @@ lands outside your home directory, registers the desktop entry so `plaza://`
 links open Plaza, and launches it. Pass `--archive <file>` to install a tarball
 you already have, which needs no network.
 
-The same app, with one thing to know. macOS hands text to the system to draw. On
-Linux there is nothing to hand it to, so Plaza draws every glyph from faces it
-carries: emoji are drawn in colour, and Latin, Cyrillic and Greek are covered.
-Scripts those faces do not carry, CJK, Japanese, Korean, Arabic, Hebrew, Thai and
-Devanagari among them, are drawn as empty boxes rather than as text. If you read
-Nostr in one of those, the macOS build is the one to use today.
+The same app, with one thing to know. macOS hands text to the system to draw, and
+gets the system's font fallback with it. On Linux there is nothing to hand it to,
+so Plaza draws every glyph from the faces it carries, and those cover Latin and
+Cyrillic. Emoji are drawn in colour. Everything else, Greek, CJK, Japanese,
+Korean, Arabic, Hebrew, Thai and Devanagari among them, is drawn as a solid block
+rather than as text. If you read Nostr in one of those scripts, the macOS build is
+the one to use today.
 
 ## Built on the core
 

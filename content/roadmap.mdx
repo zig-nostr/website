@@ -113,8 +113,10 @@ Other platforms. Linux ships, for x86_64 and aarch64, with the same one-line ins
 has. Off macOS the toolkit renders through a software rasteriser with no platform text
 provider, so Plaza draws every glyph itself and carries its own colour emoji face; the two
 renderer gaps that made that unusable are fixed and filed upstream. What is still open there
-is coverage: the bundled faces carry Latin, Cyrillic and Greek, so any other script is drawn
-as empty boxes until a broader face ships. Windows is not in CI at
+is coverage: the bundled faces carry Latin and Cyrillic, so every other script, Greek
+included, is drawn as a solid block until a broader face ships. Shaping is a second problem
+behind it: the reference rasteriser reads no GSUB or GPOS, so Arabic and the Indic scripts
+would still be wrong with a perfect face. Windows is not in CI at
 all: the relay transport resolves hostnames through libc `getaddrinfo`, which Zig's standard
 library does not declare for Windows.
 
