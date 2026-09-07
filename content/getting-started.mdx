@@ -1,14 +1,14 @@
 # Getting Started
 
 `zig-nostr` is a Nostr protocol library for [Zig](https://ziglang.org). It
-targets Zig **0.16** and is in **active development** (`v0.12.0`).
+targets Zig **0.16** and is in **active development** (`v0.14.1`).
 
 ## Install
 
 Fetch the library into your project's `build.zig.zon`:
 
 ```sh
-zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.12.0.tar.gz
+zig fetch --save https://github.com/zig-nostr/nostr/archive/refs/tags/v0.14.1.tar.gz
 ```
 
 Then wire the module in `build.zig`:
@@ -83,6 +83,7 @@ The `nostr` module re-exports focused namespaces:
 - `nip42`: client authentication to relays
 - `relay` / `websocket` / `message` / `filter`: live transport & subscriptions
 - `nip65`: relay lists and outbox routing
+- `liveness`: when a relay connection has gone quiet, and what to do about it
 - `store`: the local-first, memory-mapped event store
 
 See [Architecture](/architecture) for how these fit together.
