@@ -108,10 +108,11 @@ Groups: NIP-29, on relays that support it. Every event carries an `h` tag with t
 joining is a kind 9021 request, and the relay hosting the group is the authority on who is in
 it. Gated on what a relay declares in its NIP-11 document.
 
-Other platforms. Linux builds and passes the full suite in CI on every change and there is
-still no package, because off macOS the toolkit renders through a software rasteriser with no
-platform text provider, which is upstream work as much as mine. Windows is not in CI at all:
-the relay transport resolves hostnames through libc `getaddrinfo`, which Zig's standard
+Other platforms. Linux ships, for x86_64 and aarch64, with the same one-line installer macOS
+has. Off macOS the toolkit renders through a software rasteriser with no platform text
+provider, so Plaza draws every glyph itself and carries its own colour emoji face; the two
+renderer gaps that made that unusable are fixed and filed upstream. Windows is not in CI at
+all: the relay transport resolves hostnames through libc `getaddrinfo`, which Zig's standard
 library does not declare for Windows.
 
 And the library at 1.0. It has been pre-1.0 on purpose while the API moved underneath it.

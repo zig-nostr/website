@@ -1,6 +1,6 @@
 # Notary: the native remote signer
 
-**Notary** is a native macOS remote signer built on `zig-nostr`: Zig throughout,
+**Notary** is a native remote signer for macOS and Linux built on `zig-nostr`: Zig throughout,
 drawing its own pixels, with no Electron and no WebView anywhere. It implements
 the NIP-46 "bunker" protocol, so your `nsec` lives in a local daemon on a machine
 you control. Nothing gets signed quietly: you see what a client is asking for
@@ -59,15 +59,30 @@ The passphrase is asked for either way, including the encrypted form that does
 not strictly need it: an unlocked signer is the normal state, and whoever is at
 the keyboard then is not necessarily the person who set it up.
 
-## Install (macOS, Apple Silicon)
+## Install
+
+**macOS (Apple Silicon):**
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/zig-nostr/notary/main/scripts/install-macos.sh | bash
 ```
 
 The installer resolves the latest release, verifies its SHA-256, installs
-`Notary.app`, and launches it. Source, releases, and build instructions live at
-[`zig-nostr/notary`](https://github.com/zig-nostr/notary).
+`Notary.app`, and launches it.
+
+**Linux (x86_64 and aarch64):**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/notary/main/scripts/install-linux.sh | bash
+```
+
+GTK 4 is the one runtime dependency, and the installer says so before it
+downloads anything. It verifies the SHA-256 and installs into `~/.local`, so
+nothing needs root and nothing lands outside your home directory.
+
+Either way one download brings up both halves: the window, and the daemon it
+spawns, which is where your key actually lives. Source, releases, and build
+instructions live at [`zig-nostr/notary`](https://github.com/zig-nostr/notary).
 
 ## Supported operations
 
