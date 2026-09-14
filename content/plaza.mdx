@@ -84,11 +84,16 @@ A follow-based feed with a curated starter pack so it is never empty · real nam
 and avatars from `kind:0` · inline pictures and link previews · threads with the
 chain above a note and replies nested under it · quotes and `nostr:` mentions
 rendered inline · a composer with a mention picker and drafts that survive a quit
-· reactions · notifications for what was aimed at you · profile pages with a
-following count · your own relay list, read and write · a feed routed by
-[NIP-65](/nips) to where the people you follow actually publish · eight switches
-that take parts of the app away for good · places you can enter and leave ·
-settings, sessions, and sign-out without lock-in.
+· reactions · bookmarks, public or private, saved as a list on your own relays so
+they follow you to any other client · hashtags that open the notes carrying them,
+read from your own machine first · deleting your own note, with a confirmation
+that says what a deletion can and cannot do · notifications for what was aimed at
+you · profile pages with a following count · your own relay list, read and write ·
+a feed routed by [NIP-65](/nips) to where the people you follow actually publish ·
+an address field that opens any note, person or place you paste into it, including
+ones on relays you do not read · eight switches that take parts of the app away
+for good · places you can enter and leave · settings, sessions, and sign-out
+without lock-in.
 
 There is no follower count anywhere, on purpose. Following is a number someone
 states about themselves, and it is the length of their own contact list.
@@ -164,9 +169,10 @@ settings somebody could publish for a whole community.
 ## Places
 
 A place is somebody's corner of Nostr: their relays, and what those relays
-serve. A `plaza://place/` link opens the one it names, from anywhere, and while
-you are in a place you are reading it rather than your own feed with a banner on
-top.
+serve. A `plaza://place/` link opens the one it names, from anywhere, and so does
+pasting its `naddr1` into the address field, which is also how you open a note or
+a person somebody sent you. While you are in a place you are reading it rather
+than your own feed with a banner on top.
 
 You arrive as a visitor, which means you can already read and post, and closing
 Plaza forgets you were ever there. Entering keeps it on a rail down the side of
