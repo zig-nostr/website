@@ -7,11 +7,15 @@
 const PUBKEY =
   '3e294d2fd339bb16a5403a86e3664947dd408c4d87a0066524f8a573ae53ca8e'
 
+const PLAZA_PUBKEY =
+  '218cd85be35f1558286e68aae8fc2b33a10d19f0c2c8e05d2cf0b42653332124'
+
 // name -> hex pubkey (lowercase). `_` is the root identifier: sepehr@zignostr.com
 // with no local part resolves to it per NIP-05.
 const NAMES = {
   _: PUBKEY,
   sepehr: PUBKEY,
+  plaza: PLAZA_PUBKEY,
 }
 
 // The response depends on the query string, so never prerender or cache it.
