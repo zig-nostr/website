@@ -10,6 +10,8 @@ four clicks away: sign in, create an identity, name yourself or skip it, post.
 And the feed comes off local disk, so it is already there when the window opens
 and reconciles with relays behind you.
 
+It installs in one line on [macOS or Linux](#getting-it).
+
 <img
   src="/plaza/hero.jpg"
   alt="Plaza: a native feed read from disk. Zig and Metal, no Electron, and the feed is a local query."
@@ -29,6 +31,55 @@ and reconciles with relays behind you.
   Real windows, photographed from the running app against real notes from public
   relays. Every pixel inside the window is the app's own.
 </p>
+
+## Getting it
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/install-macos.sh | bash
+```
+
+macOS on Apple Silicon. The installer verifies the download's SHA-256, installs
+`Plaza.app`, clears the download-quarantine flag so it opens without a Gatekeeper
+detour, and launches it. Your session and local store live in `~/.plaza` and
+survive every upgrade. Your key is not there: it lives in the keyholder, which is
+a separate process with its own storage, and Plaza has no field that can hold
+one.
+
+Plaza is ad-hoc signed and not notarized on purpose. It signs notes with your
+key, so the trust anchor is a build you can reproduce rather than an Apple
+signature you cannot inspect. Read the
+[installer](https://github.com/zig-nostr/plaza/blob/main/scripts/install-macos.sh),
+or build the same artifact yourself:
+
+```sh
+git clone https://github.com/zig-nostr/plaza
+cd plaza && scripts/package-macos.sh
+```
+
+### Linux
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/install-linux.sh | bash
+```
+
+x86_64 and aarch64, on a reasonably recent distribution: **Ubuntu 23.10+, Debian
+13+, or Fedora 39+**. The binaries are built against glibc 2.38 and the toolkit's
+Linux host wants GTK 4.10, which land on the same generation, so Ubuntu 22.04 and
+Debian 12 are too old. The installer checks that before it downloads anything,
+rather than leaving you with a loader error after a successful-looking install.
+GTK 4 is the one runtime dependency beyond that. It
+verifies the SHA-256, installs into `~/.local` so nothing needs root and nothing
+lands outside your home directory, registers the desktop entry so `plaza://`
+links open Plaza, and launches it. Pass `--archive <file>` to install a tarball
+you already have, which needs no network.
+
+The same app, with one thing to know. macOS hands text to the system to draw, and
+gets the system's font fallback with it. On Linux there is nothing to hand it to,
+so Plaza draws every glyph from the faces it carries, and those cover Latin and
+Cyrillic. Emoji are drawn in colour. Everything else, Greek, CJK, Japanese,
+Korean, Arabic, Hebrew, Thai and Devanagari among them, is drawn as a solid block
+rather than as text. If you read Nostr in one of those scripts, the macOS build is
+the one to use today.
 
 ## Reading first, identity later
 
@@ -226,55 +277,6 @@ numbers are reproducible: `scripts/frame-budget.sh` in the repo measures them
 and fails on a regression.
 
 See [performance](/performance) for the library numbers underneath.
-
-## Getting it
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/install-macos.sh | bash
-```
-
-macOS on Apple Silicon. The installer verifies the download's SHA-256, installs
-`Plaza.app`, clears the download-quarantine flag so it opens without a Gatekeeper
-detour, and launches it. Your session and local store live in `~/.plaza` and
-survive every upgrade. Your key is not there: it lives in the keyholder, which is
-a separate process with its own storage, and Plaza has no field that can hold
-one.
-
-Plaza is ad-hoc signed and not notarized on purpose. It signs notes with your
-key, so the trust anchor is a build you can reproduce rather than an Apple
-signature you cannot inspect. Read the
-[installer](https://github.com/zig-nostr/plaza/blob/main/scripts/install-macos.sh),
-or build the same artifact yourself:
-
-```sh
-git clone https://github.com/zig-nostr/plaza
-cd plaza && scripts/package-macos.sh
-```
-
-### Linux
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/zig-nostr/plaza/main/scripts/install-linux.sh | bash
-```
-
-x86_64 and aarch64, on a reasonably recent distribution: **Ubuntu 23.10+, Debian
-13+, or Fedora 39+**. The binaries are built against glibc 2.38 and the toolkit's
-Linux host wants GTK 4.10, which land on the same generation, so Ubuntu 22.04 and
-Debian 12 are too old. The installer checks that before it downloads anything,
-rather than leaving you with a loader error after a successful-looking install.
-GTK 4 is the one runtime dependency beyond that. It
-verifies the SHA-256, installs into `~/.local` so nothing needs root and nothing
-lands outside your home directory, registers the desktop entry so `plaza://`
-links open Plaza, and launches it. Pass `--archive <file>` to install a tarball
-you already have, which needs no network.
-
-The same app, with one thing to know. macOS hands text to the system to draw, and
-gets the system's font fallback with it. On Linux there is nothing to hand it to,
-so Plaza draws every glyph from the faces it carries, and those cover Latin and
-Cyrillic. Emoji are drawn in colour. Everything else, Greek, CJK, Japanese,
-Korean, Arabic, Hebrew, Thai and Devanagari among them, is drawn as a solid block
-rather than as text. If you read Nostr in one of those scripts, the macOS build is
-the one to use today.
 
 ## Built on the core
 
