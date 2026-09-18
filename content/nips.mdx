@@ -33,32 +33,33 @@ rather than library surface.
 | [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers, `/.well-known/nostr.json` | the `name@domain` handle on a profile, checked against the domain |
 | [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading, marked `e` tags | threads, and replies you post |
 | [18](https://github.com/nostr-protocol/nips/blob/master/18.md) | Reposts, `kind:6` and `kind:16` | counted on a note, and a row in notifications |
+| [22](https://github.com/nostr-protocol/nips/blob/master/22.md) | Comments, `kind:1111`, the other way to write a reply | read in threads, on a profile, and as a notification |
 | [25](https://github.com/nostr-protocol/nips/blob/master/25.md) | Reactions, `kind:7` | likes, in the feed and notifications |
 | [27](https://github.com/nostr-protocol/nips/blob/master/27.md) | `nostr:` mentions in content | names instead of raw base32 |
 | [89](https://github.com/nostr-protocol/nips/blob/master/89.md) | Application handlers | the `client` tag on notes you post |
 | [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments, `imeta` | dimensions read off the tag, so an image reserves its box before it loads |
+| [51](https://github.com/nostr-protocol/nips/blob/master/51.md) | Lists: bookmarks (`kind:10003`) and mutes (`kind:10000`) | bookmarks public or private, and a mute list that is read before it is ever written |
 | [57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps, `kind:9735` receipts | receipts are read and shown. Sending is a milestone away |
+| [71](https://github.com/nostr-protocol/nips/blob/master/71.md) | Video events, `kind:21` and `kind:22` | a video is recognised as one and drawn as one. Playing it in place is still to come |
 | [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay lists, `kind:10002` | per-author routing: the feed reads where the people you follow write, and what you post goes where your own list says |
 
 ## Planned, and where it lands
 
 These are the specs the [roadmap](/roadmap) commits to, in roadmap order, each
-against the milestone that delivers it. Three rows have a half already written, and say so;
-the rest are untouched. A spec named here is a promise: if one is
-missing, it is because I have not made that promise, not because I forgot it.
+against the milestone that delivers it. A spec named here is a promise: if one
+is missing, it is because I have not made that promise, not because I forgot
+it.
 
 | Spec | Title | Milestone | Status |
 |----|----|----|----|
 | [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | Extra `kind:0` fields (`display_name`, `website`, `banner`, `bot`, `birthday`), carried through untouched when I rewrite a profile | Your identity, and your key | 🚧 planned |
 | [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter | Find anything, and keep it clean | 🚧 planned |
-| [NIP-51](https://github.com/nostr-protocol/nips/blob/master/51.md) | Lists: bookmarks (`kind:10003`) and the mute list (`kind:10000`) | Find anything, and keep it clean | 🚧 planned |
 | [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | The `t` tag: a hashtag is a lowercase `t`, and NIP-01 single-letter indexing is what makes `#t` queryable | Find anything, and keep it clean | 🚧 planned |
 | [Blossom BUD-02](https://github.com/hzrd149/blossom/blob/master/buds/02.md) | Blob upload, `PUT /upload`. This is the step that puts the bytes of a picture on a server | Media worth looking at | 🚧 planned |
 | [Blossom BUD-03](https://github.com/hzrd149/blossom/blob/master/buds/03.md) | User Server List, `kind:10063`: which servers hold your blobs, most trusted first | Media worth looking at | 🚧 planned |
 | [Blossom BUD-11](https://github.com/hzrd149/blossom/blob/master/buds/11.md) | Authorization for those requests: a signed `kind:24242` event carrying the verb and an expiry | Media worth looking at | 🚧 planned |
 | [NIP-92](https://github.com/nostr-protocol/nips/blob/master/92.md) | `imeta` written onto a note I post, not only read off one. It is what makes the picture render in someone else's client | Media worth looking at | 🚧 planned |
 | [NIP-B7](https://github.com/nostr-protocol/nips/blob/master/B7.md) | Finding a blob again: when a media URL ends in a sha256, retry it against the author's `kind:10063` servers and check the hash | Media worth looking at | 🚧 planned |
-| [NIP-71](https://github.com/nostr-protocol/nips/blob/master/71.md) | Video events: `kind:21`, and `kind:22` for short portrait video | Media worth looking at | 🚧 planned |
 | [NIP-57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps you can send: a `kind:9734` request to the recipient's LNURL callback, and the `kind:9735` receipt that follows the payment | Money, carefully | 🚧 planned |
 | [NIP-47](https://github.com/nostr-protocol/nips/blob/master/47.md) | Nostr Wallet Connect, so that invoice is paid in the app: a `nostr+walletconnect://` link, over kinds 13194, 23194 and 23195 | Money, carefully | 🚧 planned |
 | [NIP-61](https://github.com/nostr-protocol/nips/blob/master/61.md) | Nutzaps: Cashu ecash sent straight to a pubkey (`kind:9321`), gated on a `kind:10019` naming the mints you trust. No LNURL provider in the path, which is what makes a brand-new account payable | Money, carefully | 🚧 planned |
@@ -95,7 +96,8 @@ mint, not buried in a setting.
 
 Three milestones name no spec, and inventing one for them would be dishonest.
 Notifications is assembled out of NIPs already on this page: NIP-10 replies,
-NIP-18 reposts, NIP-25 reactions, NIP-27 mentions and NIP-57 zap receipts.
+NIP-22 comments, NIP-18 reposts, NIP-25 reactions, NIP-27 mentions and NIP-57
+zap receipts.
 Packaging, updates and diagnostics are not protocol work. Neither is a light
 theme, keyboard operation, or type that scales.
 
