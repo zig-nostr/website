@@ -34,6 +34,7 @@ rather than library surface.
 | [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading, marked `e` tags | threads, and replies you post |
 | [18](https://github.com/nostr-protocol/nips/blob/master/18.md) | Reposts, `kind:6` and `kind:16` | counted on a note, and a row in notifications |
 | [22](https://github.com/nostr-protocol/nips/blob/master/22.md) | Comments, `kind:1111`, the other way to write a reply | read in threads, on a profile, and as a notification |
+| [24](https://github.com/nostr-protocol/nips/blob/master/24.md) | The `t` tag: a hashtag is a lowercase `t`, and NIP-01 single-letter indexing is what makes `#t` queryable | pressing one opens the notes carrying it, read from this machine first and then asked of relays. Written onto notes you post, so yours are findable too |
 | [25](https://github.com/nostr-protocol/nips/blob/master/25.md) | Reactions, `kind:7` | likes, in the feed and notifications |
 | [27](https://github.com/nostr-protocol/nips/blob/master/27.md) | `nostr:` mentions in content | names instead of raw base32 |
 | [89](https://github.com/nostr-protocol/nips/blob/master/89.md) | Application handlers | the `client` tag on notes you post |
@@ -54,7 +55,6 @@ it.
 |----|----|----|----|
 | [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | Extra `kind:0` fields (`display_name`, `website`, `banner`, `bot`, `birthday`), carried through untouched when I rewrite a profile | Your identity, and your key | 🚧 planned |
 | [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter | Find anything, and keep it clean | 🚧 planned |
-| [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | The `t` tag: a hashtag is a lowercase `t`, and NIP-01 single-letter indexing is what makes `#t` queryable | Find anything, and keep it clean | 🚧 planned |
 | [Blossom BUD-02](https://github.com/hzrd149/blossom/blob/master/buds/02.md) | Blob upload, `PUT /upload`. This is the step that puts the bytes of a picture on a server | Media worth looking at | 🚧 planned |
 | [Blossom BUD-03](https://github.com/hzrd149/blossom/blob/master/buds/03.md) | User Server List, `kind:10063`: which servers hold your blobs, most trusted first | Media worth looking at | 🚧 planned |
 | [Blossom BUD-11](https://github.com/hzrd149/blossom/blob/master/buds/11.md) | Authorization for those requests: a signed `kind:24242` event carrying the verb and an expiry | Media worth looking at | 🚧 planned |
