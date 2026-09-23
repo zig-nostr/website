@@ -23,7 +23,7 @@ much history sits behind it. That's the **bounded query
 planner**: it walks the indexes newest-first and stops at `limit`, so latency
 tracks the page size you ask for, not the size of the store.
 
-## Reproduce it
+## Reproduce the library numbers
 
 ```sh
 git clone https://github.com/zig-nostr/nostr
@@ -35,3 +35,49 @@ The benchmark source is
 [`src/bench.zig`](https://github.com/zig-nostr/nostr/blob/main/src/bench.zig).
 Absolute numbers vary with hardware; the *shape*, flat feed latency as the
 store grows, is the point.
+
+## deed
+
+What the [command line](/deed) costs to run, measured on an Apple M2 Pro with the deed 0.3.1 binary from the release page (`ReleaseSafe`, stripped). Each number is the best of several runs, and every one is the whole command, starting the process included.
+
+| Size | Binary | Download |
+|----|----|----|
+| macOS, Apple Silicon | 2.3 MB | 1.6 MB |
+| macOS, Intel | 2.4 MB | 1.7 MB |
+| Linux, x86_64 | 2.7 MB | 1.8 MB |
+| Linux, aarch64 | 2.4 MB | 1.8 MB |
+
+| Command | |
+|----|----|
+| starting any process at all, for scale | 1.57 ms |
+| `deed version` | 2.34 ms |
+| `deed event`, signing one | 2.46 ms |
+| `deed verify`, one | 3.05 ms |
+| peak memory, a one-shot command | 1.7 MB |
+
+| Streams of 10,000 through stdin | |
+|----|----|
+| signing | 30,986 per second |
+| verifying | 32,523 per second |
+| decoding npubs | 568,831 per second |
+| peak memory, verifying | 3.9 MB |
+
+| Local store, 100,000 events from 1,000 authors | |
+|----|----|
+| storing them from a loopback relay, each signature checked | 17,379 per second |
+| one event by id | 3.25 ms |
+| one profile | 3.21 ms |
+| one author's latest 50 notes | 3.50 ms |
+| the latest 500 notes | 5.03 ms |
+| every note, 98,000 of them | 286 ms |
+
+A lookup costs about a millisecond more than `deed version` does, starting deed and opening the store included. The store's own share is the fraction of a millisecond the library numbers at the top of this page show.
+
+```sh
+git clone https://github.com/zig-nostr/deed
+cd deed
+zig build -Doptimize=ReleaseSafe -Dstrip=true
+python3 bench/run.py zig-out/bin/deed
+```
+
+It needs python3 and websocat, and talks only to a relay it runs on 127.0.0.1. The script is [`bench/run.py`](https://github.com/zig-nostr/deed/blob/main/bench/run.py), and [`BENCHMARKS.md`](https://github.com/zig-nostr/deed/blob/main/BENCHMARKS.md) has every number it prints.

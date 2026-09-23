@@ -1,0 +1,64 @@
+# deed: the nostr command line
+
+**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, and keeps what it fetches in a local store that later runs can read without a network. One binary of under 3 MB for macOS and Linux, Intel and ARM, statically linked on Linux.
+
+A deed is two things at once: a signed instrument, and a thing done. So is a nostr event.
+
+## Install
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/deed/main/scripts/install.sh | bash
+```
+
+The installer works out which build the machine wants, checks the download against the SHA-256 published beside it, and installs into `~/.local/bin`, so nothing needs root. If the digest does not match, it installs nothing and says so.
+
+## What it does
+
+| Verb | |
+| --- | --- |
+| `key` | make a key, or derive the public one from it |
+| `event` | build an event and sign it |
+| `decode` | turn a NIP-19 code into the fields it carries |
+| `encode` | build a NIP-19 code out of its parts |
+| `encrypt` | encrypt a message to someone, with NIP-44 |
+| `decrypt` | decrypt a NIP-44 payload from someone |
+| `verify` | check that events are correctly signed |
+| `req` | build a subscription, and run it |
+| `fetch` | get the events a code names |
+| `publish` | offer signed events to relays, and print the ones they accepted |
+
+Every verb that does not need a socket works without one, so what comes out can be read before any of it leaves the machine. `deed help <command>` explains any of them.
+
+## The verbs compose
+
+Each verb takes its inputs as arguments and, given none, reads them as newline-delimited records on standard input, writing one result per line:
+
+```sh
+export NOSTR_SECRET_KEY=$(deed key generate)
+
+deed event -c "hello" | deed verify
+cat drafts.jsonl | deed event - | deed publish wss://relay.example > sent.jsonl
+```
+
+`publish` prints each event a relay accepted, once the relays have answered or the deadline has passed, so what it writes out is what was published. Every relay's answer goes to standard error with the event's id on it, and the exit code is 0 only when every event was accepted by at least one relay.
+
+## It keeps what it fetches
+
+```sh
+deed req -k 1 -l 50 --store ~/.deed/db wss://relay.example   # once, over the network
+deed req -k 1 -l 50 --store ~/.deed/db --local               # again, dialling nothing
+```
+
+The second command opens no socket, and the events it prints are the same events: what is stored is what was signed, so they still verify. Every event is checked before it is stored or printed, so a relay cannot put a forgery, or an event nobody asked for, into the store or the output.
+
+## How fast it is
+
+A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and verifies about 31,000 events a second each, stores 100,000 events from a relay at about 17,000 a second, and answers a lookup from that store in about 3 ms, start to finish. The full numbers, and how to reproduce them, are on the [performance page](/performance#deed).
+
+## What is missing
+
+**Relay selection.** A code with no relay hints is not looked up yet: `deed fetch npub1...` asks you to name a relay rather than finding the author's relay list first.
+
+**Windows.** deed does not build there yet.
+
+Source, releases and the full reference live at [`zig-nostr/deed`](https://github.com/zig-nostr/deed).
