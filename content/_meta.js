@@ -17,6 +17,7 @@ export default {
   nips: 'NIP Support',
   plaza: 'Plaza',
   notary: 'Notary',
+  deed: 'deed',
   performance: 'Performance',
   roadmap: 'Roadmap',
 }
