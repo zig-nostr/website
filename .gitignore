@@ -30,3 +30,7 @@ next-env.d.ts
 
 # pagefind search index (generated at build)
 /public/_pagefind
+
+# agent files (generated at build from content/)
+/public/*.md
+/public/llms-full.txt

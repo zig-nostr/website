@@ -1,0 +1,31 @@
+# zig-nostr
+
+> A native Nostr ecosystem in Zig: `nostr`, a protocol library for Zig; Plaza, a local-first client for macOS and Linux; Notary, a NIP-46 remote signer; and deed, a command line for nostr. MIT licensed, all on one core.
+
+Every page on this site is also served as Markdown at its path with `.md` added (the home page is /index.md), and /llms-full.txt has them all in one file.
+
+## Projects
+
+- [nostr, the Zig library](/getting-started.md): keys and BIP-340 signatures via libsecp256k1, NIP-01 events, NIP-19, NIP-44, NIP-46, NIP-42, NIP-49, NIP-06, relay transport with deadlines, the NIP-65 outbox model, and a memory-mapped LMDB event store. Source: https://github.com/zig-nostr/nostr
+- [deed, the nostr command line](/deed.md): keys, signing, verifying, NIP-19, NIP-44, relay queries, publishing, and a local store it can query offline. One binary for macOS and Linux. Source: https://github.com/zig-nostr/deed
+- [Plaza](/plaza.md): a fast, local-first nostr client for macOS and Linux, rendered from its own store. Source: https://github.com/zig-nostr/plaza
+- [Notary](/notary.md): a native NIP-46 remote signer for macOS and Linux; the key stays in a local daemon on a machine you control. Source: https://github.com/zig-nostr/notary
+
+## For agents
+
+- [Skill: using deed](https://github.com/zig-nostr/deed/blob/main/skills/deed/SKILL.md): install with `npx skills add zig-nostr/deed`. Covers every command, recipes, exit codes, and two rules: publishing is public and permanent, so ask the user first, and keep secret keys in `NOSTR_SECRET_KEY`.
+- [Skill: building with the Zig library](https://github.com/zig-nostr/nostr/blob/main/skills/zig-nostr/SKILL.md): install with `npx skills add zig-nostr/nostr`. Adding the dependency, keys, events, NIP-19, NIP-44, relays read with a deadline, the store, and the traps.
+
+## Docs
+
+- [Getting started](/getting-started.md): add the library and sign a first event
+- [Ecosystem](/ecosystem.md): what exists and how the pieces fit
+- [Architecture](/architecture.md): how the library is put together
+- [NIP support](/nips.md): which NIPs are implemented, and where
+- [Performance](/performance.md): store benchmarks for the library, and deed's numbers
+- [Roadmap](/roadmap.md): what comes next
+
+## Optional
+
+- [Everything in one file](/llms-full.txt)
+- [deed benchmarks](https://github.com/zig-nostr/deed/blob/main/BENCHMARKS.md)
