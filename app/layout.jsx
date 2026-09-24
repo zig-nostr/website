@@ -3,16 +3,7 @@ import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
-
-// Base URL for absolute OG/canonical links. Sourced from the environment so the
-// production domain lives in the Vercel dashboard, never committed here. On Vercel
-// VERCEL_PROJECT_PRODUCTION_URL is injected automatically; set NEXT_PUBLIC_SITE_URL
-// to pin the canonical custom domain.
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'http://localhost:3000')
+import { siteUrl } from './site-url.js'
 
 const description =
   'A native Nostr ecosystem in Zig: a foundational protocol library, utility libraries, and fast native apps like the Notary remote signer.'
