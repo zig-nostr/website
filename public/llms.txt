@@ -29,3 +29,4 @@ Every page on this site is also served as Markdown at its path with `.md` added 
 
 - [Everything in one file](/llms-full.txt)
 - [deed benchmarks](https://github.com/zig-nostr/deed/blob/main/BENCHMARKS.md)
+- [Ranking a nostr feed with deed and Jev](https://github.com/zig-nostr/deed/tree/main/examples/jev): a worked pipeline that classifies notes by topic, substance and spam, with a real run's numbers and cost
