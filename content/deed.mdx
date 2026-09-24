@@ -51,6 +51,17 @@ deed req -k 1 -l 50 --store ~/.deed/db --local               # again, dialling n
 
 The second command opens no socket, and the events it prints are the same events: what is stored is what was signed, so they still verify. Every event is checked before it is stored or printed, so a relay cannot put a forgery, or an event nobody asked for, into the store or the output.
 
+## Judging what it fetches
+
+deed's output is one verified event per line, which makes it a clean first stage for anything that classifies text. The [Jev example](https://github.com/zig-nostr/deed/tree/main/examples/jev) fetches the newest thousand notes from five relays, drops the app data some clients publish as notes, and has [Jev](https://docs.typesafe.ai), TypeSafe's classification model, answer three questions about each: what it is about, how much substance it carries, and whether it is spam. The thresholds that decide what to keep are plain constants in the script.
+
+```sh
+export TYPESAFE_API_KEY=...
+examples/jev/rank-notes.sh 1000 > ranked.jsonl   # most substance first, spam dropped
+```
+
+On one run, 629 of 1,000 notes were text worth judging, 157 of those were dropped as spam, and the whole run cost about two cents. The example's README has the full numbers and what to watch for.
+
 ## How fast it is
 
 A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and verifies about 31,000 events a second each, stores 100,000 events from a relay at about 17,000 a second, and answers a lookup from that store in about 3 ms, start to finish. The full numbers, and how to reproduce them, are on the [performance page](/performance#deed).
