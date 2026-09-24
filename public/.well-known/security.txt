@@ -1,0 +1,8 @@
+# Report a vulnerability privately through GitHub, on the repository it affects.
+Contact: https://github.com/zig-nostr/nostr/security/advisories/new
+Contact: https://github.com/zig-nostr/plaza/security/advisories/new
+Contact: https://github.com/zig-nostr/notary/security/advisories/new
+Contact: https://github.com/zig-nostr/deed/security/advisories/new
+Policy: https://github.com/zig-nostr/nostr/blob/main/SECURITY.md
+Preferred-Languages: en
+Expires: 2027-09-23T00:00:00.000Z
