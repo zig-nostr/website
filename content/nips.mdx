@@ -10,12 +10,13 @@ official specification vectors.
 | [01](https://github.com/nostr-protocol/nips/blob/master/01.md) | Basic protocol: events, signatures, subscriptions, `kind:0` profiles and `kind:1` notes | ✅ done |
 | [06](https://github.com/nostr-protocol/nips/blob/master/06.md) | Key derivation from a BIP-39 mnemonic, path `m/44'/1237'/<account>'/0/0` | ✅ done |
 | [09](https://github.com/nostr-protocol/nips/blob/master/09.md) | Event deletion, `kind:5` (ingestion) | ✅ done |
-| [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities: `npub`, `nsec`, `note`, `nprofile`, `nevent`, `naddr` | ✅ done |
-| [21](https://github.com/nostr-protocol/nips/blob/master/21.md) | `nostr:` URI scheme | ✅ done |
+| [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities: `npub`, `nsec`, `note`, `nprofile`, `nevent`, `naddr`. A code is read in all lowercase or all uppercase, and one that mixes the two is refused | ✅ done |
+| [21](https://github.com/nostr-protocol/nips/blob/master/21.md) | `nostr:` URI scheme, with the scheme matched in any case, so the `NOSTR:` a QR code carries decodes | ✅ done |
 | [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | Client-to-relay authentication | ✅ done |
 | [44](https://github.com/nostr-protocol/nips/blob/master/44.md) | Encrypted payloads (v2) | ✅ done |
 | [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect, remote signing over `kind:24133` | ✅ done |
 | [49](https://github.com/nostr-protocol/nips/blob/master/49.md) | Private key encryption (`ncryptsec`) | ✅ done |
+| [50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search: the `search` field of a filter, sent to relays as `"search"`. Relays decide what matches, so the library's own matching ignores it, and the local store applies it as a case-insensitive substring of the content | ✅ done |
 | [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay list metadata, `kind:10002`, what people call the outbox model | ✅ done |
 
 That is the library surface, and all of it is done. What the roadmap commits to
@@ -54,7 +55,7 @@ it.
 | Spec | Title | Milestone | Status |
 |----|----|----|----|
 | [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | Extra `kind:0` fields (`display_name`, `website`, `banner`, `bot`, `birthday`), carried through untouched when I rewrite a profile | Your identity, and your key | 🚧 planned |
-| [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter | Find anything, and keep it clean | 🚧 planned |
+| [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter. The library's `Filter` carries it already, so the client side is what is left | Find anything, and keep it clean | 🚧 planned |
 | [Blossom BUD-02](https://github.com/hzrd149/blossom/blob/master/buds/02.md) | Blob upload, `PUT /upload`. This is the step that puts the bytes of a picture on a server | Media worth looking at | 🚧 planned |
 | [Blossom BUD-03](https://github.com/hzrd149/blossom/blob/master/buds/03.md) | User Server List, `kind:10063`: which servers hold your blobs, most trusted first | Media worth looking at | 🚧 planned |
 | [Blossom BUD-11](https://github.com/hzrd149/blossom/blob/master/buds/11.md) | Authorization for those requests: a signed `kind:24242` event carrying the verb and an expiry | Media worth looking at | 🚧 planned |

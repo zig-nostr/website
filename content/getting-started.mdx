@@ -21,6 +21,10 @@ your_module.addImport("nostr", nostr.module("nostr"));
 The library vendors and compiles bitcoin-core's libsecp256k1 and LMDB from
 source, so no system packages are required.
 
+## Platforms
+
+The library builds for macOS, Linux and Windows, on x86_64 and aarch64, and CI builds it and runs the tests on all three systems. To check a Windows build from another system, `zig build test -Dtarget=x86_64-windows-gnu` compiles the test binary and then stops with an error, because a non-Windows host cannot run it. A store takes its full map size on disk on Windows (1 GiB by default) from the first open, where on macOS and Linux it grows with what is kept.
+
 ## Quickstart: sign and verify an event
 
 ```zig
@@ -81,7 +85,7 @@ The `nostr` module re-exports focused namespaces:
 - `nip44`: v2 payload encryption
 - `nip46`: remote signing ("bunker") protocol
 - `nip42`: client authentication to relays
-- `relay` / `websocket` / `message` / `filter`: live transport & subscriptions
+- `relay` / `websocket` / `message` / `filter`: live transport & subscriptions, with NIP-50 `search` on the filter
 - `nip65`: relay lists and outbox routing
 - `liveness`: when a relay connection has gone quiet, and what to do about it
 - `store`: the local-first, memory-mapped event store
@@ -95,3 +99,5 @@ git clone https://github.com/zig-nostr/nostr
 cd nostr
 zig build test    # run the suite
 ```
+
+To fuzz the parsers that read bytes from outside (frames, relay messages, events, NIP-19, NIP-44, NIP-46 and more) until you stop it, use `zig build test --fuzz -Doptimize=ReleaseSafe`.

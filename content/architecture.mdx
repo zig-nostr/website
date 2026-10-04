@@ -24,7 +24,8 @@ official BIP-340 test-vector suite. On top of it:
 
 - **RFC 6455 WebSocket** framing and handshake, and a stream-generic relay
   connection state machine with NIP-01 subscriptions.
-- A live **TCP/TLS dialer** that resolves hostnames through the system resolver.
+- A live **TCP/TLS dialer**. Hostnames resolve through libc `getaddrinfo` on macOS and Linux and through std's own resolver on Windows, and an IP literal is parsed first so it never reaches a resolver. `dialDiagnosed` is `dial` that also records the HTTP status the relay answered the upgrade with, so a relay that says 503 when busy, 401 or 429 can be told apart from one that is down.
+- **NIP-50 search** on the filter: `Filter.search` is sent to relays as `"search"`, and the local store applies it as a case-insensitive substring of the content.
 - **NIP-65 outbox model**: relay lists with read/write routing and *zero*
   hardcoded relays, so events are published and fetched where they actually
   live.
@@ -36,8 +37,9 @@ A zero-copy, memory-mapped **LMDB** event store (`store.zig`):
 - A compact binary event record with secondary indexes (author, kind,
   `created_at`, tag).
 - A **bounded, newest-first query planner**: it walks the indexes via reverse
-  cursors and a k-way merge, stopping at `limit`, so feed latency stays flat as
-  the store grows (see [Performance](/performance)).
+  cursors and a k-way merge that takes the newest candidate from a binary heap,
+  stopping at `limit`, so feed latency stays flat as the store grows (see
+  [Performance](/performance)).
 - Validate-on-insert ingestion: dedup, replaceable / parameterized-replaceable
   upserts, and NIP-09 deletions.
 - A direct-message conversation index, local-first reconciliation, and a
@@ -56,3 +58,15 @@ The layer the native signer is built on:
   access behind auth.
 
 The native signer built on this layer is **[Notary](/notary)**.
+
+## Platforms
+
+The library builds for macOS, Linux and Windows, on x86_64 and aarch64, and CI builds and tests it on all three. On Windows the dialer waits for write room with a poll request to the AFD driver, because std opens its sockets on that driver and never registers them with Winsock, and a key file takes its directory's default access list because there are no mode bits. macOS and Linux keep `getaddrinfo` and `poll`.
+
+## How it is tested
+
+Tests sit beside the code and `zig build test` runs them all. The cryptography is checked against the official vectors (the BIP-340 suite, the NIP-44 v2 vectors, and the NIP-19, NIP-49 and RFC 6455 worked examples). The transport is driven by a scripted in-memory relay, with a few tests on a real loopback socket for the parts a fake cannot show. The store runs on a real LMDB file in a temporary directory.
+
+The parsers that read bytes someone else wrote have fuzz targets: WebSocket frames and handshake responses, relay messages, events, bech32 and NIP-19, NIP-44 payloads, NIP-46 messages and URIs, relay lists and URLs, mnemonics, `ncryptsec` files and filters. Each asserts that nothing crashes or leaks and, where one exists, an invariant, such as an event parsed, serialized and parsed again being the same event. `zig build test` runs each target over a seed corpus, and `zig build test --fuzz -Doptimize=ReleaseSafe` fuzzes them until stopped.
+
+The repository's [`ARCHITECTURE.md`](https://github.com/zig-nostr/nostr/blob/main/ARCHITECTURE.md) goes through the modules file by file, how an event travels from a key to a relay to the store, and the threading and cancellation rules.
