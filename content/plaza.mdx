@@ -104,8 +104,7 @@ doing.
 ## Your key is not in the app
 
 Plaza does not hold your secret key. There is no field in it that can hold one.
-Notary, shipped inside the app, is started by Plaza as its own process and holds
-the key there; Plaza asks it to sign and never sees the secret.
+Notary, shipped inside the app (Plaza v0.25.0 carries Notary 0.11.1), is started by Plaza as its own process and holds the key there; Plaza asks it to sign and never sees the secret.
 
 The two talk over a channel nothing else on this Mac can reach: no shared file,
 no fixed port, and no name for anything else to find. Holding the channel is
@@ -131,28 +130,37 @@ external signer is a first-class path rather than an advanced setting.
 
 ## What is in it today
 
-A follow-based feed with a curated starter pack so it is never empty · real names
-and avatars from `kind:0` · inline pictures and link previews · threads with the
-chain above a note and replies nested under it · quotes and `nostr:` mentions
-rendered inline · a composer with a mention picker and drafts that survive a quit
-· reactions · bookmarks, public or private, saved as a list on your own relays so
-they follow you to any other client · hashtags that open the notes carrying them,
-read from your own machine first · deleting your own note, with a confirmation
-that says what a deletion can and cannot do · notifications for what was aimed at
-you · profile pages with a following count · your own relay list, read and write ·
-a feed routed by [NIP-65](/nips) to where the people you follow actually publish ·
-an address field that opens any note, person or place you paste into it, including
-ones on relays you do not read · eight switches that take parts of the app away
-for good · places you can enter and leave · settings, sessions, and sign-out
-without lock-in.
+A follow-based feed with a curated starter pack so it is never empty · reposts from people you follow, shown as the note itself · real names and avatars from `kind:0` · inline pictures and link previews · threads with the chain above a note and replies nested under it, including replies written as NIP-22 comments · quotes and `nostr:` mentions rendered inline · a composer with a mention picker and drafts that survive a quit, and a half written reply that survives leaving its thread · reactions · bookmarks, public or private, saved as a list on your own relays so they follow you to any other client · hashtags that open a page of the notes carrying them, read from your own machine first · long-form articles in a reader · search for people by name · pictures from a file, for a note, an avatar or a banner · a content warning on a note you write, and covers over the ones other people mark sensitive · deleting your own note, with a confirmation that says what a deletion can and cannot do · notifications for what was aimed at you · profile pages with a following count that load older notes as you reach the end · every field of your profile editable, the Lightning address included · your own relay list, read and write · a feed routed by [NIP-65](/nips) to where the people you follow actually publish · an address field that opens any note, person, article or place you paste into it, including ones on relays you do not read · eight switches that take parts of the app away for good · places you can enter and leave · settings, sessions, and sign-out without lock-in.
 
-There is no follower count anywhere, on purpose. Following is a number someone
-states about themselves, and it is the length of their own contact list.
-Followers is not: nothing on your disk can know who follows a person, and the
-honest options are an indexer's figure or none. Plaza does not print numbers it
-cannot check.
+There is no follower count anywhere, on purpose. Following is a number someone states about themselves, and it is the length of their own contact list. Followers is not: nothing on your disk can know who follows a person, and the honest options are an indexer's figure or none. Plaza does not print numbers it cannot check.
 
-Private messages are two milestones out on the [roadmap](/roadmap).
+Not there yet: playing a video where it sits, sending a zap, searching notes, and private messages. See the [roadmap](/roadmap).
+
+## Search and addresses
+
+The Search tile in the rail, or Cmd+L, takes a name and lists the profiles that match. The people already on your machine answer first, instantly and with the network off, with the people you follow at the top. Once you stop typing, three NIP-50 search relays are asked as well. Each result says which relay returned it, and every relay gets a line saying what it did, whether it found anyone or not. This searches people, not notes.
+
+The same field opens what you paste into it: an `npub` or `nprofile`, a `name@domain` NIP-05 address, a note, an article, or a place. An address that carries relay hints is asked there too, so a note on relays you do not read still opens. A secret key or a signer link typed into the field is never sent anywhere.
+
+Plaza gives hints back. An address it copies, and the reply, quote, repost and like it publishes, name a relay the note was seen on or one its author writes to, and name none when Plaza does not know one. The account menu copies a profile address that names the relays you write to. A relay hint in somebody else's note that points at a private or local address is not dialled.
+
+## Articles
+
+A long-form article (NIP-23) opens in a reader of its own: the byline, title, summary and cover with a date and a reading time, then the article, with its hashtags as topics you can press. An `naddr` for an article, in a note, in a quote or in the search field, opens it, asking the relays it names and the author's own. A draft is not opened, and Plaza reads articles without writing them.
+
+## Pictures
+
+The composer has Add picture, and the profile editor has an Upload link beside Picture and Banner. A card names the file, its size and the servers it will go to, and nothing is sent until you press Upload. Location and camera details are removed from the file first. It goes to a [Blossom](https://github.com/hzrd149/blossom) media server: the first one in your published list that takes it, or one of two built in when you have none. The Media servers section of Settings shows the list and edits it.
+
+A first server list for an account that has none on any relay is started only once the relays you write to have finished answering, and only after Plaza asks. A list it has not read is never written over a real one, as described under [Careful with what is yours](#careful-with-what-is-yours).
+
+## Sensitive notes
+
+A note whose author marked it sensitive (NIP-36) shows one line, "Content warning" and the reason when there is one, with a Show press, in place of its words, pictures and link preview. Nothing in it is fetched until you press Show, and Show uncovers that one note for the session. "Show sensitive notes without a warning" in Settings turns the covering off. When you write a note, "Add a content warning" in the composer adds one, with an optional reason.
+
+## Relays that ask who you are
+
+Some relays refuse to serve until you identify yourself (NIP-42). Plaza asks you once per relay, for each account: Allow or Don't allow. It asks only when a relay has actually refused something, so a relay that sends a challenge and gates nothing is never asked about. A relay's row in Settings shows your choice (ask first, identify or anonymous), and pressing it changes the choice.
 
 ## Where the feed comes from
 
@@ -256,6 +264,8 @@ writes and refuses to publish a list it has not seen, and for follow lists and
 profiles it carries forward everything in yours that it does not model itself.
 An app that drops half your follows because a relay was slow to answer is worse
 than an app that does nothing at all.
+
+When Follow, Mute or Bookmark cannot read your lists, Plaza says why and offers Try again. An account with no list on any relay can start one, after a question that says what it would replace, and only once the relays you write to have finished. Media server lists follow the same rule.
 
 ## Fast on purpose
 

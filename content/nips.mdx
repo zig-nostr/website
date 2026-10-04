@@ -31,15 +31,21 @@ rather than library surface.
 | NIP | Title | Where |
 |----|----|----|
 | [02](https://github.com/nostr-protocol/nips/blob/master/02.md) | Contact lists, `kind:3` | reading and writing your follows |
-| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers, `/.well-known/nostr.json` | the `name@domain` handle on a profile, checked against the domain |
-| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading, marked `e` tags | threads, and replies you post |
-| [18](https://github.com/nostr-protocol/nips/blob/master/18.md) | Reposts, `kind:6` and `kind:16` | counted on a note, and a row in notifications |
+| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers, `/.well-known/nostr.json` | the `name@domain` handle on a profile, checked against the domain, and the search field resolves one to the person it names |
+| [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities, `nostr:` links | opens `npub`, `nprofile`, `note`, `nevent` and `naddr`. An address Plaza copies carries up to two relay hints, and the account menu copies an `nprofile` that names the relays you write to |
+| [10](https://github.com/nostr-protocol/nips/blob/master/10.md) | Reply threading, marked `e` tags | threads read by their markers, and replies you post with a `root` marker and a relay hint when Plaza knows one |
+| [18](https://github.com/nostr-protocol/nips/blob/master/18.md) | Reposts, `kind:6` and `kind:16` | reposts are read and shown in the feed as the note itself, counted on a note, and a row in notifications. A repost Plaza publishes carries the note's relay hint, and a quote is published as a `q` tag |
 | [22](https://github.com/nostr-protocol/nips/blob/master/22.md) | Comments, `kind:1111`, the other way to write a reply | read in threads, on a profile, and as a notification |
 | [24](https://github.com/nostr-protocol/nips/blob/master/24.md) | The `t` tag: a hashtag is a lowercase `t`, and NIP-01 single-letter indexing is what makes `#t` queryable | pressing one opens the notes carrying it, read from this machine first and then asked of relays. Written onto notes you post, so yours are findable too |
 | [25](https://github.com/nostr-protocol/nips/blob/master/25.md) | Reactions, `kind:7` | likes, in the feed and notifications |
-| [27](https://github.com/nostr-protocol/nips/blob/master/27.md) | `nostr:` mentions in content | names instead of raw base32 |
+| [27](https://github.com/nostr-protocol/nips/blob/master/27.md) | `nostr:` mentions in content | a reference to a person is shown as the name, and the first reference to a note or an article becomes a quote card. A quote you write is composed as one |
+| [23](https://github.com/nostr-protocol/nips/blob/master/23.md) | Long-form content, `kind:30023` | an article opens in a reader, from a press or from an `naddr`. A draft (`kind:30024`) is not opened, and Plaza does not write articles |
+| [36](https://github.com/nostr-protocol/nips/blob/master/36.md) | Sensitive content, the `content-warning` tag | a note that carries the tag is covered until you press Show, with nothing in it fetched, and the composer adds the tag when you ask |
+| [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | Relay authentication | Plaza answers a relay's AUTH challenge only after the relay has refused something for want of one, and only once you have allowed it for that relay and account |
+| [50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search | three search relays are asked for people by name, and each result says which relay returned it. Profiles only, not notes |
+| [Blossom](https://github.com/hzrd149/blossom) | Media servers: BUD-02 upload, BUD-03 server list (`kind:10063`), BUD-06 preflight, BUD-11 authorization (`kind:24242`) | a picture goes to the first server in your list that takes it, or to one of two built in when you have none. Plaza checks a server first with BUD-06, signs the BUD-11 token, and reads and edits your list |
 | [89](https://github.com/nostr-protocol/nips/blob/master/89.md) | Application handlers | the `client` tag on notes you post |
-| [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments, `imeta` | dimensions read off the tag, so an image reserves its box before it loads |
+| [92](https://github.com/nostr-protocol/nips/blob/master/92.md) | Media attachments, `imeta` | dimensions and placeholder read off the tag, so an image reserves its box before it loads, and written onto a picture Plaza uploads (url, type, hash, size, dimensions, blurhash and description) |
 | [51](https://github.com/nostr-protocol/nips/blob/master/51.md) | Lists: bookmarks (`kind:10003`) and mutes (`kind:10000`) | bookmarks public or private, and a mute list that is read before it is ever written |
 | [57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps, `kind:9735` receipts | receipts are read and shown. Sending is a milestone away |
 | [71](https://github.com/nostr-protocol/nips/blob/master/71.md) | Video events, `kind:21` and `kind:22` | a video is recognised as one and drawn as one. Playing it in place is still to come |
@@ -55,11 +61,6 @@ it.
 | Spec | Title | Milestone | Status |
 |----|----|----|----|
 | [NIP-24](https://github.com/nostr-protocol/nips/blob/master/24.md) | Extra `kind:0` fields (`display_name`, `website`, `banner`, `bot`, `birthday`), carried through untouched when I rewrite a profile | Your identity, and your key | 🚧 planned |
-| [NIP-50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search, which is a relay-side feature: a `search` string on an ordinary filter. The library's `Filter` carries it already, so the client side is what is left | Find anything, and keep it clean | 🚧 planned |
-| [Blossom BUD-02](https://github.com/hzrd149/blossom/blob/master/buds/02.md) | Blob upload, `PUT /upload`. This is the step that puts the bytes of a picture on a server | Media worth looking at | 🚧 planned |
-| [Blossom BUD-03](https://github.com/hzrd149/blossom/blob/master/buds/03.md) | User Server List, `kind:10063`: which servers hold your blobs, most trusted first | Media worth looking at | 🚧 planned |
-| [Blossom BUD-11](https://github.com/hzrd149/blossom/blob/master/buds/11.md) | Authorization for those requests: a signed `kind:24242` event carrying the verb and an expiry | Media worth looking at | 🚧 planned |
-| [NIP-92](https://github.com/nostr-protocol/nips/blob/master/92.md) | `imeta` written onto a note I post, not only read off one. It is what makes the picture render in someone else's client | Media worth looking at | 🚧 planned |
 | [NIP-B7](https://github.com/nostr-protocol/nips/blob/master/B7.md) | Finding a blob again: when a media URL ends in a sha256, retry it against the author's `kind:10063` servers and check the hash | Media worth looking at | 🚧 planned |
 | [NIP-57](https://github.com/nostr-protocol/nips/blob/master/57.md) | Zaps you can send: a `kind:9734` request to the recipient's LNURL callback, and the `kind:9735` receipt that follows the payment | Money, carefully | 🚧 planned |
 | [NIP-47](https://github.com/nostr-protocol/nips/blob/master/47.md) | Nostr Wallet Connect, so that invoice is paid in the app: a `nostr+walletconnect://` link, over kinds 13194, 23194 and 23195 | Money, carefully | 🚧 planned |
@@ -71,9 +72,8 @@ it.
 
 **Blossom is not a NIP.** It is a separate protocol with its own repository,
 [hzrd149/blossom](https://github.com/hzrd149/blossom), and its documents are
-called BUDs rather than NIPs. It sits in this table because it is where file
-upload actually happens. A media list without it would be a list that cannot
-post a picture.
+called BUDs rather than NIPs. It sits in the apps table above because it is where
+file upload actually happens, and Plaza uploads a picture through it today.
 
 NIP-B7 is the Nostr side of the same story, and it is easy to mistake for the
 upload spec. It is not one. It only says how to find a blob again, so a client
