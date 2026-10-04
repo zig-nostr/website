@@ -12,7 +12,7 @@ curl -fsSL https://raw.githubusercontent.com/zig-nostr/deed/main/scripts/install
 
 The installer works out which build the machine wants, checks the download against the SHA-256 published beside it, and installs into `~/.local/bin`, so nothing needs root. If the digest does not match, it installs nothing and says so.
 
-The script is for macOS and Linux. On Windows, download `deed-<version>-windows-x86_64.zip` (or `windows-aarch64` on an ARM machine) and the `.sha256` beside it from the [releases page](https://github.com/zig-nostr/deed/releases), then in PowerShell, from the folder they are in:
+The script is for macOS and Linux. On Windows, download `deed-<version>-windows-x86_64.zip` and the `.sha256` beside it from the [releases page](https://github.com/zig-nostr/deed/releases), then in PowerShell, from the folder they are in:
 
 ```powershell
 $zip = (Get-Item deed-*-windows-*.zip).Name
