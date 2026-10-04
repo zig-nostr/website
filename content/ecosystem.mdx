@@ -8,7 +8,8 @@ apps, so every layer benefits from the same well-tested foundation.
 
 **[`zig-nostr/nostr`](https://github.com/zig-nostr/nostr)**: secp256k1 keys and
 BIP-340 signing, the NIP-01 event model, relay transport with the outbox model, a
-zero-copy local-first store, and the NIP-46 signer protocol. It's the credibility
+zero-copy local-first store, and the NIP-46 signer protocol. It builds for macOS,
+Linux and Windows, and its parsers are fuzzed. It's the credibility
 anchor for everything else, and it keeps growing: more NIPs and capabilities land
 with each milestone. See [NIP support](/nips) and the [architecture](/architecture).
 
@@ -26,7 +27,7 @@ and the reason the ecosystem exists.
 
 A native NIP-46 signer for macOS and Linux: Zig, no Electron, no WebView. Your key lives in
 a local daemon, nothing gets signed quietly, and your `nsec` never leaves it
-unless you ask for it.
+unless you ask for it. On macOS it waits in the menu bar and shows its window only when a request needs a decision.
 → [`zig-nostr/notary`](https://github.com/zig-nostr/notary) · [read more](/notary)
 
 ### Plaza: shipped
@@ -38,7 +39,7 @@ process, or in your own signer.
 
 ### deed: shipped
 
-The nostr command line: keys, events, NIP-19 codes, NIP-44, signature checks, relays, and a local store that later runs read without a network. One binary of under 3 MB for macOS and Linux.
+The nostr command line: keys, events, NIP-19 codes, NIP-44, signature checks, relays, and a local store that later runs read without a network. One binary of under 3 MB for macOS, Linux and Windows.
 → [`zig-nostr/deed`](https://github.com/zig-nostr/deed) · [read more](/deed)
 
 ### On the roadmap
