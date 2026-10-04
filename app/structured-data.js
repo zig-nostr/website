@@ -47,7 +47,7 @@ const byPage = {
   ],
   'getting-started': [library],
   deed: [app('deed', 'deed', 'deed', 'The nostr command line: keys, events, NIP-19, NIP-44, relay queries, publishing, and a local store that later runs read without a network.', { operatingSystem: 'macOS, Linux, Windows' })],
-  plaza: [app('Plaza', 'plaza', 'plaza', 'A fast, local-first Nostr client for macOS and Linux, rendered from its own store and reconciled with relays in the background.', { applicationCategory: 'SocialNetworkingApplication' })],
+  plaza: [app('Plaza', 'plaza', 'plaza', 'A fast, local-first Nostr client for macOS and Linux, rendered from its own store and reconciled with relays in the background. It reads long-form articles, searches for people by name and uploads pictures to Blossom servers.', { applicationCategory: 'SocialNetworkingApplication' })],
   notary: [app('Notary', 'notary', 'notary', 'A native NIP-46 remote signer for macOS and Linux: the key stays in a local daemon on a machine you control.', { applicationCategory: 'SecurityApplication' })],
 }
 

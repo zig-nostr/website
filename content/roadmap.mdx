@@ -30,9 +30,7 @@ No dates. The order is a commitment; a calendar would not be.
 - **[deed](/deed)**, the nostr command line: keys, events, NIP-19 codes, NIP-44, relay queries
   and publishing, and a local store that later runs read without a network. It builds for
   macOS, Linux and Windows.
-- **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways (including a
-  NIP-46 bunker), and read a follow feed (your kind 3 list) that renders from disk before the
-  network answers.
+- **[Plaza](/plaza)**, the flagship client. Browse as a guest, sign in three ways (including a NIP-46 bunker), and read a follow feed (your kind 3 list) that renders from disk before the network answers. Reposts from people you follow appear in it, hashtags open a page of their notes, and relay hints are carried in the addresses it copies and the replies, quotes, reposts and likes it publishes. A long-form article (NIP-23) opens in a reader. Search finds people by name, from the profiles on your machine first and then from three NIP-50 search relays. A picture can be added from a file to a note, an avatar or a banner, and uploads go to a Blossom server from your list. A note marked sensitive (NIP-36) is covered until you press Show, and the composer can add a content warning. A relay that asks who you are (NIP-42) is answered once you allow it, per relay and per account. Every profile field is editable, deleting your own note is there, and something Plaza cannot draw shows a card naming its kind.
 - **Places**: a link opens somebody's corner of Nostr, their relays and what they serve, and
   while you are in one you see it rather than your own feed. Visit, enter to keep it on a
   rail, or leave. A community can carry several feeds and switch between them, and one that
@@ -52,22 +50,7 @@ No dates. The order is a commitment; a calendar would not be.
 
 ### Everything you do on the first day
 
-Four things are already built and do not work. Reposts by people you follow never reach the
-feed: Plaza publishes them and counts other people's, but nothing asks a relay for kind 6.
-Relay hints are decoded and dropped, so a quoted note from outside your relays renders dead
-even though its author said where it lives. Hashtags are drawn like every other link and
-carry no target. The bookmark button does nothing.
-
-Then the ordinary parts. Pictures, which is one absence with three symptoms: no posting a
-photo, no avatar, no banner. Uploading is [Blossom](https://github.com/hzrd149/blossom)
-rather than a NIP: BUD-02 `PUT /upload`, authorised by a signed kind 24242 event (BUD-11),
-aimed at the servers in your kind 10063 list (BUD-03), with a NIP-92 `imeta` tag so they
-render elsewhere. A profile with more than three fields, because Plaza reads nine out of a
-kind 0 and lets you edit three, and `lud16` is not one of them, so an account set up only in
-Plaza cannot receive a zap at all. Zaps you can send, not only verify. Finding a person, both
-locally over the profiles already on your disk and through NIP-50 where a relay supports it.
-Deleting your own note, NIP-36 content warnings, and something drawn in place of a kind Plaza
-cannot render.
+Zaps you can send, not only verify. Plaza shows the receipts of other people's zaps, and sending one is not built.
 
 ### An app worth leaving open
 
@@ -75,12 +58,12 @@ Nothing Plaza knows leaves the window today: no notification reaches you, and on
 you follow run dry there is nothing else to read.
 
 Notifications at the level of the system, which a native app holding live relay connections
-can do with no server in the middle. Feeds with more than one shape: a hashtag, a single
+can do with no server in the middle. Feeds with more than one shape: a single
 relay, a saved relay set, follow packs as real events rather than a hardcoded list. A store
 you can see and reclaim, because Plaza keeps everything it has ever ingested and gives you no
 way to see how large that has grown. Muting a word, a hashtag or a thread, and for an
 afternoon rather than forever. An update path, so people who installed are not stranded on
-whatever version they downloaded. Operable without a mouse, a light theme, and type that
+whatever version they downloaded. Keyboard operation of what Tab does not yet reach, a light theme, and type that
 scales.
 
 Places go further: the entered list as an encrypted event so it follows you between
@@ -94,9 +77,7 @@ you agree to rather than something that happens.
 
 ### What the local store was for
 
-Everything Plaza does reads from a database on your own disk, and none of it can be searched.
-Finding a note you read last week, by words you remember, with the network off, is the thing
-a client without a local store cannot offer.
+Everything Plaza does reads from a database on your own disk, and the only thing it can search there today is people. Finding a note you read some time ago, by words you remember, with the network off, is the thing a client without a local store cannot offer.
 
 Private messages: NIP-17, gift wrapped per NIP-59 (a kind 13 seal inside a kind 1059 wrap),
 on the local store, signing through Notary, published only to the recipient's kind 10050 DM
@@ -104,8 +85,7 @@ relays. The seal's conversation key derives from the identity key, so the signer
 NIP-44 work; Notary and the library already do, and it is Plaza's own NIP-46 client that has to
 learn to ask for it.
 
-NIP-23 long-form, which is a large part of what people write here and which Plaza cannot
-display. NIP-71 video that actually plays, which in a renderer with no browser means platform
+NIP-71 video that actually plays, which in a renderer with no browser means platform
 decode and compositing rather than an embed. And NIP-60 wallets with NIP-61 nutzaps, Cashu
 ecash sent to a pubkey: a Lightning zap needs an LNURL provider the recipient signed up for
 in advance, and an account four clicks old has none, so this is what makes a new person
@@ -154,7 +134,7 @@ you price it.
   rejection that starts `pow:`, needs no setting at all.
 - **NIP-96 HTTP file storage.** Supporting both upload paths looks like broader
   compatibility. NIP-96 carries an `unrecommended` banner in its own spec and the NIPs index
-  strikes it through as replaced by Blossom, so uploads go to Blossom (item 6) and nowhere
+  strikes it through as replaced by Blossom, so uploads go to Blossom and nowhere
   else.
 - **Web-of-trust distance filtering.** Computed over a store that holds only what you
   happened to sync, the graph is wrong in a way that changes between launches, so the same
