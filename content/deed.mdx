@@ -6,29 +6,21 @@ A deed is two things at once: a signed instrument, and a thing done. So is a nos
 
 ## Install
 
+macOS and Linux:
+
 ```sh
 curl -fsSL https://raw.githubusercontent.com/zig-nostr/deed/main/scripts/install.sh | bash
 ```
 
-The installer works out which build the machine wants, checks the download against the SHA-256 published beside it, and installs into `~/.local/bin`, so nothing needs root. If the digest does not match, it installs nothing and says so.
-
-The script is for macOS and Linux. On Windows, download `deed-<version>-windows-x86_64.zip` and the `.sha256` beside it from the [releases page](https://github.com/zig-nostr/deed/releases), then in PowerShell, from the folder they are in:
+Windows, in PowerShell:
 
 ```powershell
-$zip = (Get-Item deed-*-windows-*.zip).Name
-$want = (Get-Content "$zip.sha256").Split(' ')[0]
-$got = (Get-FileHash $zip -Algorithm SHA256).Hash
-if ($got -ne $want) { throw "the SHA-256 does not match, do not run this" }
-
-$dir = "$env:LOCALAPPDATA\deed"
-Expand-Archive $zip -DestinationPath $dir -Force
-$user = [Environment]::GetEnvironmentVariable('Path', 'User')
-if (($user -split ';') -notcontains $dir) {
-  [Environment]::SetEnvironmentVariable('Path', "$user;$dir".TrimStart(';'), 'User')
-}
+irm https://raw.githubusercontent.com/zig-nostr/deed/main/scripts/install.ps1 | iex
 ```
 
-That checks the download, unpacks `deed.exe` into `%LOCALAPPDATA%\deed`, and puts that folder on your `PATH` unless it is there already. Open a new terminal and `deed version` confirms it. The binary is not code-signed, so Windows may show a warning the first time it runs.
+Each checks the download against the SHA-256 published beside it, and if the digest does not match it installs nothing and says so. On macOS and Linux deed goes into `~/.local/bin`. On Windows it goes into `%LOCALAPPDATA%\deed`, which is added to your `PATH`, so `deed version` works in a new terminal. Neither needs root or administrator rights.
+
+`--version <tag>` installs a particular release and `--prefix <dir>` puts it somewhere else; on Windows they are `-Version` and `-Prefix` when the script runs as a file, and `$env:DEED_VERSION` and `$env:DEED_PREFIX` for the piped line. Windows on ARM gets the x86_64 build, which Windows 11 runs under emulation. The Windows binary is not code-signed, so Windows may show a warning the first time it runs.
 
 ## What it does
 
