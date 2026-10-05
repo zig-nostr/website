@@ -6,6 +6,21 @@ the NIP-46 "bunker" protocol, so your `nsec` lives in a local daemon on a machin
 you control. Nothing gets signed quietly: you see what a client is asking for
 before it happens, and the key never leaves the daemon unless you ask for it.
 
+## Install
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/zig-nostr/notary/main/scripts/install.sh | bash
+```
+
+That works on macOS (Apple Silicon) and Linux (x86_64 and aarch64). It downloads the latest release for your system, verifies its SHA-256, installs it and starts it: `Notary.app` in `/Applications` on macOS, and everything under `~/.local` on Linux, so nothing needs root. One download brings up both halves: the window, and the daemon it spawns, which is where your key actually lives.
+
+- Linux needs GTK 4 and a recent distribution: Ubuntu 23.10+, Debian 13+ or Fedora 39+. Ubuntu 22.04 and Debian 12 are too old. The installer checks both before it downloads anything.
+- The macOS build is ad-hoc signed, not notarized, on purpose: Notary holds your key, so the trust anchor is a build you can reproduce rather than an Apple signature.
+- On macOS, choose **Quit Notary** in the menu bar before you install over a running copy.
+- Options go after `bash -s --`: `--version <tag>`, `--archive <file>`, `--prefix <dir>` and `--no-open`. The [README](https://github.com/zig-nostr/notary#install) explains each.
+
+Source, releases, and build instructions live at [`zig-nostr/notary`](https://github.com/zig-nostr/notary).
+
 <img
   src="/notary/hero.jpg"
   alt="Notary: a native home for your key. Zig and Metal, no Electron. Your key stays in the signer."
@@ -42,6 +57,8 @@ before it happens, and the key never leaves the daemon unless you ask for it.
 - Clients connect with a `bunker://` URL. It works end-to-end over public
   relays, including those that require NIP-42 authentication.
 
+[`ARCHITECTURE.md`](https://github.com/zig-nostr/notary/blob/main/ARCHITECTURE.md) in the repository explains how the two processes talk, the daemon's modules, how the key is stored with NIP-49, and how the window supervises the daemon.
+
 ## Your key is yours to take
 
 A nostr key cannot be replaced. If the only copy is on one Mac, losing the Mac
@@ -59,34 +76,13 @@ The passphrase is asked for either way, including the encrypted form that does
 not strictly need it: an unlocked signer is the normal state, and whoever is at
 the keyboard then is not necessarily the person who set it up.
 
-## Install
+## Staying in the background
 
-**macOS (Apple Silicon):**
+On macOS, closing the window does not quit Notary. The signer keeps answering, and an `N` item in the menu bar shows how many requests are waiting. When a request arrives the window comes back to the front, and when you have answered the last one it goes away again. If you opened the window yourself, it stays open until you close it.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/zig-nostr/notary/main/scripts/install-macos.sh | bash
-```
+The menu bar item has **Open Notary** to bring the window back by hand and **Quit Notary** to stop. Quitting stops the signer too, so nothing is left running with your key. If the signer stops by itself the window comes back and says so, rather than leaving a menu bar item that no longer answers anything.
 
-The installer resolves the latest release, verifies its SHA-256, installs
-`Notary.app`, and launches it.
-
-**Linux (x86_64 and aarch64):**
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/zig-nostr/notary/main/scripts/install-linux.sh | bash
-```
-
-On a reasonably recent distribution: **Ubuntu 23.10+, Debian 13+, or Fedora
-39+**. The binaries are built against glibc 2.38 and the toolkit's Linux host
-wants GTK 4.10, so Ubuntu 22.04 and Debian 12 are too old; the installer checks
-that before it downloads anything. GTK 4 is the one runtime dependency beyond
-that, and it says so before it downloads anything too. It verifies the SHA-256
-and installs into `~/.local`, so nothing needs root and nothing lands outside
-your home directory.
-
-Either way one download brings up both halves: the window, and the daemon it
-spawns, which is where your key actually lives. Source, releases, and build
-instructions live at [`zig-nostr/notary`](https://github.com/zig-nostr/notary).
+Notary has no Dock icon on macOS. A window that another app opened for its own keyholder behaves as it always did: it has a Dock icon, and closing it ends it. On Linux closing the window quits, because the toolkit's Linux host has no status item that could bring a hidden window back.
 
 ## Supported operations
 

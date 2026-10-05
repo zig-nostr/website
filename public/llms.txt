@@ -6,10 +6,10 @@ Every page on this site is also served as Markdown at its path with `.md` added 
 
 ## Projects
 
-- [nostr, the Zig library](/getting-started.md): keys and BIP-340 signatures via libsecp256k1, NIP-01 events, NIP-19, NIP-44, NIP-46, NIP-42, NIP-49, NIP-06, relay transport with deadlines, the NIP-65 outbox model, and a memory-mapped LMDB event store. Source: https://github.com/zig-nostr/nostr
-- [deed, the nostr command line](/deed.md): keys, signing, verifying, NIP-19, NIP-44, relay queries, publishing, and a local store it can query offline. One binary for macOS and Linux. Source: https://github.com/zig-nostr/deed
-- [Plaza](/plaza.md): a fast, local-first nostr client for macOS and Linux, rendered from its own store. Source: https://github.com/zig-nostr/plaza
-- [Notary](/notary.md): a native NIP-46 remote signer for macOS and Linux; the key stays in a local daemon on a machine you control. Source: https://github.com/zig-nostr/notary
+- [nostr, the Zig library](/getting-started.md): keys and BIP-340 signatures via libsecp256k1, NIP-01 events, NIP-19, NIP-44, NIP-46, NIP-42, NIP-49, NIP-06, relay transport with deadlines, the NIP-65 outbox model, NIP-50 `search` on the filter, and a memory-mapped LMDB event store. Builds for macOS, Linux and Windows, and the parsers that read outside bytes have fuzz targets. Source: https://github.com/zig-nostr/nostr
+- [deed, the nostr command line](/deed.md): keys, signing, verifying, NIP-19, NIP-44, relay queries, publishing, and a local store it can query offline. One binary for macOS, Linux and Windows. Source: https://github.com/zig-nostr/deed
+- [Plaza](/plaza.md): a fast, local-first nostr client for macOS and Linux, rendered from its own store. It reads long-form articles (NIP-23), searches for people by name (NIP-50), uploads pictures to Blossom servers, covers notes marked sensitive (NIP-36) and answers a relay's AUTH challenge (NIP-42) when you allow it. Source: https://github.com/zig-nostr/plaza
+- [Notary](/notary.md): a native NIP-46 remote signer for macOS and Linux; the key stays in a local daemon on a machine you control, and on macOS it waits in the menu bar until a request needs a decision. Source: https://github.com/zig-nostr/notary
 
 ## For agents
 

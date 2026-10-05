@@ -1,16 +1,26 @@
 # deed: the nostr command line
 
-**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, and keeps what it fetches in a local store that later runs can read without a network. One binary of under 3 MB for macOS and Linux, Intel and ARM, statically linked on Linux.
+**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, and keeps what it fetches in a local store that later runs can read without a network. One binary of under 3 MB for macOS, Linux and Windows, Intel and ARM, statically linked on Linux.
 
 A deed is two things at once: a signed instrument, and a thing done. So is a nostr event.
 
 ## Install
 
+macOS and Linux:
+
 ```sh
 curl -fsSL https://raw.githubusercontent.com/zig-nostr/deed/main/scripts/install.sh | bash
 ```
 
-The installer works out which build the machine wants, checks the download against the SHA-256 published beside it, and installs into `~/.local/bin`, so nothing needs root. If the digest does not match, it installs nothing and says so.
+Windows, in PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/zig-nostr/deed/main/scripts/install.ps1 | iex
+```
+
+Each checks the download against the SHA-256 published beside it, and if the digest does not match it installs nothing and says so. On macOS and Linux deed goes into `~/.local/bin`. On Windows it goes into `%LOCALAPPDATA%\deed`, which is added to your `PATH`, so `deed version` works in a new terminal. Neither needs root or administrator rights.
+
+`--version <tag>` installs a particular release and `--prefix <dir>` puts it somewhere else; on Windows they are `-Version` and `-Prefix` when the script runs as a file, and `$env:DEED_VERSION` and `$env:DEED_PREFIX` for the piped line. Windows on ARM gets the x86_64 build, which Windows 11 runs under emulation. The Windows binary is not code-signed, so Windows may show a warning the first time it runs.
 
 ## What it does
 
@@ -51,6 +61,10 @@ deed req -k 1 -l 50 --store ~/.deed/db --local               # again, dialling n
 
 The second command opens no socket, and the events it prints are the same events: what is stored is what was signed, so they still verify. Every event is checked before it is stored or printed, so a relay cannot put a forgery, or an event nobody asked for, into the store or the output.
 
+A store is one file. `--store` creates it the first time, and the directories above it as `mkdir -p` would, and a leading `~` is your home directory even when it was quoted. `--local` only reads, so it opens a store that already exists and says "there is no store at" a path that has none, rather than leaving an empty one behind. When a store will not open, the message says why: a directory in the way, no permission, a read-only file system, a full disk, or a file that is not a store. On Windows the file takes 1 GiB of disk from the first run, because LMDB sizes it to its whole map up front there; on macOS and Linux it grows with what is kept.
+
+NIP-19 codes are read the way a QR code carries them: `deed decode NPUB1...` and `NOSTR:NPUB1...` work as the lowercase forms do, and a code that mixes cases is refused.
+
 ## Judging what it fetches
 
 deed's output is one verified event per line, which makes it a clean first stage for anything that classifies text. The [Jev example](https://github.com/zig-nostr/deed/tree/main/examples/jev) fetches the newest thousand notes from five relays, drops the app data some clients publish as notes, and has [Jev](https://docs.typesafe.ai), TypeSafe's classification model, answer three questions about each: what it is about, how much substance it carries, and whether it is spam. The thresholds that decide what to keep are plain constants in the script.
@@ -66,10 +80,12 @@ On one run, 629 of 1,000 notes were text worth judging, 157 of those were droppe
 
 A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and verifies about 31,000 events a second each, stores 100,000 events from a relay at about 17,000 a second, and answers a lookup from that store in about 3 ms, start to finish. The full numbers, and how to reproduce them, are on the [performance page](/performance#deed).
 
+## How it is built
+
+[`ARCHITECTURE.md`](https://github.com/zig-nostr/deed/blob/main/ARCHITECTURE.md) explains how deed is put together: where each command lives, how a run flows, the store, the exit codes and how it is tested. CI builds deed and runs its tests on Linux, macOS and Windows, and on Windows it also makes a key, signs an event and verifies it through a pipe with the binary it built.
+
 ## What is missing
 
 **Relay selection.** A code with no relay hints is not looked up yet: `deed fetch npub1...` asks you to name a relay rather than finding the author's relay list first.
-
-**Windows.** deed does not build there yet.
 
 Source, releases and the full reference live at [`zig-nostr/deed`](https://github.com/zig-nostr/deed).

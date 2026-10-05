@@ -23,6 +23,19 @@ much history sits behind it. That's the **bounded query
 planner**: it walks the indexes newest-first and stops at `limit`, so latency
 tracks the page size you ask for, not the size of the store.
 
+### A long follow list
+
+A client that follows hundreds of people queries for all of them at once, and the store merges one stream per author, newest first. The merge takes the newest candidate from a binary heap of the live streams rather than scanning all of them for every note it returns, so adding authors costs a sift of the heap and not another pass over every author. The order of the results is unchanged. This is a 60-note `kind:1` query with one stream per author, in microseconds, `ReleaseFast`, best of five runs, before and after the heap.
+
+| Authors followed | Before | After |
+|----|----|----|
+| 20 | 46.6 | 46.0 |
+| 128 | 114.5 | 93.2 |
+| 512 | 357.8 | 253.9 |
+| 2,048 | 1,430.1 | 1,006.4 |
+
+What remains at large follow lists is mostly opening a cursor per author, which a heap does not change.
+
 ## Reproduce the library numbers
 
 ```sh
@@ -30,6 +43,8 @@ git clone https://github.com/zig-nostr/nostr
 cd nostr
 BENCH_N=100000 zig build bench -Doptimize=ReleaseFast
 ```
+
+`BENCH_AUTHORS` sets how many authors the store is spread across, which is also how many streams the wide feed query merges.
 
 The benchmark source is
 [`src/bench.zig`](https://github.com/zig-nostr/nostr/blob/main/src/bench.zig).
