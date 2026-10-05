@@ -1,10 +1,9 @@
 # Roadmap
 
 zig-nostr is a protocol library in Zig, the native apps that prove it on real
-product surfaces, and the docs around both. This is what has shipped, and the
-order of what comes next.
+product surfaces, and the docs around both. This is what has shipped, and what comes next.
 
-No dates. The order is a commitment; a calendar would not be.
+No dates.
 
 ## Shipped
 
@@ -46,7 +45,33 @@ No dates. The order is a commitment; a calendar would not be.
   you post goes where your own list says it should, and scrolling past what is on disk asks
   the relays for older notes.
 
-## What comes next, in order
+## What comes next
+
+### The library from other languages
+
+A C ABI over the library: keys, events, NIP-19, NIP-44, relay reads and the local store, with a C header. On top of it, Swift bindings published as a Swift package. The C ABI and the Swift package are both tested in CI.
+
+### Notary on Windows
+
+Notary packaged for Windows, so the library, deed and Notary are each tested in CI on Windows, macOS and Linux.
+
+### deed for agents
+
+`deed mcp` serves deed's verbs over the Model Context Protocol, so an agent can read relays, query the local store and verify events. Anything that signs goes through a NIP-46 signer that asks first.
+
+### An app engine
+
+I am extracting the non-visual parts of Plaza into an engine. That is sync (subscriptions, filling the local store, paging back), relay and outbox routing, and signer sessions, both embedded and remote NIP-46. It also holds a cache for profiles, follow lists and relay lists, and content parsing that turns a note into structured data: mentions, hashtags, links, media and nostr: references.
+
+The engine has no views and no UI templates. An app receives data and draws its own interface. Plaza moves onto the engine, and each part gets a guide on this site.
+
+### More apps, and Plaza 1.0
+
+New small apps on the engine, each with its own interface, unlike Plaza's. And Plaza 1.0.
+
+### Android
+
+A proof of concept that uses the library through the C ABI to read a feed into a local store on a phone. It is a proof of concept, not a store release.
 
 ### Everything you do on the first day
 
@@ -105,7 +130,7 @@ is coverage: the bundled faces carry Latin and Cyrillic, so every other script, 
 included, is drawn as a solid block until a broader face ships. Shaping is a second problem
 behind it: the reference rasteriser reads no GSUB or GPOS, so Arabic and the Indic scripts
 would still be wrong with a perfect face. Windows is covered by the library and by deed, which
-build there and are tested in CI. Plaza and Notary list macOS and Linux as their platforms.
+build there and are tested in CI. Notary for Windows is listed above. Plaza is not packaged for Windows.
 
 And the library at 1.0. It has been pre-1.0 on purpose while the API moved underneath it.
 Everything above lands there first, so by the time the rest of this is done the parts worth
@@ -116,16 +141,12 @@ freezing have stopped moving.
 Naming these is half of a roadmap, because each looks obviously worth doing until
 you price it.
 
-- **Plaza and Notary for Windows.** The library and deed build for Windows, but the two
-  apps list macOS and Linux as their platforms, so neither has a Windows package.
 - **Multi-account.** It taxes every feature after it: per-account stores, relay pools,
   notification state, and switching without a reconnect storm. A read-only "view as" answers
   most of the real demand.
 - **Set-reconciliation sync (NIP-77).** Relay support is thin and the protocol is easy to get
   subtly wrong. Per-relay cursors capture most of the benefit against a store that already
   answers a feed query in under a millisecond.
-- **C-ABI bindings, WASM, and mobile.** Real work for a set of consumers that is currently
-  empty. Each becomes worth doing the day somebody names a project that needs it.
 - **A proof of work difficulty slider (NIP-13).** Reading proof of work is cheap: count the
   leading zero bits of the event id and honour the target committed in the `nonce` tag. A
   slider is not, and none of the mainstream relays I checked ask for any difficulty, so the
