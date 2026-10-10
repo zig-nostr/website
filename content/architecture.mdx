@@ -57,7 +57,27 @@ The layer the native signer is built on:
 - **NIP-42** client authentication, so a signer can serve over relays that gate
   access behind auth.
 
+- A **NIP-46 client** (`nip46_client`, experimental): the app side of a bunker
+  connection, over `bunker://` or `nostrconnect://`, with one reader per relay.
+  Its shape may still change.
+
 The native signer built on this layer is **[Notary](/notary)**.
+
+## Messages, sync and HTTP
+
+Codecs and protocols the command line is built from. Where a spec needs HTTP,
+the library builds and reads the messages and leaves the transport to the caller.
+
+- **NIP-59 gift wrap and NIP-17 messages**: rumor, seal and wrap, with the sender
+  proven by the seal alone.
+- **NIP-04** legacy messages, for older clients. It has no authentication.
+- **NIP-77 negentropy**: protocol version 1, checked against transcripts recorded
+  from the reference implementation, with the `NEG-*` and NIP-45 `COUNT` messages
+  encoded and parsed.
+- **NIP-13** proof of work: counting, and mining to a target.
+- **NIP-05** identifiers and **NIP-11** relay documents, parsed.
+- **NIP-98** HTTP authentication, the **NIP-86** relay management API, and
+  **Blossom** authorization and blob descriptors.
 
 ## Platforms
 

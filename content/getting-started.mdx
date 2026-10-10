@@ -83,10 +83,16 @@ The `nostr` module re-exports focused namespaces:
 - `nip06` / `bip39`: mnemonic key derivation
 - `nip49`: encrypted key storage at rest (`ncryptsec`)
 - `nip44`: v2 payload encryption
-- `nip46`: remote signing ("bunker") protocol
+- `nip46` / `nip46_client`: remote signing ("bunker") protocol, the signer side and a client that connects to one
+- `nip04`: legacy encrypted messages, for older clients only
+- `nip59`: gift wrap and NIP-17 private messages
 - `nip42`: client authentication to relays
 - `relay` / `websocket` / `message` / `filter`: live transport & subscriptions, with NIP-50 `search` on the filter
 - `nip65`: relay lists and outbox routing
+- `nip05` / `nip11`: DNS identifiers and relay information documents, parsed (the library does no HTTP)
+- `nip13`: proof of work, counting and mining
+- `nip77`: negentropy set reconciliation
+- `nip98` / `nip86` / `blossom`: HTTP authorization headers, the relay management API and Blossom media authorization and blob descriptors
 - `liveness`: when a relay connection has gone quiet, and what to do about it
 - `store`: the local-first, memory-mapped event store
 

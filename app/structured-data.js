@@ -31,7 +31,7 @@ const library = {
   '@type': 'SoftwareSourceCode',
   name: 'nostr',
   alternateName: 'zig-nostr',
-  description: 'A Nostr protocol library for Zig: keys and BIP-340 signatures, NIP-01 events, NIP-19, NIP-44, NIP-46, relay transport, the NIP-65 outbox model, and a local-first LMDB event store.',
+  description: 'A Nostr protocol library for Zig: keys and BIP-340 signatures, NIP-01 events, NIP-19, NIP-44, NIP-46, NIP-59 gift wrap, NIP-77 negentropy, NIP-98, Blossom authorization, relay transport, the NIP-65 outbox model, and a local-first LMDB event store.',
   codeRepository: 'https://github.com/zig-nostr/nostr',
   programmingLanguage: 'Zig',
   license: 'https://opensource.org/licenses/MIT',
@@ -46,7 +46,7 @@ const byPage = {
     library,
   ],
   'getting-started': [library],
-  deed: [app('deed', 'deed', 'deed', 'The nostr command line: keys, events, NIP-19, NIP-44, relay queries, publishing, and a local store that later runs read without a network.', { operatingSystem: 'macOS, Linux, Windows' })],
+  deed: [app('deed', 'deed', 'deed', 'The nostr command line: keys, events, NIP-19, NIP-44, relay queries, publishing, sync, private messages, a NIP-46 signer, Blossom and NIP-98 requests, and a local store that later runs read without a network.', { operatingSystem: 'macOS, Linux, Windows' })],
   plaza: [app('Plaza', 'plaza', 'plaza', 'A fast, local-first Nostr client for macOS and Linux, rendered from its own store and reconciled with relays in the background. It reads long-form articles, searches for people by name and uploads pictures to Blossom servers.', { applicationCategory: 'SocialNetworkingApplication' })],
   notary: [app('Notary', 'notary', 'notary', 'A native NIP-46 remote signer for macOS and Linux: the key stays in a local daemon on a machine you control.', { applicationCategory: 'SecurityApplication' })],
 }
