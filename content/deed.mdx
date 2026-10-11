@@ -181,7 +181,7 @@ deed nsite list npub1...
 deed nsite download npub1... ./copy
 ```
 
-`deploy` uploads only the files the published manifest does not already name, and publishes nothing if any file could not be uploaded. `download` writes a file only when its bytes hash to the name in the manifest. `--name` picks one of a person's named sites.
+`deploy` skips dot-files and dot-directories by default (`--include-hidden` opts in, and the skipped paths are named on stderr). It uploads only the files the published manifest does not already name, checks every named server with HEAD, lists only the servers that hold every file, and publishes nothing if a file reached no server. It refuses to replace a manifest it could not read, or to publish when no relay finished answering, unless `--force`. `download` writes a file only when its bytes hash to the name in the manifest, refuses servers on private addresses unless `--allow-local`, and refuses names that collide on case-insensitive disks. `--name` picks one of a person's named sites.
 
 ## Git over nostr
 
