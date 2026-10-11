@@ -55,7 +55,22 @@ deed reaches relays and keeps what it finds. Every verb that does not need a soc
 | `serve` | a local relay |
 | `version` | print the version |
 
-{/* TODO serve */}
+## A local relay
+
+`deed serve` runs a relay on this machine, for development and tests. It listens on 127.0.0.1 port 10547 by default and prints its URL on standard output once it is listening, so a script can read it. Connections and errors go to standard error, and the relay runs until it gets SIGINT or SIGTERM.
+
+```sh
+deed serve                                          # 127.0.0.1:10547, events in a temporary store
+deed serve --port 0 | head -1                       # let the system pick a port and print its URL
+deed serve --store ~/.deed/relay --events seed.jsonl
+deed serve --auth-required
+```
+
+`--hostname` sets the address to listen on, an IP address or `localhost`, and it defaults to 127.0.0.1. `--port` sets the port, which defaults to 10547, and 0 lets the system choose one. `--store` keeps events in a store at the path you give, and the store outlives the relay. Without it the events sit in a temporary store that is removed when the relay stops. `--events` loads a file of events before the relay starts, one JSON event per line. A bad line is reported on standard error and skipped. `--auth-required` sends a NIP-42 challenge on connect and answers nothing until the client has authenticated.
+
+The relay speaks NIP-01, NIP-09 deletions, NIP-11 (the information document, served to HTTP requests that ask for `application/nostr+json`), NIP-40 expiration, NIP-42 AUTH, NIP-45 COUNT, NIP-70 protected events and NIP-77 negentropy. Every incoming event has its id and signature checked before it is stored, and a replaceable or addressable event keeps only the newest version. With `--store`, each accepted event is synced to disk before it is acknowledged.
+
+Limits: a message is at most 512 KiB, a connection holds at most 64 subscriptions, a REQ carries at most 32 filters, a filter is answered with at most 10000 stored events, and a client that stops reading is disconnected once 4 MiB are waiting for it.
 
 ## The verbs compose
 
@@ -201,6 +216,6 @@ A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and
 
 {/* TODO serve: remote signer anywhere a key is accepted */}
 
-`serve` and the use of a remote signer (`bunker://`) wherever a key is accepted are not finished. `fetch` and `post` do not follow a person to their own relays by themselves: find them with `deed relays` and name them. deed has no daemon and no config file, so the relays you want on every run go in `DEED_RELAYS`.
+The use of a remote signer (`bunker://`) wherever a key is accepted is not finished. `fetch` and `post` do not follow a person to their own relays by themselves: find them with `deed relays` and name them. deed has no daemon and no config file, so the relays you want on every run go in `DEED_RELAYS`.
 
 Source, releases and the full reference live at [`zig-nostr/deed`](https://github.com/zig-nostr/deed).
