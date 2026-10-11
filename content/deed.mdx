@@ -1,6 +1,6 @@
 # deed: the nostr command line
 
-**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, syncs with NIP-77, sends private messages, runs a NIP-46 signer, talks to Blossom servers and NIP-98 HTTP endpoints, and keeps what it fetches in a local store that later runs can read without a network. One binary of under 3 MB for macOS, Linux and Windows, Intel and ARM, statically linked on Linux.
+**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, syncs with NIP-77, sends private messages, runs a NIP-46 signer, talks to Blossom servers and NIP-98 HTTP endpoints, serves its tools to MCP clients, reads NIP-29 groups, NIP-34 repositories and NIP-5A static sites, and keeps what it fetches in a local store that later runs can read without a network. One binary of under 3 MB for macOS, Linux and Windows, Intel and ARM, statically linked on Linux.
 
 A deed is two things at once: a signed instrument, and a thing done. So is a nostr event.
 
@@ -53,6 +53,16 @@ deed reaches relays and keeps what it finds. Every verb that does not need a soc
 | `admin` | manage a relay with the NIP-86 management API |
 | `blossom` | list, upload, download, delete, check and mirror blobs on a Blossom server |
 | `serve` | a local relay |
+| `spell` | fetch a spell (kind 777) and run the subscription it holds |
+| `mcp` | serve deed's tools to MCP clients over stdio |
+| `outbox` | list, refresh and clear the cached relay lists in a store |
+| `nsite` | deploy, download and list static sites (NIP-5A) |
+| `nip` | list the NIPs, or print one by number |
+| `group` | read and write NIP-29 groups: info, chat, join, moderation |
+| `podcast` | list the episodes of a podcast published on Nostr, read-only |
+| `validate` | check events against a registry-of-kinds schema |
+| `dekey` | set up and share a NIP-4E decoupled encryption key |
+| `git` | NIP-34 repositories, patches and issues: read them, announce, send patches |
 | `version` | print the version |
 
 ## A local relay
@@ -66,7 +76,7 @@ deed serve --store ~/.deed/relay --events seed.jsonl
 deed serve --auth-required
 ```
 
-`--hostname` sets the address to listen on, an IP address or `localhost`, and it defaults to 127.0.0.1. `--port` sets the port, which defaults to 10547, and 0 lets the system choose one. `--store` keeps events in a store at the path you give, and the store outlives the relay. Without it the events sit in a temporary store that is removed when the relay stops. `--events` loads a file of events before the relay starts, one JSON event per line. A bad line is reported on standard error and skipped. `--auth-required` sends a NIP-42 challenge on connect and answers nothing until the client has authenticated.
+`--hostname` sets the address to listen on, an IP address or `localhost`, and it defaults to 127.0.0.1. `--port` sets the port, which defaults to 10547, and 0 lets the system choose one. `--store` keeps events in a store at the path you give, and the store outlives the relay. Without it the events sit in a temporary store that is removed when the relay stops. `--events` loads a file of events before the relay starts, one JSON event per line. A bad line is reported on standard error and skipped. `--auth-required` sends a NIP-42 challenge on connect and answers nothing until the client has authenticated. A websocket request that carries an `Origin` header is refused, so a web page you happen to have open cannot reach the relay; `--allow-origin <origin>` lets a page from that origin in, and can be given more than once. Clients that are not browsers send no `Origin` and are not affected.
 
 The relay speaks NIP-01, NIP-09 deletions, NIP-11 (the information document, served to HTTP requests that ask for `application/nostr+json`), NIP-40 expiration, NIP-42 AUTH, NIP-45 COUNT, NIP-70 protected events and NIP-77 negentropy. Every incoming event has its id and signature checked before it is stored, and a replaceable or addressable event keeps only the newest version. With `--store`, each accepted event is synced to disk before it is acknowledged.
 
@@ -128,7 +138,77 @@ deed relays --store ~/.deed/db npub1...   # use a cached list first, and keep wh
 deed req -k 1 -l 20 -a npub1... $(deed relays --outbox npub1...)
 ```
 
-`fetch` and `post` do not follow a person to their own relays by themselves. Find the relays with `deed relays` and name them.
+`req --outbox` asks each author in the filter at their own write relays, and `-n` sets how many of an author's relays are asked (default 3). `fetch`, `post` and `profile` follow a person to their relays too, starting from at least one relay named with `-r` or `DEED_RELAYS`.
+
+```sh
+deed req -k 1 -l 20 --outbox -a npub1... -a npub1...   # each author's write relays
+```
+
+With `--store`, the relay lists are kept in the store, and `deed outbox` manages that cache:
+
+```sh
+deed outbox list    --store ~/.deed/db [npub1...] [--json]   # pubkey, relay, read or write, tab separated
+deed outbox refresh npub1... --store ~/.deed/db -r wss://relay.example   # ask again, keep the newest
+deed outbox clear   --store ~/.deed/db npub1...              # or --all
+```
+
+`refresh` keeps the cached list for a person the relays have no list for. `clear` removes only relay lists, and leaves the other events in the store alone.
+
+## Spells
+
+`deed spell` fetches a kind 777 event, checks its signature, and runs the subscription its tags describe, as `req` would. `$me` and `$contacts` stand for you and the people you follow; say who you are with `--pub` or `--sec`. A spell that lists no relays, or lists `$outbox`, asks each author's own write relays. A spell ends once the relays have sent what they hold unless you give `--stream`.
+
+## Groups
+
+`deed group` reads and writes NIP-29 relay-based groups. A group is written `relay'group-id`, as in `wss://groups.example'pizza`, and a naddr code with a relay hint works too.
+
+```sh
+deed group info wss://groups.example'pizza
+deed group chat wss://groups.example'pizza --limit 20
+deed group chat wss://groups.example'pizza --send "hello"
+deed group join wss://groups.example'pizza --code <invite>
+```
+
+`info`, `members` and `admins` read the group's metadata, and `chat` prints the newest messages, oldest first. Everything that writes is signed with your key, offered to the group's relay, and printed only if the relay accepted it. Moderation for admins (`put-user`, `remove-user`, `delete-event`, `create-group`, `delete-group`, `create-invite`) works the same way. Every event that is read has had its signature checked.
+
+## Static sites
+
+`deed nsite` handles NIP-5A static sites: a manifest event that maps paths to the sha256 of the file served there, with the files on Blossom servers under that hash.
+
+```sh
+deed nsite deploy ./public --server cdn.example.com wss://relay.example
+deed nsite list npub1...
+deed nsite download npub1... ./copy
+```
+
+`deploy` uploads only the files the published manifest does not already name, and publishes nothing if any file could not be uploaded. `download` writes a file only when its bytes hash to the name in the manifest. `--name` picks one of a person's named sites.
+
+## Git over nostr
+
+`deed git` works with NIP-34 repositories, patches and issues. A repository is an naddr code or `<npub>/<identifier>`.
+
+```sh
+deed git repo npub1.../deed wss://relay.example
+deed git patches naddr1... --apply-ready 1a2b3c4d | git am
+deed git announce --sec nsec1... wss://relay.example
+deed git send-patch --repo naddr1... HEAD~2..HEAD
+```
+
+`repo`, `state`, `patches`, `issues` and `pulls` read. `announce` publishes a repository announcement for the git repository in the current directory and never writes over an existing one unless `--replace` is given. `send-patch` publishes one patch per commit in a range. Both take `--dry-run` to print the signed events and publish nothing.
+
+## Other verbs
+
+`deed dekey` sets up a NIP-4E decoupled encryption key and shares it with your other devices when you pass `--authorize-all`; without that flag it sends the key to none. `deed validate` checks events against a registry-of-kinds schema and prints the ones that pass. `deed podcast` lists the episodes of a podcast published on Nostr, and only reads. `deed nip` prints the list of NIPs, or the text of one by number.
+
+## Serving tools to MCP clients
+
+`deed mcp` speaks the Model Context Protocol over stdio, for an MCP client to start as a subprocess. An agent or any other MCP client can use these tools: `decode`, `encode`, `verify`, `req`, `fetch`, `count`, `relay_info`, `relays` and `kind`. Events that arrive from relays are checked before they are returned, `encode` never builds an nsec, and `decode` refuses one.
+
+```json
+{"mcpServers":{"deed":{"command":"deed","args":["mcp"]}}}
+```
+
+`--store <path>` adds a `store_query` tool that reads that store and nothing else. Publishing is off by default. With `--allow-publish` and a signing key from `--sec` or `$NOSTR_SECRET_KEY`, the `publish_note` and `publish_event` tools are listed; without it they are neither listed nor callable. The key is never accepted as a tool argument and never returned. Every call has a deadline of at most 30 seconds, and results are capped at 256 KiB with a note saying so.
 
 ## Syncing
 
@@ -216,6 +296,6 @@ A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and
 
 {/* TODO serve: remote signer anywhere a key is accepted */}
 
-The use of a remote signer (`bunker://`) wherever a key is accepted is not finished. `fetch` and `post` do not follow a person to their own relays by themselves: find them with `deed relays` and name them. deed has no daemon and no config file, so the relays you want on every run go in `DEED_RELAYS`.
+The use of a remote signer (`bunker://`) wherever a key is accepted is not finished. deed has no daemon and no config file, so the relays you want on every run go in `DEED_RELAYS`.
 
 Source, releases and the full reference live at [`zig-nostr/deed`](https://github.com/zig-nostr/deed).
