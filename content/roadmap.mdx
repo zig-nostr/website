@@ -144,15 +144,8 @@ you price it.
 - **Multi-account.** It taxes every feature after it: per-account stores, relay pools,
   notification state, and switching without a reconnect storm. A read-only "view as" answers
   most of the real demand.
-- **Set-reconciliation sync (NIP-77).** Relay support is thin and the protocol is easy to get
-  subtly wrong. Per-relay cursors capture most of the benefit against a store that already
-  answers a feed query in under a millisecond.
-- **A proof of work difficulty slider (NIP-13).** Reading proof of work is cheap: count the
-  leading zero bits of the event id and honour the target committed in the `nonce` tag. A
-  slider is not, and none of the mainstream relays I checked ask for any difficulty, so the
-  setting would buy background mining, a cancel path and per-kind policy for nothing. Mining
-  when a relay actually asks, through `min_pow_difficulty` in its NIP-11 document or an `OK`
-  rejection that starts `pow:`, needs no setting at all.
+- **Set-reconciliation sync (NIP-77) in Plaza.** The library and deed already sync with it. In Plaza, relay support is thin and the protocol is easy to get subtly wrong, and per-relay cursors capture most of the benefit against a store that already answers a feed query in under a millisecond.
+- **A proof of work difficulty slider (NIP-13) in Plaza.** The library mines, and deed's `event --pow` uses it. Reading proof of work is cheap: count the leading zero bits of the event id and honour the target committed in the `nonce` tag. A slider is not, and none of the mainstream relays I checked ask for any difficulty, so the setting would buy background mining, a cancel path and per-kind policy for nothing. Mining when a relay actually asks, through `min_pow_difficulty` in its NIP-11 document or an `OK` rejection that starts `pow:`, needs no setting at all.
 - **NIP-96 HTTP file storage.** Supporting both upload paths looks like broader
   compatibility. NIP-96 carries an `unrecommended` banner in its own spec and the NIPs index
   strikes it through as replaced by Blossom, so uploads go to Blossom and nowhere

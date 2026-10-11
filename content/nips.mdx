@@ -8,19 +8,57 @@ official specification vectors.
 | NIP | Title | Status |
 |----|----|----|
 | [01](https://github.com/nostr-protocol/nips/blob/master/01.md) | Basic protocol: events, signatures, subscriptions, `kind:0` profiles and `kind:1` notes | ✅ done |
+| [04](https://github.com/nostr-protocol/nips/blob/master/04.md) | Legacy encrypted direct messages, `kind:4` (AES-256-CBC with an `?iv=` payload). Interoperability only: it has no authentication, so a successful decrypt proves nothing about who wrote the message | ✅ done |
+| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | DNS identifiers, `/.well-known/nostr.json`: the identifier is parsed and normalized and the response is read for the pubkey and relays. A codec only, the library does no HTTP; deed does the lookup | ✅ done |
 | [06](https://github.com/nostr-protocol/nips/blob/master/06.md) | Key derivation from a BIP-39 mnemonic, path `m/44'/1237'/<account>'/0/0` | ✅ done |
+| [11](https://github.com/nostr-protocol/nips/blob/master/11.md) | Relay information documents: the document is parsed, and a field of the wrong type is skipped without losing the rest. A codec only, the library does no HTTP; deed fetches the document | ✅ done |
+| [13](https://github.com/nostr-protocol/nips/blob/master/13.md) | Proof of work: counting the leading zero bits of an id, reading the target committed in a `nonce` tag, and mining a nonce to a target | ✅ done |
 | [09](https://github.com/nostr-protocol/nips/blob/master/09.md) | Event deletion, `kind:5` (ingestion) | ✅ done |
 | [19](https://github.com/nostr-protocol/nips/blob/master/19.md) | bech32-encoded entities: `npub`, `nsec`, `note`, `nprofile`, `nevent`, `naddr`. A code is read in all lowercase or all uppercase, and one that mixes the two is refused | ✅ done |
+| [17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages: building the `kind:14` message and its wraps with NIP-59, and reading one back. Relay lists for delivery (`kind:10050`) and file messages (`kind:15`) are not handled | ✅ done |
 | [21](https://github.com/nostr-protocol/nips/blob/master/21.md) | `nostr:` URI scheme, with the scheme matched in any case, so the `NOSTR:` a QR code carries decodes | ✅ done |
-| [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | Client-to-relay authentication | ✅ done |
+| [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | Client-to-relay authentication: answering a relay's `AUTH` challenge with a `kind:22242` event | ✅ done |
 | [44](https://github.com/nostr-protocol/nips/blob/master/44.md) | Encrypted payloads (v2) | ✅ done |
-| [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect, remote signing over `kind:24133` | ✅ done |
+| [45](https://github.com/nostr-protocol/nips/blob/master/45.md) | Event counts: the `COUNT` request and the relay reply, encoded and parsed. The local store counts too, with deed | ✅ done |
+| [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | Nostr Connect, remote signing over `kind:24133`: the signer side, and a client that connects to a signer by `bunker://` or `nostrconnect://`. The client is marked experimental and its shape may still change | ✅ done |
 | [49](https://github.com/nostr-protocol/nips/blob/master/49.md) | Private key encryption (`ncryptsec`) | ✅ done |
 | [50](https://github.com/nostr-protocol/nips/blob/master/50.md) | Search: the `search` field of a filter, sent to relays as `"search"`. Relays decide what matches, so the library's own matching ignores it, and the local store applies it as a case-insensitive substring of the content | ✅ done |
+| [29](https://github.com/nostr-protocol/nips/blob/master/29.md) | `group` reads a group's info, members, admins and chat, joins and leaves, sends messages, and makes the admin moderation calls. A group is addressed as `relay'group-id` |
+| [34](https://github.com/nostr-protocol/nips/blob/master/34.md) | `git` reads repository announcements, state, patches, issues and pull requests, announces a repository, and sends a series of patches. Patches of 60 kB or more are refused |
+| [4E](https://github.com/nostr-protocol/nips/blob/master/4E.md) | `dekey` announces a decoupled encryption key and sends it to devices that ask, only when told to with `--authorize-all` |
+| [5A](https://github.com/nostr-protocol/nips/blob/master/5A.md) | `nsite` deploys, downloads and lists static sites. A file is written only when its bytes hash to the name in the manifest |
+| [59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap: the rumor, the seal (`kind:13`) and the wrap (`kind:1059`), with the seal and wrap timestamps moved back at random and the sender proven by the seal alone | ✅ done |
 | [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | Relay list metadata, `kind:10002`, what people call the outbox model | ✅ done |
+| [77](https://github.com/nostr-protocol/nips/blob/master/77.md) | Negentropy set reconciliation, protocol version 1, with the `NEG-OPEN`, `NEG-MSG`, `NEG-CLOSE` and `NEG-ERR` messages. The tests replay transcripts recorded from the reference implementation | ✅ done |
+| [86](https://github.com/nostr-protocol/nips/blob/master/86.md) | Relay management API: requests encoded and responses parsed, with the NIP-98 header that authorizes them. The library does no HTTP | ✅ done |
+| [98](https://github.com/nostr-protocol/nips/blob/master/98.md) | HTTP authentication: building and reading the `kind:27235` event and the `Authorization: Nostr` header, and checking one on the server side. The library does no HTTP | ✅ done |
+| [Blossom](https://github.com/hzrd149/blossom) | Media authorization (`kind:24242`, BUD-01, BUD-02 and BUD-11 headers) and blob descriptors. Not NIPs: Blossom documents are called BUDs. The library builds the header and parses the descriptor, and does no HTTP | ✅ done |
 
 That is the library surface, and all of it is done. What the roadmap commits to
 next is [further down this page](#planned-and-where-it-lands).
+
+## In deed
+
+[deed](/deed) uses the library for the protocol and adds the network. Where a row says deed does the lookup, that is the part the library leaves out.
+
+| NIP | What deed does |
+|----|----|
+| [04](https://github.com/nostr-protocol/nips/blob/master/04.md) | `encrypt --nip04` and `decrypt --nip04`, for older clients. NIP-44 is the default |
+| [05](https://github.com/nostr-protocol/nips/blob/master/05.md) | `decode name@domain` looks the identifier up over https and prints the pubkey and relays the domain lists. A redirect is an error |
+| [11](https://github.com/nostr-protocol/nips/blob/master/11.md) | `relay` fetches each relay's information document and prints it |
+| [13](https://github.com/nostr-protocol/nips/blob/master/13.md) | `event --pow <bits>` mines a nonce on every core, with a time limit if you set one |
+| [17](https://github.com/nostr-protocol/nips/blob/master/17.md) | `gift dm` builds a `kind:14` message for each recipient plus a copy for you, wrapped, and prints the wraps for `publish`. It sends nothing itself |
+| [42](https://github.com/nostr-protocol/nips/blob/master/42.md) | `--auth` on `req`, `fetch` and `publish` answers a relay's challenge. Without it deed signs nothing it was not asked to sign |
+| [45](https://github.com/nostr-protocol/nips/blob/master/45.md) | `count` asks relays how many events match, or counts a local store. A relay that does not support it is named and left out |
+| [46](https://github.com/nostr-protocol/nips/blob/master/46.md) | `bunker` runs a signer and prints a `bunker://` URI. Only authorized clients are served. A remote signer is not yet accepted wherever deed takes a key |
+| [59](https://github.com/nostr-protocol/nips/blob/master/59.md) | `gift wrap` and `gift unwrap`, with the failed check named when an unwrap fails |
+| [65](https://github.com/nostr-protocol/nips/blob/master/65.md) | `relays` prints where a person reads and writes. `req --outbox`, `fetch`, `post` and `profile` follow it, and `outbox` manages the lists cached in a store |
+| [77](https://github.com/nostr-protocol/nips/blob/master/77.md) | `sync` between two relays, or a relay and a store. A relay without NIP-77 is asked with a plain REQ |
+| [86](https://github.com/nostr-protocol/nips/blob/master/86.md) | `admin` makes a management call, signed with your key |
+| [98](https://github.com/nostr-protocol/nips/blob/master/98.md) | `curl` signs the request it is about to make. A body read from a file or sent with `-F` is not hashed into the event |
+| [Blossom](https://github.com/hzrd149/blossom) | `blossom` lists, uploads, downloads, deletes, checks and mirrors blobs. An upload counts only when the server's hash and size match the file |
+
+{/* TODO serve */}
 
 ## In the apps
 
@@ -66,8 +104,8 @@ it.
 | [NIP-47](https://github.com/nostr-protocol/nips/blob/master/47.md) | Nostr Wallet Connect, so that invoice is paid in the app: a `nostr+walletconnect://` link, over kinds 13194, 23194 and 23195 | Money, carefully | 🚧 planned |
 | [NIP-61](https://github.com/nostr-protocol/nips/blob/master/61.md) | Nutzaps: Cashu ecash sent straight to a pubkey (`kind:9321`), gated on a `kind:10019` naming the mints you trust. No LNURL provider in the path, which is what makes a brand-new account payable | Money, carefully | 🚧 planned |
 | [NIP-60](https://github.com/nostr-protocol/nips/blob/master/60.md) | The wallet that holds what arrives: `kind:17375` wallet, `kind:7375` tokens, `kind:7376` spending history, which NIP-61 reuses to mark a nutzap redeemed | Money, carefully | 🚧 planned |
-| [NIP-17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages: `kind:14` chat, `kind:15` files, and the `kind:10050` relay list they are delivered to | Private messages | 🚧 planned |
-| [NIP-59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap, which does the wrapping NIP-17 defers: a `kind:13` seal signed by me, inside a `kind:1059` wrap signed by a throwaway key | Private messages | 🚧 planned |
+| [NIP-17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private direct messages in Plaza: `kind:14` chat, `kind:15` files, and the `kind:10050` relay list they are delivered to. The library builds and reads the messages already | Private messages | 🚧 planned |
+| [NIP-59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift wrap in Plaza, which does the wrapping NIP-17 defers: a `kind:13` seal signed by me, inside a `kind:1059` wrap signed by a throwaway key. The library has the wrapping already | Private messages | 🚧 planned |
 | [NIP-29](https://github.com/nostr-protocol/nips/blob/master/29.md) | Groups, which live on one relay: an `h` tag on every event, relay-published metadata (`kind:39000`), and join and leave requests (`kind:9021`, `kind:9022`) | Groups | 🚧 planned |
 
 **Blossom is not a NIP.** It is a separate protocol with its own repository,
@@ -107,16 +145,15 @@ theme, keyboard operation, or type that scales.
 Refusing is a promise too, and these are the ones I get asked about. The
 [roadmap](/roadmap) has the rest.
 
-- **[NIP-77](https://github.com/nostr-protocol/nips/blob/master/77.md)**, set
-  reconciliation. Relay support is thin and the protocol is easy to get subtly
-  wrong. Per-relay cursors capture most of the benefit against a store that
+- **[NIP-77](https://github.com/nostr-protocol/nips/blob/master/77.md)** in
+  Plaza. The library and deed implement it. In the client, relay support is thin
+  and per-relay cursors capture most of the benefit against a store that
   already answers a feed query in under a millisecond.
 - **[NIP-96](https://github.com/nostr-protocol/nips/blob/master/96.md)**, HTTP
   file storage. Marked `unrecommended` in the NIPs repo and replaced by Blossom.
   Media goes through Blossom instead.
-- **[NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)**, proof
-  of work. No milestone needs it, and no mainstream relay I have checked
-  advertises a `min_pow_difficulty` above zero in its
-  [NIP-11](https://github.com/nostr-protocol/nips/blob/master/11.md) document.
-  If that changes, reading the number and mining to it is a small piece of work,
-  and I would rather do it then than promise it now.
+- **[NIP-13](https://github.com/nostr-protocol/nips/blob/master/13.md)** in
+  Plaza. The library mines and deed's `event --pow` uses it, but no mainstream
+  relay I have checked advertises a `min_pow_difficulty` above zero in its
+  [NIP-11](https://github.com/nostr-protocol/nips/blob/master/11.md) document,
+  so the client has no use for it yet.
