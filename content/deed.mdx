@@ -118,7 +118,7 @@ deed key mnemonic                                      # a BIP-39 phrase
 deed key from-mnemonic --public                        # the npub at m/44'/1237'/0'/0/0
 ```
 
-{/* TODO serve: remote signer anywhere a key is accepted */}
+A remote signer works wherever a key is accepted. Give a `bunker://` URI in place of the key, with `--sec` or in `$NOSTR_SECRET_KEY`, and every verb that signs or encrypts as you asks the signer over NIP-46. Each request waits up to 60 seconds, since someone may be approving it on another device. An approval link is shown on stderr only when it is https. Each run makes a new client key, so a signer that asks before trusting a new client asks every time. Set `DEED_BUNKER_CLIENT_KEYS` to a file path to keep one client key per signer there; the file is readable only by you. Verbs that need the raw key (`key public`, `key encrypt`, `bunker`, `nsite deploy`, `mcp`) refuse a `bunker://` URI.
 
 A relay that keeps some events behind authentication (NIP-42) is answered with `--auth` on `req`, `fetch` and `publish`. Without it deed signs nothing it was not asked to sign. `--force-pre-auth` waits for the challenge and answers it before asking anything.
 
@@ -294,8 +294,6 @@ A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and
 
 ## What is missing
 
-{/* TODO serve: remote signer anywhere a key is accepted */}
-
-The use of a remote signer (`bunker://`) wherever a key is accepted is not finished. deed has no daemon and no config file, so the relays you want on every run go in `DEED_RELAYS`.
+deed has no daemon and no config file, so the relays you want on every run go in `DEED_RELAYS`. Verbs that need the raw key itself refuse a remote signer.
 
 Source, releases and the full reference live at [`zig-nostr/deed`](https://github.com/zig-nostr/deed).
