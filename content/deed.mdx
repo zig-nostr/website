@@ -1,8 +1,10 @@
 # deed: the nostr command line
 
-**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, syncs with NIP-77, sends private messages, runs a NIP-46 signer, talks to Blossom servers and NIP-98 HTTP endpoints, serves its tools to MCP clients, reads NIP-29 groups, NIP-34 repositories and NIP-5A static sites, and keeps what it fetches in a local store that later runs can read without a network. One binary of under 3 MB for macOS, Linux and Windows, Intel and ARM, statically linked on Linux.
+**deed** is a command line for nostr, built on `zig-nostr`. It makes keys, builds and signs events, reads and writes NIP-19 codes, encrypts and decrypts with NIP-44, checks signatures, asks relays for events and publishes to them, syncs with NIP-77, sends private messages, runs a NIP-46 signer, talks to Blossom servers and NIP-98 HTTP endpoints, serves its tools to MCP clients, reads NIP-29 groups, NIP-34 repositories and NIP-5A static sites, and keeps what it fetches in a local store that later runs can read without a network. One binary of about 5 MB for macOS, Linux and Windows, Intel and ARM, statically linked on Linux.
 
 A deed is two things at once: a signed instrument, and a thing done. So is a nostr event.
+
+deed beats nak on every benchmark run: it starts in 1.9 ms against 121 ms, verifies 10,000 events in 32 ms against 1,967 ms, and uses 2 MB of memory at startup against 69 MB. The full comparison is in the [performance section](/performance#deed-and-nak). deed covers every nak command except `fs`.
 
 ## Install
 
@@ -51,7 +53,7 @@ deed reaches relays and keeps what it finds. Every verb that does not need a soc
 | `store` | inspect, export, import and trim a local event store |
 | `curl` | run curl with a NIP-98 signed Authorization header |
 | `admin` | manage a relay with the NIP-86 management API |
-| `blossom` | list, upload, download, delete, check and mirror blobs on a Blossom server |
+| `blossom` | list, upload, download, delete, check, verify and mirror blobs on a Blossom server |
 | `serve` | a local relay |
 | `spell` | fetch a spell (kind 777) and run the subscription it holds |
 | `mcp` | serve deed's tools to MCP clients over stdio |
@@ -271,7 +273,15 @@ deed admin relay.example.com banpubkey npub1... "spam"       # a NIP-86 call to 
 deed blossom upload photo.jpg -s cdn.example.com             # a blob, by its sha256
 ```
 
-`curl` signs a kind 27235 event for the request and hands the rest to the system curl, whose exit status becomes its own. `admin` signs each call with your key and prints the relay's result. `blossom` has `list`, `upload`, `download`, `delete`, `check` and `mirror`: an upload is confirmed only when the server's sha256 and size match the file, and a download is written only when its sha256 matches.
+`curl` signs a kind 27235 event for the request and hands the rest to the system curl, whose exit status becomes its own. `admin` signs each call with your key and prints the relay's result. `blossom` has `list`, `upload`, `download`, `delete`, `check`, `verify` and `mirror`: `upload --metadata` prints the blob's descriptor as JSON, `--imeta` prints it as a NIP-92 `imeta` tag ready for a note, and `verify` re-hashes a blob from the server and compares it with its address. An upload is confirmed only when the server's sha256 and size match the file, and a download is written only when its sha256 matches.
+
+## Proxies
+
+`--proxy <url>` sends web requests and relay connections through an `http://` proxy (HTTP CONNECT), or a `socks5://` or `socks5h://` one (use `socks5h` for Tor, so names resolve at the proxy). Without the flag, `DEED_PROXY` is used, then `HTTPS_PROXY`, `HTTP_PROXY` and `ALL_PROXY`, minus any host listed in `NO_PROXY`. A proxy that is set and cannot be reached fails the command: deed never goes around a configured proxy.
+
+## Threads
+
+`deed fetch --thread` gets the conversation a note belongs to, not only the note. Pretty-printed JSON also works on stdin, so the output of `jq .` or a file saved by hand can be piped straight into `verify`, `filter` or `publish`, and not only one event per line.
 
 ## Judging what it fetches
 
@@ -286,7 +296,7 @@ On one run, 629 of 1,000 notes were text worth judging, 157 of those were droppe
 
 ## How fast it is
 
-A one-shot command runs in about 2.3 ms and under 2 MB of memory. deed signs and verifies about 31,000 events a second each, stores 100,000 events from a relay at about 17,000 a second, and answers a lookup from that store in about 3 ms, start to finish. The full numbers, and how to reproduce them, are on the [performance page](/performance#deed).
+A one-shot command runs in about 1.9 ms and under 2.5 MB of memory. deed signs and verifies about 310,000 events a second each, stores 100,000 events from a relay at about 17,000 a second, and answers a lookup from that store in about 3 ms, start to finish. The full numbers, and how to reproduce them, are on the [performance page](/performance#deed).
 
 ## How it is built
 

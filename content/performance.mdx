@@ -51,13 +51,35 @@ The benchmark source is
 Absolute numbers vary with hardware; the *shape*, flat feed latency as the
 store grows, is the point.
 
+## deed and nak
+
+deed 0.5.0 beats nak v0.21.2 on every benchmark run here: faster or smaller on 50 of 51 comparisons, one tie, none slower. Times are the minimum of N runs, release builds of both, on an Apple M2 Pro over loopback.
+
+| Benchmark | deed | nak | deed is |
+|----|----|----|----|
+| Startup (`--version`) | 1.9 ms | 121 ms | 64x faster |
+| Memory at startup | 2.0 MB | 69.4 MB | 35x smaller |
+| Binary size | 5.4 MB | 43.4 MB | 8x smaller |
+| Verify 10,000 events | 32 ms | 1,967 ms | 62x faster |
+| Sign 10,000 drafts | 32 ms | 1,414 ms | 44x faster |
+| `req`, latest 500 notes | 15.9 ms | 226 ms | 14x faster |
+| `req --paginate`, 49,500 notes | 1.34 s | 9.60 s | 7x faster |
+| Publish 100 events to each of 4 relays | 46 ms | 280 ms | 6x faster |
+| Gift wrap 1,000 messages | 123 ms | 601 ms | 4.9x faster |
+| Gift unwrap 1,000 messages | 115 ms | 761 ms | 6.6x faster |
+| NIP-77 sync, 50,000 events, 1% missing | 146 ms | 790 ms | 5.4x faster |
+| Relay serving, publish 10,000 events | 1.40 s | 3.54 s | 2.5x faster |
+| Relay serving, query latest 500 of 10,000 | 16.09 ms | 16.10 ms | a tie (nak serve caps a request at 500, so 500 is the equal work) |
+
+Both tools ran the same work on the same fixtures, signed with throwaway keys. Fixtures and relays bind 127.0.0.1 only: nak's relay is `nak serve`, and deed was checked to produce the same output as nak for each row (event counts, cross-unwrapping of each other's gift wraps, cross-decrypting each other's payloads). Timing uses `hyperfine -N` with a warm-up, and the minimum is reported because noise on a shared machine only adds time. A comparison within 5 percent counts as a tie. Rows where nak lacks the feature, such as reading from a local store, are not counted. The full table, with every row and the method, is in deed's [`BENCHMARKS.md`](https://github.com/zig-nostr/deed/blob/main/BENCHMARKS.md).
+
 ## deed
 
-What the [command line](/deed) costs to run, measured on an Apple M2 Pro with the deed 0.3.1 binary from the release page (`ReleaseSafe`, stripped). Each number is the best of several runs, and every one is the whole command, starting the process included.
+What the [command line](/deed) costs to run, measured on an Apple M2 Pro with the deed 0.3.1 binary from the release page (`ReleaseSafe`, stripped). Each number is the best of several runs, and every one is the whole command, starting the process included. The macOS Apple Silicon size and the two 10,000-event stream rates are from deed 0.5.0; the other rows are from 0.3.1.
 
 | Size | Binary | Download |
 |----|----|----|
-| macOS, Apple Silicon | 2.3 MB | 1.6 MB |
+| macOS, Apple Silicon (0.5.0) | 5.4 MB | 2.8 MB |
 | macOS, Intel | 2.4 MB | 1.7 MB |
 | Linux, x86_64 | 2.7 MB | 1.8 MB |
 | Linux, aarch64 | 2.4 MB | 1.8 MB |
@@ -72,8 +94,8 @@ What the [command line](/deed) costs to run, measured on an Apple M2 Pro with th
 
 | Streams of 10,000 through stdin | |
 |----|----|
-| signing | 30,986 per second |
-| verifying | 32,523 per second |
+| signing (0.5.0) | 309,449 per second |
+| verifying (0.5.0) | 312,868 per second |
 | decoding npubs | 568,831 per second |
 | peak memory, verifying | 3.9 MB |
 
