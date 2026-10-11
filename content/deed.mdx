@@ -273,7 +273,7 @@ deed admin relay.example.com banpubkey npub1... "spam"       # a NIP-86 call to 
 deed blossom upload photo.jpg -s cdn.example.com             # a blob, by its sha256
 ```
 
-`curl` signs a kind 27235 event for the request and hands the rest to the system curl, whose exit status becomes its own. `admin` signs each call with your key and prints the relay's result. `blossom` has `list`, `upload`, `download`, `delete`, `check`, `verify` and `mirror`: `upload --metadata` prints the blob's descriptor as JSON, `--imeta` prints it as a NIP-92 `imeta` tag ready for a note, and `verify` re-hashes a blob from the server and compares it with its address. An upload is confirmed only when the server's sha256 and size match the file, and a download is written only when its sha256 matches.
+`curl` signs a kind 27235 event for the request and hands the rest to the system curl, whose exit status becomes its own. `admin` signs each call with your key and prints the relay's result. `blossom` has `list`, `upload`, `download`, `delete`, `check`, `verify` and `mirror`: `upload --metadata` signs and prints a kind 1063 file metadata event (NIP-94) for the file, `--imeta` prints the NIP-92 `imeta` tag for it, and `verify` hashes a local file and compares it with a sha256 or a blob URL. An upload is confirmed only when the server's sha256 and size match the file, and a download is written only when its sha256 matches.
 
 ## Proxies
 
