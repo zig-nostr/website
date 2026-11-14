@@ -19,5 +19,6 @@ export default {
   notary: 'Notary',
   deed: 'deed',
   performance: 'Performance',
+  privacy: 'Privacy',
   roadmap: 'Roadmap',
 }

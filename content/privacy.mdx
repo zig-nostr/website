@@ -1,0 +1,52 @@
+# Privacy: the site, and what the apps talk to
+
+This site collects nothing. There is no analytics script, no
+tracking pixel, no cookie, and no third-party request. The only
+thing a page writes to your browser is a `theme` entry in
+`localStorage`, so the light/dark choice survives a reload.
+
+The apps built on `zig-nostr` hold to the same standard: no
+telemetry, no crash reporting, no phoning home beyond what is
+listed here. Each network call they make on your behalf goes to a
+destination you can see in the app or in the list below, and what
+that destination learns is your IP address and the request you
+made.
+
+## Plaza
+
+| Destination | When | Why |
+| --- | --- | --- |
+| Your relays, and the NIP-65 relays of people you follow | feed, search, publish | reading and writing Nostr |
+| `search.nos.today`, `search.nostrarchives.com` | you type in the search field | NIP-50 people search |
+| NIP-05 domains in profiles you open | profile view | verifying `name@domain` |
+| The Blossom servers in your published list | you press Upload | picture uploads (EXIF and GPS stripped first) |
+| `blossom.primal.net`, `blossom.band` | picture uploads, when you have no list of your own | built-in fallback media servers |
+| `api.github.com/repos/zig-nostr/plaza` | every 6 h, switchable off in settings | update check |
+| `njump.me` | only when you press share / open-on-the-web | renders a note as a web page to hand off |
+
+Picture and link-preview fetches are URL-gated before any request:
+no private, loopback or LAN addresses, no userinfo, no odd ports.
+Optional proxying of images through a service you name (the
+default suggestion is `wsrv.nl`) is off until you switch it on.
+
+## Notary
+
+The daemon talks to the relays in its own configuration, and to
+nothing else. The approval API is loopback-only and answers only
+with the token its parent app passed it on startup. An export of
+your key requires the passphrase every time, is written to the
+audit log, and the log file lives beside the key at mode 0600
+(`SIGNER_LOG_FILE=""` turns it off).
+
+## deed
+
+deed talks only to what you asked it to: the relays and HTTP
+endpoints named on the command line. `deed mcp` serves over stdio
+only; publishing tools exist only when started with
+`--allow-publish`, and the signing key is never a tool argument or
+a result.
+
+## What this site's builds load
+
+Fonts and images are self-hosted. There are no CDN, font or
+analytics origins in any page.
